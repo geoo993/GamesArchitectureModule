@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PlatformerLab2.MacOS</RootNamespace>
+    <AssemblyName>PlatformerLab2.MacOS</AssemblyName>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Accelerometer.cs" />
+    <Compile Include="Enemy.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="PlatformerGame.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="Tile.cs" />
+    <Compile Include="TouchCollectionExtensions.cs" />
+    <Compile Include="Animation.cs" />
+    <Compile Include="AnimationPlayer.cs" />
+    <Compile Include="Circle.cs" />
+    <Compile Include="Gem.cs" />
+    <Compile Include="RectangleExtensions.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="GameInfo.cs" />
+    <Compile Include="Game1.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="PlatformerContent\.DS_Store" />
+    <None Include="PlatformerContent\Content.contentproj" />
+    <None Include="PlatformerContent\Fonts\Hud.spritefont" />
+    <None Include="PlatformerContent\Levels\0.txt" />
+    <None Include="PlatformerContent\Levels\1.txt" />
+    <None Include="PlatformerContent\Levels\2.txt" />
+    <None Include="Game.ico" />
+    <None Include="PlatformerContent\Sounds\ExitReached.wma" />
+    <None Include="PlatformerContent\Sounds\GemCollected.wma" />
+    <None Include="PlatformerContent\Sounds\MonsterKilled.wma" />
+    <None Include="PlatformerContent\Sounds\Music.wma" />
+    <None Include="PlatformerContent\Sounds\PlayerFall.wma" />
+    <None Include="PlatformerContent\Sounds\PlayerJump.wma" />
+    <None Include="PlatformerContent\Sounds\PlayerKilled.wma" />
+    <None Include="PlatformerContent\Sounds\Powerup.wma" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MonoGame.Framework.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Hud.xnb">
+      <Link>Content\Fonts\Hud.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer0_0.xnb">
+      <Link>Content\Backgrounds\Layer0_0.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer0_1.xnb">
+      <Link>Content\Backgrounds\Layer0_1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer0_2.xnb">
+      <Link>Content\Backgrounds\Layer0_2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer1_0.xnb">
+      <Link>Content\Backgrounds\Layer1_0.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer1_1.xnb">
+      <Link>Content\Backgrounds\Layer1_1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer1_2.xnb">
+      <Link>Content\Backgrounds\Layer1_2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer2_0.xnb">
+      <Link>Content\Backgrounds\Layer2_0.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer2_1.xnb">
+      <Link>Content\Backgrounds\Layer2_1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Layer2_2.xnb">
+      <Link>Content\Backgrounds\Layer2_2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\you_died.xnb">
+      <Link>Content\OverLays\you_died.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\you_lose.xnb">
+      <Link>Content\OverLays\you_lose.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\you_win.xnb">
+      <Link>Content\OverLays\you_win.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA0.xnb">
+      <Link>Content\Tiles\BlockA0.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA1.xnb">
+      <Link>Content\Tiles\BlockA1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA2.xnb">
+      <Link>Content\Tiles\BlockA2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA3.xnb">
+      <Link>Content\Tiles\BlockA3.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA4.xnb">
+      <Link>Content\Tiles\BlockA4.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA5.xnb">
+      <Link>Content\Tiles\BlockA5.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockA6.xnb">
+      <Link>Content\Tiles\BlockA6.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Exit.xnb">
+      <Link>Content\Tiles\Exit.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Platform.xnb">
+      <Link>Content\Tiles\Platform.xnb</Link>
+    </Content>
+    <Content Include="PlatformerContent\Levels\0.txt">
+      <Link>Content\Levels\0.txt</Link>
+    </Content>
+    <Content Include="PlatformerContent\Levels\1.txt">
+      <Link>Content\Levels\1.txt</Link>
+    </Content>
+    <Content Include="PlatformerContent\Levels\2.txt">
+      <Link>Content\Levels\2.txt</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Gem.xnb">
+      <Link>Content\Sprites\Gem.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\GemCollected.xnb">
+      <Link>Content\Sounds\GemCollected.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Music.xnb">
+      <Link>Content\Sounds\Music.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Powerup.xnb">
+      <Link>Content\Sounds\Powerup.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerCelebrate.xnb">
+      <Link>Content\Sprites\Player\PlayerCelebrate.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerDie.xnb">
+      <Link>Content\Sprites\Player\PlayerDie.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerIdle.xnb">
+      <Link>Content\Sprites\Player\PlayerIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerRun.xnb">
+      <Link>Content\Sprites\Player\PlayerRun.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerJumping.xnb">
+      <Link>Content\Sprites\Player\PlayerJumping.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerFall.xnb">
+      <Link>Content\Sounds\PlayerFall.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerJump.xnb">
+      <Link>Content\Sounds\PlayerJump.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterKilled.xnb">
+      <Link>Content\Sounds\MonsterKilled.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\PlayerKilled.xnb">
+      <Link>Content\Sounds\PlayerKilled.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\ExitReached.xnb">
+      <Link>Content\Sounds\ExitReached.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockB0.xnb">
+      <Link>Content\Tiles\BlockB0.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\BlockB1.xnb">
+      <Link>Content\Tiles\BlockB1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterDRun.xnb">
+      <Link>Content\Sprites\MonsterD\MonsterDRun.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterDIdle.xnb">
+      <Link>Content\Sprites\MonsterD\MonsterDIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterCRun.xnb">
+      <Link>Content\Sprites\MonsterC\MonsterCRun.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterCIdle.xnb">
+      <Link>Content\Sprites\MonsterC\MonsterCIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterBRun.xnb">
+      <Link>Content\Sprites\MonsterB\MonsterBRun.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterBIdle.xnb">
+      <Link>Content\Sprites\MonsterB\MonsterBIdle.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterARun.xnb">
+      <Link>Content\Sprites\MonsterA\MonsterARun.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MonsterAIdle.xnb">
+      <Link>Content\Sprites\MonsterA\MonsterAIdle.xnb</Link>
+    </Content>
+    <Content Include="PlatformerContent\XML\info.xml">
+      <Link>Content\XML\info.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
+      <Link>libopenal.1.dylib</Link>
+      <Kind>Static</Kind>
+    </NativeReference>
+    <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libSDL2-2.0.0.dylib">
+      <Link>libSDL2-2.0.0.dylib</Link>
+      <Kind>Static</Kind>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="PlatformerContent\Overlays\you_died.png" />
+    <BundleResource Include="PlatformerContent\Overlays\you_lose.png" />
+    <BundleResource Include="PlatformerContent\Overlays\you_win.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Gem.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Player\Celebrate.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Player\Die.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Player\Idle.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Player\Jump.png" />
+    <BundleResource Include="PlatformerContent\Sprites\Player\Run.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA0.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA1.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA2.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA3.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA4.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA5.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockA6.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockB0.png" />
+    <BundleResource Include="PlatformerContent\Tiles\BlockB1.png" />
+    <BundleResource Include="PlatformerContent\Tiles\Exit.png" />
+    <BundleResource Include="PlatformerContent\Tiles\Platform.png" />
+    <BundleResource Include="Background.png" />
+    <BundleResource Include="GameThumbnail.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer0_0.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer0_1.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer0_2.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer1_0.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer1_1.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer1_2.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer2_0.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer2_1.png" />
+    <BundleResource Include="PlatformerContent\Backgrounds\Layer2_2.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterD\MonsterDIdle.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterD\MonsterDRun.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterC\MonsterCIdle.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterC\MonsterCRun.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterB\MonsterBIdle.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterB\MonsterBRun.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterA\MonsterAIdle.png" />
+    <BundleResource Include="PlatformerContent\Sprites\MonsterA\MonsterARun.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Fonts\" />
+    <Folder Include="Content\OverLays\" />
+    <Folder Include="Content\Backgrounds\" />
+    <Folder Include="Content\Sounds\" />
+    <Folder Include="Content\Levels\" />
+    <Folder Include="Content\Tiles\" />
+    <Folder Include="Content\Sprites\" />
+    <Folder Include="Content\Sprites\MonsterA\" />
+    <Folder Include="Content\Sprites\MonsterB\" />
+    <Folder Include="Content\Sprites\MonsterC\" />
+    <Folder Include="Content\Sprites\MonsterD\" />
+    <Folder Include="Content\Sprites\Player\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+</Project>

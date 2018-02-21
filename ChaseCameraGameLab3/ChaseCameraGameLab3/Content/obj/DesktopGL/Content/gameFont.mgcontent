@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/gameFont.spritefont</SourceFile>
+  <SourceTime>2011-04-01T10:42:38+01:00</SourceTime>
+  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/bin/DesktopGL/Content/gameFont.xnb</DestFile>
+  <DestTime>2018-02-21T09:58:45+00:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2018-02-16T07:17:46+00:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

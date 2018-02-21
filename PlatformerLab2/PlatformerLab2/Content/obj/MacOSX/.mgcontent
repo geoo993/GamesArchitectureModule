@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>MacOSX</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA0.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA1.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA2.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA3.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA4.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA5.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockA6.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockB0.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/BlockB1.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Exit.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/ExitReached.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Gem.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/GemCollected.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Hud.spritefont</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer0_0.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer0_1.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer0_2.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer1_0.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer1_1.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer1_2.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer2_0.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer2_1.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Layer2_2.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterAIdle.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterARun.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterBIdle.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterBRun.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterCIdle.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterCRun.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterDIdle.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterDRun.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/MonsterKilled.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Music.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Platform.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerCelebrate.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerDie.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerFall.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerIdle.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerJump.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerJumping.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerKilled.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/PlayerRun.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/Powerup.wma</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/you_died.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/you_lose.png</File>
+    <File>/Users/GeorgeQuentin/Projects/PlatformerLab2/PlatformerLab2/Content/you_win.png</File>
+  </SourceFiles>
+</SourceFileCollection>
