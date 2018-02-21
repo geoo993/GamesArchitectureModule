@@ -22,6 +22,7 @@ namespace ChaseCameraGameLab3.MacOS
     /// </summary>
     public class ChaseCameraGame : Microsoft.Xna.Framework.Game
     {
+        
         #region Fields
 
         GraphicsDeviceManager graphics;
@@ -42,8 +43,13 @@ namespace ChaseCameraGameLab3.MacOS
 
         Model shipModel;
         Model groundModel;
+        
+        Texture2D shipTexture;
+        Texture2D groundTexture;
 
         bool cameraSpringEnabled = true;
+
+        CommandManager commandManager;
 
         #endregion
 
@@ -82,7 +88,9 @@ namespace ChaseCameraGameLab3.MacOS
             camera.NearPlaneDistance = 10.0f;
             camera.FarPlaneDistance = 100000.0f;
 
-            //TODO: Set any other camera invariants here such as field of view
+            // Create CommandManager
+            commandManager = new CommandManager();
+
         }
 
 
@@ -92,9 +100,17 @@ namespace ChaseCameraGameLab3.MacOS
         protected override void Initialize()
         {
             base.Initialize();
-
+            
+            commandManager.AddKeyboardBinding(Keys.Q, StopGame); 
+            commandManager.AddKeyboardBinding(Keys.A, EnableCameraSpring); 
+            commandManager.AddKeyboardBinding(Keys.R, Reset); 
 
             ship = new Ship(GraphicsDevice);
+			commandManager.AddKeyboardBinding(Keys.W, ship.Thrust);
+			commandManager.AddKeyboardBinding(Keys.Left, ship.TurnLeft);
+			commandManager.AddKeyboardBinding(Keys.Right, ship.TurnRight);
+			commandManager.AddKeyboardBinding(Keys.Up, ship.LookUp);
+			commandManager.AddKeyboardBinding(Keys.Down, ship.LookDown);
 
             // Set the camera aspect ratio
             // This must be done after the class to base.Initalize() which will
@@ -122,7 +138,8 @@ namespace ChaseCameraGameLab3.MacOS
             
             groundModel = Content.Load<Model>("Ground");
             shipModel = Content.Load<Model>("ship");
-            
+            shipTexture = Content.Load<Texture2D>("ShipDiffuse");
+            groundTexture = Content.Load<Texture2D>("grid");
         }
 
 
@@ -136,6 +153,8 @@ namespace ChaseCameraGameLab3.MacOS
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
+            commandManager.Update();
+            
             lastKeyboardState = currentKeyboardState;
             lastGamePadState = currentGamePadState;
             lastMousState = currentMouseState;
@@ -149,36 +168,36 @@ namespace ChaseCameraGameLab3.MacOS
             currentMouseState = Mouse.GetState();
 
 
-            // Exit when the Escape key or Back button is pressed
-            if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
-                currentGamePadState.Buttons.Back == ButtonState.Pressed)
-            {
-                Exit();
-            }
+            //// Exit when the Escape key or Back button is pressed
+            //if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
+            //    currentGamePadState.Buttons.Back == ButtonState.Pressed)
+            //{
+            //    Exit();
+            //}
 
-            bool touchTopLeft = currentMouseState.LeftButton == ButtonState.Pressed &&
-                    lastMousState.LeftButton != ButtonState.Pressed &&
-                    currentMouseState.X < GraphicsDevice.Viewport.Width / 10 &&
-                    currentMouseState.Y < GraphicsDevice.Viewport.Height / 10;
+            //bool touchTopLeft = currentMouseState.LeftButton == ButtonState.Pressed &&
+            //        lastMousState.LeftButton != ButtonState.Pressed &&
+            //        currentMouseState.X < GraphicsDevice.Viewport.Width / 10 &&
+            //        currentMouseState.Y < GraphicsDevice.Viewport.Height / 10;
 
 
-            // Pressing the A button or key toggles the spring behavior on and off
-            if (lastKeyboardState.IsKeyUp(Keys.A) &&
-                (currentKeyboardState.IsKeyDown(Keys.A)) ||
-                (lastGamePadState.Buttons.A == ButtonState.Released &&
-                currentGamePadState.Buttons.A == ButtonState.Pressed) ||
-                touchTopLeft)
-            {
-                cameraSpringEnabled = !cameraSpringEnabled;
-            }
+            //// Pressing the A button or key toggles the spring behavior on and off
+            //if (lastKeyboardState.IsKeyUp(Keys.A) &&
+            //    (currentKeyboardState.IsKeyDown(Keys.A)) ||
+            //    (lastGamePadState.Buttons.A == ButtonState.Released &&
+            //    currentGamePadState.Buttons.A == ButtonState.Pressed) ||
+            //    touchTopLeft)
+            //{
+            //    cameraSpringEnabled = !cameraSpringEnabled;
+            //}
 
-            // Reset the ship on R key or right thumb stick clicked
-            if (currentKeyboardState.IsKeyDown(Keys.R) ||
-                currentGamePadState.Buttons.RightStick == ButtonState.Pressed)
-            {
-                ship.Reset();
-                camera.Reset();
-            }
+            //// Reset the ship on R key or right thumb stick clicked
+            //if (currentKeyboardState.IsKeyDown(Keys.R) ||
+            //    currentGamePadState.Buttons.RightStick == ButtonState.Pressed)
+            //{
+            //    ship.Reset();
+            //    camera.Reset();
+            //}
 
             // Update the ship
             ship.Update(gameTime);
@@ -221,8 +240,8 @@ namespace ChaseCameraGameLab3.MacOS
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
 
-            DrawModel(shipModel, ship.World);
-            DrawModel(groundModel, Matrix.Identity);
+            DrawModel(shipModel, ship.World, shipTexture);
+            DrawModel(groundModel, Matrix.Identity, groundTexture);
 
             DrawOverlayText();
 
@@ -234,16 +253,19 @@ namespace ChaseCameraGameLab3.MacOS
         /// Simple model drawing method. The interesting part here is that
         /// the view and projection matrices are taken from the camera object.
         /// </summary>        
-        private void DrawModel(Model model, Matrix world)
+        private void DrawModel(Model model, Matrix world, Texture2D texture)
         {
             Matrix[] transforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(transforms);
-
+            
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
                     effect.EnableDefaultLighting();
+                    effect.TextureEnabled = true;
+                    effect.EnableDefaultLighting();
+                    effect.Texture = texture;
                     effect.World = transforms[mesh.ParentBone.Index] * world;
 
                     // Use the matrices provided by the chase camera
@@ -263,7 +285,7 @@ namespace ChaseCameraGameLab3.MacOS
         {
             spriteBatch.Begin();
 
-            string text = "-Touch, Right Trigger, or Spacebar = thrust\n" +
+            string text = "-Touch, Right Trigger, or W = thrust\n" +
                           "-Screen edges, Left Thumb Stick,\n  or Arrow keys = steer\n" +
                           "-Press A or touch the top left corner\n  to toggle camera spring (" + (cameraSpringEnabled ?
                               "on" : "off") + ")";
@@ -276,8 +298,26 @@ namespace ChaseCameraGameLab3.MacOS
 
             spriteBatch.End();
         }
+        
+        public void StopGame(ButtonState buttonState, Vector2 amount){
+            //System.Diagnostics.Debug.Print(" Pressing button");
+            Exit();
+        }
 
-
+        public void EnableCameraSpring(ButtonState buttonState, Vector2 amount){
+            
+            if (buttonState == ButtonState.Pressed)
+            {
+                cameraSpringEnabled = !cameraSpringEnabled;
+            }
+           
+        }
+        
+        public void Reset(ButtonState buttonState, Vector2 amount){
+            ship.Reset();
+            camera.Reset();
+        }   
+        
         #endregion
     }
 

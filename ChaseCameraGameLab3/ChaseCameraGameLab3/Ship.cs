@@ -56,6 +56,7 @@ namespace ChaseCameraGameLab3.MacOS
         /// Full speed at which ship can rotate; measured in radians per second.
         /// </summary>
         private const float RotationRate = 1.5f;
+        private Vector2 rotationAmount;
 
         /// <summary>
         /// Mass of ship.
@@ -66,6 +67,7 @@ namespace ChaseCameraGameLab3.MacOS
         /// Maximum force that can be applied along the ship's direction.
         /// </summary>
         private const float ThrustForce = 24000.0f;
+        private float thrustAmount;
 
         /// <summary>
         /// Velocity scalar to approximate drag.
@@ -150,7 +152,7 @@ namespace ChaseCameraGameLab3.MacOS
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-
+            /*
             // Determine rotation amount from input
             Vector2 rotationAmount = -gamePadState.ThumbSticks.Left;
             if (keyboardState.IsKeyDown(Keys.Left) || TouchLeft())
@@ -161,7 +163,8 @@ namespace ChaseCameraGameLab3.MacOS
                 rotationAmount.Y = -1.0f;
             if (keyboardState.IsKeyDown(Keys.Down) || TouchDown())
                 rotationAmount.Y = 1.0f;
-
+            */
+            
             // Scale rotation amount to radians per second
             rotationAmount = rotationAmount * RotationRate * elapsed;
 
@@ -195,9 +198,9 @@ namespace ChaseCameraGameLab3.MacOS
 
 
             // Determine thrust amount from input
-            float thrustAmount = gamePadState.Triggers.Right;
-            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.LeftButton == ButtonState.Pressed)
-                thrustAmount = 1.0f;
+            //float thrustAmount = gamePadState.Triggers.Right;
+            //if (keyboardState.IsKeyDown(Keys.Space) || mouseState.LeftButton == ButtonState.Pressed)
+            //    thrustAmount = 1.0f;
 
             // Calculate force from thrust amount
             Vector3 force = Direction * thrustAmount * ThrustForce;
@@ -225,5 +228,50 @@ namespace ChaseCameraGameLab3.MacOS
             world.Right = right;
             world.Translation = Position;
         }
+        
+        public void Thrust(ButtonState buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                thrustAmount = 1.0f;
+            }
+            else
+            {
+                thrustAmount = 0.0f;
+            }
+        }
+        
+        public void TurnLeft(ButtonState buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                rotationAmount.X = 1.0f;
+            }
+        }
+        
+        public void TurnRight(ButtonState buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                rotationAmount.X = -1.0f;
+            }
+        }
+        
+        public void LookUp(ButtonState buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                rotationAmount.Y = -1.0f;
+            }
+        }
+        
+        public void LookDown(ButtonState buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonState.Pressed)
+            {
+                rotationAmount.Y = 1.0f;
+            }
+        }
+        
     }
 }

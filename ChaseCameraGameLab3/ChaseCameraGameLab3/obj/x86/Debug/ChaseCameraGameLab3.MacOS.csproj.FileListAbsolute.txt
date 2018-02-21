@@ -28,3 +28,5 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/obj/x86/Debug/ChaseCameraGameLab3.MacOS.csproj.CoreCompileInputs.cache
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/obj/x86/Debug/ChaseCameraGameLab3.MacOS.exe
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/obj/x86/Debug/ChaseCameraGameLab3.MacOS.pdb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/bin/Debug/Content/plane.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/bin/Debug/Content/grid.xnb

@@ -4,10 +4,11 @@
   <Platform>MacOSX</Platform>
   <Config />
   <SourceFiles>
-    <File>/Users/GeorgeQuentin/Projects/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/Checker.bmp</File>
-    <File>/Users/GeorgeQuentin/Projects/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/gameFont.spritefont</File>
-    <File>/Users/GeorgeQuentin/Projects/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/Ground.x</File>
-    <File>/Users/GeorgeQuentin/Projects/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/ship.obj</File>
-    <File>/Users/GeorgeQuentin/Projects/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/ShipDiffuse.tga</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/Checker.bmp</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/gameFont.spritefont</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/grid.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/Ground.x</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/ship.obj</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/ShipDiffuse.tga</File>
   </SourceFiles>
 </SourceFileCollection>

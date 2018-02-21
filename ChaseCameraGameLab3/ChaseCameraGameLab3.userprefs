@@ -2,9 +2,12 @@
   <MonoDevelop.Ide.ItemProperties.ChaseCameraGameLab3.MacOS PreferredExecutionTarget="Test1" />
   <MonoDevelop.Ide.Workbench ActiveDocument="ChaseCameraGameLab3/ChaseCameraGame.cs">
     <Files>
-      <File FileName="ChaseCameraGameLab3/Main.cs" Line="27" Column="5" />
-      <File FileName="ChaseCameraGameLab3/ChaseCameraGame.cs" Line="115" Column="22" />
-      <File FileName="ChaseCameraGameLab3/Ship.cs" Line="18" Column="11" />
+      <File FileName="ChaseCameraGameLab3/ChaseCameraGame.cs" Line="291" Column="43" />
+      <File FileName="ChaseCameraGameLab3/InputListener.cs" Line="72" Column="1" />
+      <File FileName="ChaseCameraGameLab3/CommandManager.cs" Line="69" Column="10" />
+      <File FileName="ChaseCameraGameLab3/KeyboardEventArgs.cs" Line="1" Column="1" />
+      <File FileName="ChaseCameraGameLab3/MouseEventArgs.cs" Line="1" Column="1" />
+      <File FileName="ChaseCameraGameLab3/Ship.cs" Line="272" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

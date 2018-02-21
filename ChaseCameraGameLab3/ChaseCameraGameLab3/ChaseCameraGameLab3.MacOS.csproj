@@ -64,6 +64,8 @@
     <Compile Include="Ship.cs" />
     <Compile Include="KeyboardEventArgs.cs" />
     <Compile Include="MouseEventArgs.cs" />
+    <Compile Include="InputListener.cs" />
+    <Compile Include="CommandManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -75,6 +77,11 @@
     <None Include="ChaseCameraContent\ShipDiffuse.tga" />
     <None Include="ChaseCameraContent\ship.mtl" />
     <None Include="ChaseCameraContent\ship.obj" />
+    <None Include="ChaseCameraContent\plane.mtl" />
+    <None Include="ChaseCameraContent\plane.obj" />
+    <None Include="Content\bin\MacOSX\grid.xnb">
+      <Link>Content\grid.xnb</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />

@@ -32,6 +32,18 @@
 /processorParam:TextureFormat=Compressed
 /build:gameFont.spritefont
 
+#begin grid.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:grid.png
+
 #begin Ground.x
 /importer:XImporter
 /processor:ModelProcessor
@@ -48,7 +60,7 @@
 /processorParam:RotationZ=0
 /processorParam:Scale=1
 /processorParam:SwapWindingOrder=False
-/processorParam:TextureFormat=Compressed
+/processorParam:TextureFormat=NoChange
 /build:Ground.x
 
 #begin ship.obj

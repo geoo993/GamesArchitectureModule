@@ -3,7 +3,7 @@
   <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/Checker.bmp</SourceFile>
   <SourceTime>2010-09-13T12:40:50+01:00</SourceTime>
   <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ChaseCameraGameLab3/ChaseCameraGameLab3/Content/bin/DesktopGL/Content/Checker_0.xnb</DestFile>
-  <DestTime>2018-02-21T09:58:45+00:00</DestTime>
+  <DestTime>2018-02-21T10:47:34+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
@@ -30,7 +30,7 @@
   </Parameters>
   <Parameters>
     <Key>TextureFormat</Key>
-    <Value>Compressed</Value>
+    <Value>NoChange</Value>
   </Parameters>
   <Dependencies />
   <BuildAsset />
