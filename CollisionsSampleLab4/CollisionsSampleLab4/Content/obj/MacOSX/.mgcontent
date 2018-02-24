@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>MacOSX</Platform>
+  <Config />
+  <SourceFiles>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/Checker.bmp</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/gameFont.spritefont</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/grid.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/Ground.x</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/ship.obj</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/CollisionsSampleLab4/CollisionsSampleLab4/Content/ShipDiffuse.tga</File>
+  </SourceFiles>
+</SourceFileCollection>

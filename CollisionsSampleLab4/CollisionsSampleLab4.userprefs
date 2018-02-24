@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="CollisionsSampleLab4/ChaseCameraGame.cs">
+    <Files>
+      <File FileName="CollisionsSampleLab4/Main.cs" Line="35" Column="13" />
+      <File FileName="CollisionsSampleLab4/ChaseCameraGame.cs" Line="247" Column="37" />
+      <File FileName="CollisionsSampleLab4/InputListener.cs" Line="9" Column="37" />
+      <File FileName="CollisionsSampleLab4/DebugDraw.cs" Line="18" Column="31" />
+      <File FileName="CollisionsSampleLab4/Ship.cs" Line="159" Column="44" />
+      <File FileName="CollisionsSampleLab4/KeyboardEventArgs.cs" Line="9" Column="37" />
+      <File FileName="CollisionsSampleLab4/ChaseCamera.cs" Line="16" Column="37" />
+      <File FileName="CollisionsSampleLab4/MouseEventArgs.cs" Line="9" Column="37" />
+      <File FileName="CollisionsSampleLab4/CommandManager.cs" Line="9" Column="37" />
+      <File FileName="CollisionsSampleLab4/Collision.cs" Line="6" Column="37" />
+      <File FileName="CollisionsSampleLab4/Collidable.cs" Line="8" Column="37" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.CollisionsSampleLab4.MacOS PreferredExecutionTarget="Test1" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
