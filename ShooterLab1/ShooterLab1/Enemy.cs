@@ -53,17 +53,17 @@ namespace ShooterLab1.MacOS
 
 
             // Set the health of the enemy
-            Health = 10;
+            Health = (int)(double)GameManager.manager["EnemyHealth"];;
 
             // Set the amount of damage the enemy can do
-            Damage = 10;
+            Damage = (int)(double)GameManager.manager["EnemyDamage"];;
 
             // Set how fast the enemy moves
-            enemyMoveSpeed = 6f;
+            enemyMoveSpeed = (float)(double)GameManager.manager["EnemyMoveSpeed"];
 
 
             // Set the score value of the enemy
-            Value = 100;
+            Value = (int)(double)GameManager.manager["EnemyScoreValue"];
 
         }
 

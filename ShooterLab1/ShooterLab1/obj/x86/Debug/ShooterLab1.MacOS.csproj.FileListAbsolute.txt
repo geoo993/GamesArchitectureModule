@@ -49,10 +49,10 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/ShooterLab1.MacOS.exe
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/ShooterLab1.MacOS.pdb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/MonoGame.Framework.dll
-/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/Xamarin.Mac.dll
-/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/Xamarin.Mac.dll.mdb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/MonoGame.Framework.xml
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/obj/x86/Debug/ShooterLab1.MacOS.csprojResolveAssemblyReference.cache
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/obj/x86/Debug/ShooterLab1.MacOS.csproj.CoreCompileInputs.cache
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/obj/x86/Debug/ShooterLab1.MacOS.exe
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/obj/x86/Debug/ShooterLab1.MacOS.pdb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/NLua.dll
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/ShooterLab1/ShooterLab1/bin/Debug/KeraLua.dll

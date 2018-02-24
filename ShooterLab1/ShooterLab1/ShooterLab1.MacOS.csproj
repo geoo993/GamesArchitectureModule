@@ -8,10 +8,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ShooterLab1.MacOS</RootNamespace>
     <AssemblyName>ShooterLab1.MacOS</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <UseXamMacFullFramework>true</UseXamMacFullFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +53,9 @@
     <Reference Include="Xamarin.Mac" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>..\NLua.OSX\NLua.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +142,7 @@
     <Content Include="Content\bin\MacOSX\explosion.xnb">
       <Link>Content\explosion.xnb</Link>
     </Content>
+    <Content Include="Content\Scripts\GameManager.lua" />
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -149,6 +152,10 @@
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libSDL2-2.0.0.dylib">
       <Link>libSDL2-2.0.0.dylib</Link>
       <Kind>Static</Kind>
+    </NativeReference>
+    <NativeReference Include="..\NLua.OSX\liblua52.dylib">
+      <Kind>Dynamic</Kind>
+      <SmartLink>False</SmartLink>
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +170,9 @@
     <BundleResource Include="ShooterContent\mineAnimation.png" />
     <BundleResource Include="ShooterContent\player.png" />
     <BundleResource Include="ShooterContent\shipAnimation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

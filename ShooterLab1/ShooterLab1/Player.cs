@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 namespace ShooterLab1.MacOS
 {
@@ -41,9 +42,26 @@ namespace ShooterLab1.MacOS
 
             // Set the player to be active
             Active = true;
+            
+            
+            //var folderName = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            //// Our executable is inside /MonoBundle
+            //// So we need to go back one folder and enter "Resources/Content/Scripts/player.lua
+            //state.DoFile("../Resources/Content/Scripts/GameManager.lua");
+            ////var res = state.DoString("return 200")[0];
+
+            var healthLua = GameManager.manager["HealthLua"];
+            
+            System.Diagnostics.Debug.Print(healthLua.ToString());
+
+            double healthAsDouble = (double)healthLua;
+            System.Diagnostics.Debug.Print(healthAsDouble.ToString());
+
+            int healthAsInteger = (int)healthAsDouble;
+            System.Diagnostics.Debug.Print(healthAsInteger.ToString());
 
             // Set the player health
-            Health = 100;
+            Health = healthAsInteger;
         }
 
         // Update the player animation

@@ -1,0 +1,9 @@
+﻿FrameWidth = 115
+HealthLua = 200
+ProjectileDamage = 4
+ProjectileMoveSpeed = 20
+PlayerMoveSpeed = 10
+EnemyScoreValue = 500
+EnemyMoveSpeed = 8
+EnemyDamage = 10
+EnemyHealth = 15

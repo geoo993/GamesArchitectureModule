@@ -44,10 +44,12 @@ namespace ShooterLab1.MacOS
             this.viewport = viewport;
 
             Active = true;
-
-            Damage = 2;
-
-            projectileMoveSpeed = 20f;
+            
+            var damageLua = GameManager.manager["ProjectileDamage"];
+            Damage = (int)(double)damageLua;
+            
+            var speedLua = GameManager.manager["ProjectileMoveSpeed"];
+            projectileMoveSpeed = (float)(double)speedLua;
         }
 
         public void Update()

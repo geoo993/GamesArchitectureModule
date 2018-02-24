@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using System.Diagnostics.Tracing;
+using NLua;
 
 //http://www.gamefromscratch.com/post/2015/06/09/Getting-Started-with-MonoGame-on-MacOS.aspx/
 //https://developer.xamarin.com/guides/cross-platform/game_development/cocossharp/content_pipeline/walkthrough//
@@ -105,7 +106,7 @@ namespace ShooterLab1.MacOS
             player = new Player();
 
             // Set a constant player move speed
-            playerMoveSpeed = 8.0f;
+            playerMoveSpeed = (float)(double)GameManager.manager["PlayerMoveSpeed"];
 
             //Enable the FreeDrag gesture.
             TouchPanel.EnabledGestures = GestureType.FreeDrag;
@@ -149,7 +150,8 @@ namespace ShooterLab1.MacOS
 
             Animation playerAnimation = new Animation();
             Texture2D playerTexture = Content.Load<Texture2D>("shipAnimation");
-            int frameWidth = 115;
+            
+            int frameWidth = (int)(double)GameManager.manager["FrameWidth"];
             playerAnimation.Initialize(playerTexture, Vector2.Zero, frameWidth, 69, 8, 30, Color.White, 1f, true);
 
             Vector2 playerPosition = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + (frameWidth / 2), GraphicsDevice.Viewport.TitleSafeArea.Y
@@ -354,7 +356,6 @@ namespace ShooterLab1.MacOS
                     projectiles.RemoveAt(i);
                 }
             }
-
         }
 
         private void AddExplosion(Vector2 position)

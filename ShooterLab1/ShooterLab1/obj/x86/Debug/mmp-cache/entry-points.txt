@@ -830,7 +830,6 @@ Function=xamarin_simd__Vector2_objc_msgSendSuper_nint
 	/Library/Frameworks/Xamarin.Mac.framework/Versions/4.0.0.216/lib/x86_64/full/Xamarin.Mac.dll
 Function=xamarin_get_block_descriptor
 	/Library/Frameworks/Xamarin.Mac.framework/Versions/4.0.0.216/lib/x86_64/full/Xamarin.Mac.dll
-Function=mono_pmip
 Function=xamarin_dyn_objc_msgSend
 Function=xamarin_dyn_objc_msgSendSuper
 Function=xamarin_dyn_objc_msgSend_stret
