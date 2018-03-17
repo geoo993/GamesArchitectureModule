@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}</ProjectGuid>
+    <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WareHouse3</RootNamespace>
+    <AssemblyName>WareHouse3</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <PlatformTarget>x86</PlatformTarget>
+    <PackageSigningKey>3rd Party Mac Developer Installer</PackageSigningKey>
+    <AOTMode>None</AOTMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>true</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>true</IncludeMonoRuntime>
+    <UseSGen>true</UseSGen>
+    <UseRefCounting>true</UseRefCounting>
+    <LinkMode>None</LinkMode>
+    <PlatformTarget>x86</PlatformTarget>
+    <AOTMode>None</AOTMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Xamarin.Mac" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>..\NLua.OSX\NLua.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Game1.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TexturePackerLoader\Animation.cs" />
+    <Compile Include="TexturePackerLoader\AnimationManager.cs" />
+    <Compile Include="TexturePackerLoader\SpriteFrame.cs" />
+    <Compile Include="TexturePackerLoader\SpriteRender.cs" />
+    <Compile Include="TexturePackerLoader\SpriteSheet.cs" />
+    <Compile Include="TexturePackerLoader\SpriteSheetLoader.cs" />
+    <Compile Include="Controls\InputListener.cs" />
+    <Compile Include="Controls\KeyboardEventArgs.cs" />
+    <Compile Include="Controls\MouseEventArgs.cs" />
+    <Compile Include="Controls\CommandManager.cs" />
+    <Compile Include="Characters\Player.cs" />
+    <Compile Include="Controls\Accelerometer.cs" />
+    <Compile Include="Controls\TouchCollectionExtensions.cs" />
+    <Compile Include="Assets\TexturePackerSprites.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="Assets\.DS_Store" />
+    <None Include="Assets\sprites\.DS_Store" />
+    <None Include="Assets\sprites\capguy\.DS_Store" />
+    <None Include="Assets\sprites\cowboy\.DS_Store" />
+    <None Include="Assets\sprites\cowboy\Celebrate\.DS_Store" />
+    <None Include="Assets\sprites\cowboy\Die\.DS_Store" />
+    <None Include="Assets\sprites\cowboy\Jump\.DS_Store" />
+    <None Include="Assets\sprites\cowboy\Run\.DS_Store" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MonoGame.Framework.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Scripts\GameManager.lua">
+      <Link>Content\Scripts\GameManager.lua</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\TexturePackerSprites.xnb">
+      <Link>Content\TexturePackerSprites.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\TexturePackerSprites%402x.xnb">
+      <Link>Content\TexturePackerSprites%402x.xnb</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
+      <Link>libopenal.1.dylib</Link>
+      <Kind>Static</Kind>
+    </NativeReference>
+    <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libSDL2-2.0.0.dylib">
+      <Link>libSDL2-2.0.0.dylib</Link>
+      <Kind>Static</Kind>
+    </NativeReference>
+    <NativeReference Include="..\NLua.OSX\liblua52.dylib">
+      <Kind>Dynamic</Kind>
+      <SmartLink>False</SmartLink>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Assets\sprites\Background.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0001.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0002.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0003.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0004.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0005.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0006.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0007.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0008.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0009.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0010.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0011.png" />
+    <BundleResource Include="Assets\sprites\capguy\turn\0012.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0001.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0002.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0003.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0004.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0005.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0006.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0007.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0008.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0009.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0010.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0011.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0012.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0013.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0014.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0015.png" />
+    <BundleResource Include="Assets\sprites\capguy\walk\0016.png" />
+    <BundleResource Include="Assets\TexturePackerSprites.png" />
+    <BundleResource Include="Assets\TexturePackerSprites%402x.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Idle.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_01.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_02.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_03.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_04.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_05.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_06.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_07.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_08.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_09.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_10.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Celebrate\Celebrate_11.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_01.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_02.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_03.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_04.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_05.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_06.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_07.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_08.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_09.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_10.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_11.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Die\Die_12.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_01.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_02.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_03.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_04.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_05.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_06.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_07.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_08.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_09.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_10.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Jump\Jump_11.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_01.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_02.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_03.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_04.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_05.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_06.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_07.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_08.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_09.png" />
+    <BundleResource Include="Assets\sprites\cowboy\Run\Run_10.png" />
+    <BundleResource Include="Assets\TexturePackerSprites.txt" />
+    <BundleResource Include="Assets\TexturePackerSprites%402x.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+</Project>

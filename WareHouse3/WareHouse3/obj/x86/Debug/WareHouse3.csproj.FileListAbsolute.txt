@@ -1,0 +1,13 @@
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/MonoGame.Framework.dll.config
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/WareHouse3.exe
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/WareHouse3.pdb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/MonoGame.Framework.dll
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/MonoGame.Framework.xml
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/WareHouse3.csprojResolveAssemblyReference.cache
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/WareHouse3.csproj.CoreCompileInputs.cache
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/WareHouse3.exe
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/WareHouse3.pdb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/NLua.dll
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/KeraLua.dll
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/TexturePackerSprites.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/TexturePackerSprites@2x.xnb

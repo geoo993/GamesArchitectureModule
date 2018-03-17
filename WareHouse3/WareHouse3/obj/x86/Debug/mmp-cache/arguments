@@ -1,0 +1,30 @@
+# Version: 4.2.0.20 (d15-6: 1c6f300e)
+# [first argument, ignore] # /Library/Frameworks/Xamarin.Mac.framework/Versions/4.2.0.20/lib/mmp/mmp.exe
+/Library/Frameworks/Xamarin.Mac.framework/Versions/4.2.0.20/lib/mmp/mmp.exe \
+	/verbose \
+	/debug \
+	/output:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/ \
+	/name:WareHouse3 \
+	'/profile:Xamarin.Mac,Version=v4.5,Profile=System' \
+	/arch:x86_64 \
+	--http-message-handler=HttpClientHandler \
+	/minos=10.6 \
+	/nolink \
+	/assembly:/Library/Frameworks/Mono.framework/External/xbuild/MonoGame/v3.0/Assemblies/DesktopGL/MonoGame.Framework.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/mscorlib.dll \
+	/assembly:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/NLua.OSX/NLua.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/System.Core.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/System.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/System.Drawing.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/System.Xml.dll \
+	/assembly:/Library/Frameworks/Mono.framework/Versions/5.8.0/lib/mono/4.5-api/System.Xml.Linq.dll \
+	/assembly:/Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib/mono/4.5/Xamarin.Mac.dll \
+	/assembly:/Library/Frameworks/Mono.framework/External/xbuild/MonoGame/v3.0/Assemblies/DesktopGL/MonoGame.Framework.dll \
+	/assembly:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/NLua.OSX/NLua.dll \
+	/assembly:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/NLua.OSX/KeraLua.dll \
+	/root-assembly:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/WareHouse3.exe \
+	/native-reference:/Library/Frameworks/Mono.framework/External/xbuild/MonoGame/v3.0/Assemblies/DesktopGL/libopenal.1.dylib \
+	/native-reference:/Library/Frameworks/Mono.framework/External/xbuild/MonoGame/v3.0/Assemblies/DesktopGL/libSDL2-2.0.0.dylib \
+	/native-reference:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/NLua.OSX/liblua52.dylib \
+	/sdkroot:/Applications/Xcode.app/Contents/Developer \
+	--cache:/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/mmp-cache \

@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ShooterLab1/Content/Scripts/GameManager.lua">
+    <Files>
+      <File FileName="ShooterLab1/Content/Scripts/GameManager.lua" Line="9" Column="17" />
+      <File FileName="ShooterLab1/Player.cs" Line="53" Column="13" />
+      <File FileName="ShooterLab1/ParallaxingBackground.cs" Line="25" Column="31" />
+      <File FileName="ShooterLab1/Game1.cs" Line="154" Column="54" />
+      <File FileName="ShooterLab1/Enemy.cs" Line="56" Column="59" />
+      <File FileName="ShooterLab1/Animation.cs" Line="1" Column="1" />
+      <File FileName="ShooterLab1/Main.cs" Line="18" Column="5" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.ItemProperties.ShooterLab1.MacOS PreferredExecutionTarget="Test1" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
