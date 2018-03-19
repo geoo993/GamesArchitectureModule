@@ -1,1 +1,2 @@
-ScreenSize = 600
+ScreenWidth = 800
+ScreenHeight = 600

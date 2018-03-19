@@ -34,6 +34,15 @@ namespace WareHouse3
         AnimationManager characterAnimationManager;
         CommandManager commandManager;
         
+        private int levelIndex = -1;
+        private Level level;
+        private bool wasContinuePressed;
+        private int numberOfLevels = 3;
+        
+        private GamePadState gamePadState;
+        private KeyboardState keyboardState;
+        private AccelerometerState accelerometerState;
+        
          #endregion
         
         public Game1()
@@ -44,16 +53,15 @@ namespace WareHouse3
             //System.Diagnostics.Debug.Print(this.graphics.PreferredBackBufferHeight.ToString());
             //System.Diagnostics.Debug.Print(this.graphics.PreferredBackBufferWidth.ToString());
             
-            float aspectRatio = (float)this.graphics.PreferredBackBufferWidth / this.graphics.PreferredBackBufferHeight;
-            float size = (float)(double)GameManager.manager["ScreenSize"];
-            screenSize = new Vector2((size * aspectRatio), size);
-            graphics.PreferredBackBufferWidth = (int)screenSize.X;
-            graphics.PreferredBackBufferHeight = (int)screenSize.Y;
+            //graphics.PreferredBackBufferWidth = GameInfo.screenWidth;
+            //graphics.PreferredBackBufferHeight = GameInfo.screenHeight;
             graphics.IsFullScreen = false;
             
             Content.RootDirectory = "Content";
             
             IsMouseVisible = true;
+            
+            Accelerometer.Initialize();
         }
 
         /// <summary>
@@ -82,6 +90,7 @@ namespace WareHouse3
             {
                 Exit();
             }
+            
         }
 
         #endregion
@@ -99,10 +108,11 @@ namespace WareHouse3
             var spriteSheetLoader = new SpriteSheetLoader(this.Content);
             spriteSheet = spriteSheetLoader.Load("TexturePackerSprites");
             
-            backgroundSprite = this.spriteSheet.Sprite(TexturePackerMonoGameDefinitions.SpriteSheet.Background);
+            backgroundSprite = this.spriteSheet.Sprite(TexturePackerMonoGameDefinitions.SpriteSheet.Backgrounds_Background);
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
 
-            InitialiseAnimationManager();
+            LoadNextLevel();
+            //InitialiseAnimationManager();
             //TODO: use this.Content to load your game content here 
         }
         
@@ -114,7 +124,8 @@ namespace WareHouse3
         {
             // TODO: Unload any non ContentManager content here
         }
-
+        
+    
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -125,9 +136,45 @@ namespace WareHouse3
             // Update the command manager (updates polling input and fires input events)
             commandManager.Update();
             
+             // Handle polling for our input and handling high-level input
+            HandleInput();
+            
+            // update our level, passing down the GameTime along with all of our input states
+            level.Update(gameTime, keyboardState, gamePadState, accelerometerState, Window.CurrentOrientation);
+            
             // TODO: Add your update logic here
-            characterAnimationManager.Update(gameTime);
+            //characterAnimationManager.Update(gameTime);
             base.Update(gameTime);
+        }
+        
+        private void HandleInput()
+        {
+            // get all of our input states
+            keyboardState = Keyboard.GetState();
+            gamePadState = GamePad.GetState(PlayerIndex.One);
+            accelerometerState = Accelerometer.GetState();
+
+
+            bool continuePressed = keyboardState.IsKeyDown(Keys.Space) || gamePadState.IsButtonDown(Buttons.A);
+
+            // Perform the appropriate action to advance the game and
+            // to get the player back to playing.
+            if (!wasContinuePressed && continuePressed)
+            {
+                if (!level.Player.IsAlive)
+                {
+                    level.StartNewLife();
+                }
+                else if (level.TimeRemaining == TimeSpan.Zero)
+                {
+                    if (level.ReachedExit)
+                        LoadNextLevel();
+                    else
+                        ReloadCurrentLevel();
+                }
+            }
+
+            wasContinuePressed = continuePressed;
         }
 
         /// <summary>
@@ -142,25 +189,28 @@ namespace WareHouse3
             this.spriteBatch.Begin();
             
             // Draw the background
-            this.spriteRender.Draw(this.backgroundSprite, this.centreScreen);
-            
+            //this.spriteRender.Draw(this.backgroundSprite, this.centreScreen);
+
             // Draw character on screen
-            
+            /*
             this.spriteRender.Draw(
                 this.spriteSheet.Sprite(
                     TexturePackerMonoGameDefinitions.SpriteSheet.Cowboy_Idle
                 ),
                 new Vector2(100, 400)
             );
-            
-            
+            */
+            /*
             // Draw character on screen
             this.spriteRender.Draw(
                 this.characterAnimationManager.CurrentSprite, 
                 this.characterAnimationManager.CurrentPosition, 
                 Color.White, 0, 1,
                 this.characterAnimationManager.CurrentSpriteEffects);
+            */
 
+            level.Draw(gameTime, spriteRender);
+            
             this.spriteBatch.End();
 
             base.Draw(gameTime);
@@ -168,19 +218,19 @@ namespace WareHouse3
 
          private void InitialiseAnimationManager()
         {
-            #if __IOS__
+#if __IOS__
             var scale = MonoTouch.UIKit.UIScreen.MainScreen.Scale;
             var characterStartPosition = new Vector2(350 * scale, 530 * scale);
             var characterVelocityPixelsPerSecond = 200 * (int)scale;
-            #else
+#else
             var characterStartPosition = new Vector2(0, 530);
             var characterVelocityPixelsPerSecond = 200;
             #endif
 
-            var animationWalkRight = new Animation(new Vector2(characterVelocityPixelsPerSecond, 0), this.timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.SpriteSheet.capguyWalkSprites);
-            var animationWalkLeft = new Animation(new Vector2(-characterVelocityPixelsPerSecond, 0), this.timePerFrame, SpriteEffects.FlipHorizontally, TexturePackerMonoGameDefinitions.SpriteSheet.capguyWalkSprites);
-            var animationTurnRightToLeft = new Animation(Vector2.Zero, this.timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.SpriteSheet.capguyTurnSprites);
-            var animationTurnLeftToRight = new Animation(Vector2.Zero, this.timePerFrame, SpriteEffects.FlipHorizontally, TexturePackerMonoGameDefinitions.SpriteSheet.capguyTurnSprites);
+            var animationWalkRight = new Animation(new Vector2(characterVelocityPixelsPerSecond, 0), this.timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.capguyWalkSprites);
+            var animationWalkLeft = new Animation(new Vector2(-characterVelocityPixelsPerSecond, 0), this.timePerFrame, SpriteEffects.FlipHorizontally, TexturePackerMonoGameDefinitions.Sprites.capguyWalkSprites);
+            var animationTurnRightToLeft = new Animation(Vector2.Zero, this.timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.capguyTurnSprites);
+            var animationTurnLeftToRight = new Animation(Vector2.Zero, this.timePerFrame, SpriteEffects.FlipHorizontally, TexturePackerMonoGameDefinitions.Sprites.capguyTurnSprites);
 
             var animations = new[] 
             { 
@@ -193,6 +243,32 @@ namespace WareHouse3
             this.characterAnimationManager = new AnimationManager (this.spriteSheet, characterStartPosition, animations);
         }
         
+        private void LoadNextLevel()
+        {
+            var levels = new[] {
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer0Sprites,
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer1Sprites,
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer2Sprites
+            };
+            
+            // move to the next level
+            levelIndex = (levelIndex + 1) % numberOfLevels;
+
+            // Unloads the content for the current level before loading the next one.
+            if (level != null)
+                level.Dispose();
+
+            // Load the level.
+            string levelPath = string.Format("Content/Levels/{0}.txt", levelIndex);
+            using (Stream fileStream = TitleContainer.OpenStream(levelPath))
+                level = new Level(Services, fileStream, levels[levelIndex], spriteSheet);
+        }
+
+        private void ReloadCurrentLevel()
+        {
+            --levelIndex;
+            LoadNextLevel();
+        }
         
         
     }

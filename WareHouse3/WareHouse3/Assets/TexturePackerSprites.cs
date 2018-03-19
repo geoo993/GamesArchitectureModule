@@ -4,14 +4,23 @@
  * Contains references to each image within the sprite sheet.
  *
  * https://www.codeandweb.com/texturepacker
- * $TexturePacker:SmartUpdate:81d1e7c8ca87b27e57ec3baae0722c82:e4f22956df2ec7945308ba0f847561cb:64bd503133ec8fc3aa7eefa9c9033dc9$
+ * $TexturePacker:SmartUpdate:d8ad68702df23bc1d68a568132e64fd3:241075f5952fb2345c146e686b4ee23a:ecb83c17541fd5f5426fe0806af7d3c3$
  *
  */
 namespace TexturePackerMonoGameDefinitions
 {
 	public class SpriteSheet
 	{
-		public const string Background = "Background";
+		public const string Backgrounds_Background = "Backgrounds/Background";
+		public const string Backgrounds_Layer0_0 = "Backgrounds/Layer0_0";
+		public const string Backgrounds_Layer0_1 = "Backgrounds/Layer0_1";
+		public const string Backgrounds_Layer0_2 = "Backgrounds/Layer0_2";
+		public const string Backgrounds_Layer1_0 = "Backgrounds/Layer1_0";
+		public const string Backgrounds_Layer1_1 = "Backgrounds/Layer1_1";
+		public const string Backgrounds_Layer1_2 = "Backgrounds/Layer1_2";
+		public const string Backgrounds_Layer2_0 = "Backgrounds/Layer2_0";
+		public const string Backgrounds_Layer2_1 = "Backgrounds/Layer2_1";
+		public const string Backgrounds_Layer2_2 = "Backgrounds/Layer2_2";
 		public const string Capguy_turn_0001 = "capguy/turn/0001";
 		public const string Capguy_turn_0002 = "capguy/turn/0002";
 		public const string Capguy_turn_0003 = "capguy/turn/0003";
@@ -85,80 +94,101 @@ namespace TexturePackerMonoGameDefinitions
 		public const string Cowboy_Run_Run_08 = "cowboy/Run/Run_08";
 		public const string Cowboy_Run_Run_09 = "cowboy/Run/Run_09";
 		public const string Cowboy_Run_Run_10 = "cowboy/Run/Run_10";
-        
-        public static string[] capguyTurnSprites = new [] {
-            Capguy_turn_0001,
-            Capguy_turn_0002,
-            Capguy_turn_0003,
-            Capguy_turn_0004,
-            Capguy_turn_0005,
-            Capguy_turn_0006,
-            Capguy_turn_0007,
-            Capguy_turn_0008,
-            Capguy_turn_0009,
-            Capguy_turn_0010,
-            Capguy_turn_0011,
-            Capguy_turn_0012
-        };
-
-        public static string[] capguyWalkSprites = new [] {
-            Capguy_walk_0001,
-            Capguy_walk_0002,
-            Capguy_walk_0003,
-            Capguy_walk_0004,
-            Capguy_walk_0005,
-            Capguy_walk_0006,
-            Capguy_walk_0007,
-            Capguy_walk_0008,
-            Capguy_walk_0009,
-            Capguy_walk_0010,
-            Capguy_walk_0011,
-            Capguy_walk_0012,
-            Capguy_walk_0013,
-            Capguy_walk_0014,
-            Capguy_walk_0015,
-            Capguy_walk_0016
-        };
-            
-        public static string[] coyboyIdleSprites = new [] { Cowboy_Idle };
-        public static string[] coyboyRunSprites = new [] { 
-            Cowboy_Run_Run_01,
-            Cowboy_Run_Run_02,
-            Cowboy_Run_Run_03,
-            Cowboy_Run_Run_04,
-            Cowboy_Run_Run_05,
-            Cowboy_Run_Run_06,
-            Cowboy_Run_Run_07,
-            Cowboy_Run_Run_08,
-            Cowboy_Run_Run_09,
-            Cowboy_Run_Run_10
-        };
-        public static string[] coyboyDieSprites = new [] { 
-            Cowboy_Die_Die_01,
-            Cowboy_Die_Die_02,
-            Cowboy_Die_Die_03,
-            Cowboy_Die_Die_04,
-            Cowboy_Die_Die_05,
-            Cowboy_Die_Die_06,
-            Cowboy_Die_Die_07,
-            Cowboy_Die_Die_08,
-            Cowboy_Die_Die_09,
-            Cowboy_Die_Die_10,
-            Cowboy_Die_Die_11,
-            Cowboy_Die_Die_12
-        };
-        public static string[] coyboyJumpSprites = new [] { 
-            Cowboy_Jump_Jump_01,
-            Cowboy_Jump_Jump_02,
-            Cowboy_Jump_Jump_03,
-            Cowboy_Jump_Jump_04,
-            Cowboy_Jump_Jump_05,
-            Cowboy_Jump_Jump_06,
-            Cowboy_Jump_Jump_07,
-            Cowboy_Jump_Jump_08,
-            Cowboy_Jump_Jump_09,
-            Cowboy_Jump_Jump_10,
-            Cowboy_Jump_Jump_11
-        };
+		public const string Gem = "Gem";
+		public const string MonsterA_MonsterAIdle_01 = "MonsterA/MonsterAIdle_01";
+		public const string MonsterA_MonsterAIdle_02 = "MonsterA/MonsterAIdle_02";
+		public const string MonsterA_MonsterAIdle_03 = "MonsterA/MonsterAIdle_03";
+		public const string MonsterA_MonsterAIdle_04 = "MonsterA/MonsterAIdle_04";
+		public const string MonsterA_MonsterAIdle_05 = "MonsterA/MonsterAIdle_05";
+		public const string MonsterA_MonsterAIdle_06 = "MonsterA/MonsterAIdle_06";
+		public const string MonsterA_MonsterAIdle_07 = "MonsterA/MonsterAIdle_07";
+		public const string MonsterA_MonsterAIdle_08 = "MonsterA/MonsterAIdle_08";
+		public const string MonsterA_MonsterAIdle_09 = "MonsterA/MonsterAIdle_09";
+		public const string MonsterA_MonsterAIdle_10 = "MonsterA/MonsterAIdle_10";
+		public const string MonsterA_MonsterAIdle_11 = "MonsterA/MonsterAIdle_11";
+		public const string MonsterA_MonsterARun_01 = "MonsterA/MonsterARun_01";
+		public const string MonsterA_MonsterARun_02 = "MonsterA/MonsterARun_02";
+		public const string MonsterA_MonsterARun_03 = "MonsterA/MonsterARun_03";
+		public const string MonsterA_MonsterARun_04 = "MonsterA/MonsterARun_04";
+		public const string MonsterA_MonsterARun_05 = "MonsterA/MonsterARun_05";
+		public const string MonsterA_MonsterARun_06 = "MonsterA/MonsterARun_06";
+		public const string MonsterA_MonsterARun_07 = "MonsterA/MonsterARun_07";
+		public const string MonsterA_MonsterARun_08 = "MonsterA/MonsterARun_08";
+		public const string MonsterA_MonsterARun_09 = "MonsterA/MonsterARun_09";
+		public const string MonsterA_MonsterARun_10 = "MonsterA/MonsterARun_10";
+		public const string MonsterB_MonsterBIdle_01 = "MonsterB/MonsterBIdle_01";
+		public const string MonsterB_MonsterBIdle_02 = "MonsterB/MonsterBIdle_02";
+		public const string MonsterB_MonsterBIdle_03 = "MonsterB/MonsterBIdle_03";
+		public const string MonsterB_MonsterBIdle_04 = "MonsterB/MonsterBIdle_04";
+		public const string MonsterB_MonsterBIdle_05 = "MonsterB/MonsterBIdle_05";
+		public const string MonsterB_MonsterBIdle_06 = "MonsterB/MonsterBIdle_06";
+		public const string MonsterB_MonsterBIdle_07 = "MonsterB/MonsterBIdle_07";
+		public const string MonsterB_MonsterBIdle_08 = "MonsterB/MonsterBIdle_08";
+		public const string MonsterB_MonsterBIdle_09 = "MonsterB/MonsterBIdle_09";
+		public const string MonsterB_MonsterBIdle_10 = "MonsterB/MonsterBIdle_10";
+		public const string MonsterB_MonsterBIdle_11 = "MonsterB/MonsterBIdle_11";
+		public const string MonsterB_MonsterBRun_01 = "MonsterB/MonsterBRun_01";
+		public const string MonsterB_MonsterBRun_02 = "MonsterB/MonsterBRun_02";
+		public const string MonsterB_MonsterBRun_03 = "MonsterB/MonsterBRun_03";
+		public const string MonsterB_MonsterBRun_04 = "MonsterB/MonsterBRun_04";
+		public const string MonsterB_MonsterBRun_05 = "MonsterB/MonsterBRun_05";
+		public const string MonsterB_MonsterBRun_06 = "MonsterB/MonsterBRun_06";
+		public const string MonsterB_MonsterBRun_07 = "MonsterB/MonsterBRun_07";
+		public const string MonsterB_MonsterBRun_08 = "MonsterB/MonsterBRun_08";
+		public const string MonsterB_MonsterBRun_09 = "MonsterB/MonsterBRun_09";
+		public const string MonsterB_MonsterBRun_10 = "MonsterB/MonsterBRun_10";
+		public const string MonsterC_MonsterCIdle_01 = "MonsterC/MonsterCIdle_01";
+		public const string MonsterC_MonsterCIdle_02 = "MonsterC/MonsterCIdle_02";
+		public const string MonsterC_MonsterCIdle_03 = "MonsterC/MonsterCIdle_03";
+		public const string MonsterC_MonsterCIdle_04 = "MonsterC/MonsterCIdle_04";
+		public const string MonsterC_MonsterCIdle_05 = "MonsterC/MonsterCIdle_05";
+		public const string MonsterC_MonsterCIdle_06 = "MonsterC/MonsterCIdle_06";
+		public const string MonsterC_MonsterCIdle_07 = "MonsterC/MonsterCIdle_07";
+		public const string MonsterC_MonsterCIdle_08 = "MonsterC/MonsterCIdle_08";
+		public const string MonsterC_MonsterCIdle_09 = "MonsterC/MonsterCIdle_09";
+		public const string MonsterC_MonsterCIdle_10 = "MonsterC/MonsterCIdle_10";
+		public const string MonsterC_MonsterCIdle_11 = "MonsterC/MonsterCIdle_11";
+		public const string MonsterC_MonsterCRun_01 = "MonsterC/MonsterCRun_01";
+		public const string MonsterC_MonsterCRun_02 = "MonsterC/MonsterCRun_02";
+		public const string MonsterC_MonsterCRun_03 = "MonsterC/MonsterCRun_03";
+		public const string MonsterC_MonsterCRun_04 = "MonsterC/MonsterCRun_04";
+		public const string MonsterC_MonsterCRun_05 = "MonsterC/MonsterCRun_05";
+		public const string MonsterC_MonsterCRun_06 = "MonsterC/MonsterCRun_06";
+		public const string MonsterC_MonsterCRun_07 = "MonsterC/MonsterCRun_07";
+		public const string MonsterC_MonsterCRun_08 = "MonsterC/MonsterCRun_08";
+		public const string MonsterC_MonsterCRun_09 = "MonsterC/MonsterCRun_09";
+		public const string MonsterC_MonsterCRun_10 = "MonsterC/MonsterCRun_10";
+		public const string MonsterD_MonsterDIdle_01 = "MonsterD/MonsterDIdle_01";
+		public const string MonsterD_MonsterDIdle_02 = "MonsterD/MonsterDIdle_02";
+		public const string MonsterD_MonsterDIdle_03 = "MonsterD/MonsterDIdle_03";
+		public const string MonsterD_MonsterDIdle_04 = "MonsterD/MonsterDIdle_04";
+		public const string MonsterD_MonsterDIdle_05 = "MonsterD/MonsterDIdle_05";
+		public const string MonsterD_MonsterDIdle_06 = "MonsterD/MonsterDIdle_06";
+		public const string MonsterD_MonsterDIdle_07 = "MonsterD/MonsterDIdle_07";
+		public const string MonsterD_MonsterDIdle_08 = "MonsterD/MonsterDIdle_08";
+		public const string MonsterD_MonsterDIdle_09 = "MonsterD/MonsterDIdle_09";
+		public const string MonsterD_MonsterDIdle_10 = "MonsterD/MonsterDIdle_10";
+		public const string MonsterD_MonsterDIdle_11 = "MonsterD/MonsterDIdle_11";
+		public const string MonsterD_MonsterDRun_01 = "MonsterD/MonsterDRun_01";
+		public const string MonsterD_MonsterDRun_02 = "MonsterD/MonsterDRun_02";
+		public const string MonsterD_MonsterDRun_03 = "MonsterD/MonsterDRun_03";
+		public const string MonsterD_MonsterDRun_04 = "MonsterD/MonsterDRun_04";
+		public const string MonsterD_MonsterDRun_05 = "MonsterD/MonsterDRun_05";
+		public const string MonsterD_MonsterDRun_06 = "MonsterD/MonsterDRun_06";
+		public const string MonsterD_MonsterDRun_07 = "MonsterD/MonsterDRun_07";
+		public const string MonsterD_MonsterDRun_08 = "MonsterD/MonsterDRun_08";
+		public const string MonsterD_MonsterDRun_09 = "MonsterD/MonsterDRun_09";
+		public const string MonsterD_MonsterDRun_10 = "MonsterD/MonsterDRun_10";
+		public const string Tiles_BlockA0 = "Tiles/BlockA0";
+		public const string Tiles_BlockA1 = "Tiles/BlockA1";
+		public const string Tiles_BlockA2 = "Tiles/BlockA2";
+		public const string Tiles_BlockA3 = "Tiles/BlockA3";
+		public const string Tiles_BlockA4 = "Tiles/BlockA4";
+		public const string Tiles_BlockA5 = "Tiles/BlockA5";
+		public const string Tiles_BlockA6 = "Tiles/BlockA6";
+		public const string Tiles_BlockB0 = "Tiles/BlockB0";
+		public const string Tiles_BlockB1 = "Tiles/BlockB1";
+		public const string Tiles_Exit = "Tiles/Exit";
+		public const string Tiles_Platform = "Tiles/Platform";
 	}
 }

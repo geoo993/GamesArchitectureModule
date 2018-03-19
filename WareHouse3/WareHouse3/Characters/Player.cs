@@ -13,7 +13,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
-/*
+using TexturePackerLoader;
+
 namespace WareHouse3
 {
     /// <summary>
@@ -21,6 +22,9 @@ namespace WareHouse3
     /// </summary>
     class Player
     {
+        private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(0.1f);
+        private SpriteSheet spriteSheet;
+        
         // Animations
         private Animation idleAnimation;
         private Animation runAnimation;
@@ -34,7 +38,13 @@ namespace WareHouse3
         //private SoundEffect killedSound;
         //private SoundEffect jumpSound;
         //private SoundEffect fallSound;
-
+        
+        public Level Level
+        {
+            get { return level; }
+        }
+        Level level;
+        
         public bool IsAlive
         {
             get { return isAlive; }
@@ -103,8 +113,8 @@ namespace WareHouse3
         {
             get
             {
-                int left = (int)Math.Round(Position.X - sprite.Origin.X) + localBounds.X;
-                int top = (int)Math.Round(Position.Y - sprite.Origin.Y) + localBounds.Y;
+                int left = (int)Math.Round(Position.X - sprite.CurrentSprite.Origin.X) + localBounds.X;
+                int top = (int)Math.Round(Position.Y - sprite.CurrentSprite.Origin.Y) + localBounds.Y;
 
                 return new Rectangle(left, top, localBounds.Width, localBounds.Height);
             }
@@ -113,11 +123,14 @@ namespace WareHouse3
         /// <summary>
         /// Constructors a new player.
         /// </summary>
-        public Player(Vector2 position)
+        public Player(SpriteSheet spriteSheet, Level level, Vector2 position)
         {
-            LoadContent();
+			this.spriteSheet = spriteSheet;
+            this.level = level;
 
+            LoadContent();
             Reset(position);
+            
         }
 
         /// <summary>
@@ -125,23 +138,22 @@ namespace WareHouse3
         /// </summary>
         public void LoadContent()
         {
-            // Load animated textures.
-            idleAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/PlayerIdle"), 0.1f, true);
-            runAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/PlayerRun"), 0.1f, true);
-            jumpAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/PlayerJumping"), 0.1f, false);
-            celebrateAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/PlayerCelebrate"), 0.1f, false);
-            dieAnimation = new Animation(Level.Content.Load<Texture2D>("Sprites/Player/PlayerDie"), 0.1f, false);
+            idleAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyIdleSprites, true);
+            runAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyRunSprites, true);
+            jumpAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyJumpSprites, false);
+            celebrateAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyCelebrateSprites, false);
+            dieAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyDieSprites, false);
+			sprite = new AnimationPlayer(spriteSheet, position, idleAnimation);            // Load animated textures.
 
             // Calculate bounds within texture size.            
-            int width = (int)(idleAnimation.FrameWidth * 0.4);
-            int left = (idleAnimation.FrameWidth - width) / 2;
-            int height = (int)(idleAnimation.FrameWidth * 0.8);
-            int top = idleAnimation.FrameHeight - height;
+            int width = (int)(sprite.CurrentSprite.Rectangle.Width * 0.4);
+            int left = (sprite.CurrentSprite.Rectangle.Width - width) / 2;
+            int height = (int)(sprite.CurrentSprite.Rectangle.Height  * 0.8);
+            int top = sprite.CurrentSprite.Rectangle.Height  - height;
             localBounds = new Rectangle(left, top, width, height);
-
         }
-
-        /// <summary>
+        
+         /// <summary>
         /// Resets the player to life.
         /// </summary>
         /// <param name="position">The position to come to life at.</param>
@@ -164,12 +176,11 @@ namespace WareHouse3
         public void Update(
             GameTime gameTime, 
             KeyboardState keyboardState, 
-            GamePadState gamePadState, 
-            TouchCollection touchState, 
+            GamePadState gamePadState,
             AccelerometerState accelState,
             DisplayOrientation orientation)
         {
-            GetInput(keyboardState, gamePadState, touchState, accelState, orientation);
+            GetInput(keyboardState, gamePadState, accelState, orientation);
 
             ApplyPhysics(gameTime);
 
@@ -196,7 +207,6 @@ namespace WareHouse3
         private void GetInput(
             KeyboardState keyboardState, 
             GamePadState gamePadState, 
-            TouchCollection touchState,
             AccelerometerState accelState, 
             DisplayOrientation orientation)
         {
@@ -237,8 +247,7 @@ namespace WareHouse3
                 gamePadState.IsButtonDown(JumpButton) ||
                 keyboardState.IsKeyDown(Keys.Space) ||
                 keyboardState.IsKeyDown(Keys.Up) ||
-                keyboardState.IsKeyDown(Keys.W) ||
-                touchState.AnyTouch();
+                keyboardState.IsKeyDown(Keys.W);
         }
 
         /// <summary>
@@ -271,7 +280,7 @@ namespace WareHouse3
             Position = new Vector2((float)Math.Round(Position.X), (float)Math.Round(Position.Y));
 
             // If the player is now colliding with the level, separate them.
-            //HandleCollisions();
+            HandleCollisions();
 
             // If the collision stopped us from moving, reset the velocity to zero.
             if (Position.X == previousPosition.X)
@@ -334,8 +343,8 @@ namespace WareHouse3
 
             return velocityY;
         }
-        */
-        /*
+        
+        
         /// <summary>
         /// Detects and resolves all collisions between the player and his neighboring
         /// tiles. When a collision is detected, the player is pushed away along one
@@ -346,10 +355,10 @@ namespace WareHouse3
         {
             // Get the player's bounding rectangle and find neighboring tiles.
             Rectangle bounds = BoundingRectangle;
-            int leftTile = (int)Math.Floor((float)bounds.Left / Tile.Width);
-            int rightTile = (int)Math.Ceiling(((float)bounds.Right / Tile.Width)) - 1;
-            int topTile = (int)Math.Floor((float)bounds.Top / Tile.Height);
-            int bottomTile = (int)Math.Ceiling(((float)bounds.Bottom / Tile.Height)) - 1;
+            int leftTile = (int)Math.Floor((float)bounds.Left / TileInfo.Width);
+            int rightTile = (int)Math.Ceiling(((float)bounds.Right / TileInfo.Width)) - 1;
+            int topTile = (int)Math.Floor((float)bounds.Top / TileInfo.Height);
+            int bottomTile = (int)Math.Ceiling(((float)bounds.Bottom / TileInfo.Height)) - 1;
 
             // Reset flag to search for ground collision.
             isOnGround = false;
@@ -417,14 +426,16 @@ namespace WareHouse3
             isAlive = false;
 
             if (killedBy != null)
-                killedSound.Play();
-            else
-                fallSound.Play();
+            {
+                //killedSound.Play();
+            } else {
+                //fallSound.Play();
+            }
 
             sprite.PlayAnimation(dieAnimation);
         }
-        */
-        /*
+        
+        
         /// <summary>
         /// Called when this player reaches the level's exit.
         /// </summary>
@@ -436,7 +447,7 @@ namespace WareHouse3
         /// <summary>
         /// Draws the animated player.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteRender spriteRender)
         {
             // Flip the sprite to face the way we are moving.
             if (Velocity.X > 0)
@@ -445,8 +456,7 @@ namespace WareHouse3
                 flip = SpriteEffects.None;
 
             // Draw that sprite.
-            sprite.Draw(gameTime, spriteBatch, Position, flip);
+            sprite.Draw(gameTime, spriteRender, Position, flip);
         }
     }
 }
-*/

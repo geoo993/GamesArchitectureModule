@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/TexturePackerSprites.png</SourceFile>
-  <SourceTime>2018-03-17T20:14:30+00:00</SourceTime>
+  <SourceTime>2018-03-19T01:27:58+00:00</SourceTime>
   <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/bin/MacOSX/TexturePackerSprites.xnb</DestFile>
-  <DestTime>2018-03-17T23:01:50+00:00</DestTime>
+  <DestTime>2018-03-19T01:31:25+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -1,32 +1,18 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Game1.cs">
     <Files>
-      <File FileName="WareHouse3/Game1.cs" Line="180" Column="203" />
-      <File FileName="WareHouse3/Characters/Player.cs" Line="452" Column="3" />
-      <File FileName="WareHouse3/TexturePackerLoader/Animation.cs" Line="8" Column="18" />
-      <File FileName="WareHouse3/TexturePackerLoader/AnimationManager.cs" Line="27" Column="23" />
-      <File FileName="WareHouse3/Assets/TexturePackerSprites.cs" Line="153" Column="25" />
-      <File FileName="WareHouse3/TexturePackerLoader/SpriteRender.cs" Line="41" Column="30" />
-      <File FileName="WareHouse3/TexturePackerLoader/SpriteFrame.cs" Line="29" Column="1" />
-      <File FileName="WareHouse3/TexturePackerLoader/SpriteSheet.cs" Line="24" Column="14" />
-      <File FileName="WareHouse3/TexturePackerLoader/SpriteSheetLoader.cs" Line="47" Column="1" />
+      <File FileName="WareHouse3/Game1.cs" Line="156" Column="1" />
+      <File FileName="WareHouse3/Characters/Player.cs" Line="116" Column="84" />
+      <File FileName="WareHouse3/Levels/Level.cs" Line="545" Column="72" />
+      <File FileName="WareHouse3/Characters/Enemy.cs" Line="109" Column="44" />
+      <File FileName="WareHouse3/Assets/TexturePackerSprites.cs" Line="1" Column="1" />
+      <File FileName="WareHouse3/Characters/Gem.cs" Line="25" Column="11" />
+      <File FileName="WareHouse3/TexturePackerLoader/SpriteFrame.cs" Line="55" Column="95" />
+      <File FileName="WareHouse3/Animations/AnimationPlayer.cs" Line="75" Column="13" />
+      <File FileName="WareHouse3/Obstacles/Tile.cs" Line="54" Column="44" />
+      <File FileName="WareHouse3/Controls/KeyboardEventArgs.cs" Line="11" Column="17" />
+      <File FileName="WareHouse3/Controls/InputListener.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="WareHouse3" expanded="True">
-            <Node name="WareHouse3" expanded="True">
-              <Node name="Assets" expanded="True" />
-              <Node name="Characters" expanded="True" />
-              <Node name="Content" expanded="True" />
-              <Node name="Controls" expanded="True" />
-              <Node name="TexturePackerLoader" expanded="True" />
-              <Node name="Game1.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

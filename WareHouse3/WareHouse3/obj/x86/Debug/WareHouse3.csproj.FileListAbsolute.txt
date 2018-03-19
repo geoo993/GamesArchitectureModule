@@ -10,4 +10,3 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/NLua.dll
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/KeraLua.dll
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/TexturePackerSprites.xnb
-/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/TexturePackerSprites@2x.xnb
