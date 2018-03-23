@@ -48,18 +48,7 @@
             get { return Sprites.Length; }
         }
       
-        /// <summary>
-        /// Constructors a new animation.
-        /// </summary>        
-        public Animation(Vector2 characterVelocity, TimeSpan timePerFrame, SpriteEffects effect, string[] sprites, bool isLooping = true)
-        {
-            this.Sprites = sprites;
-            this.TimePerFrame = timePerFrame;
-            this.frameTime = (float)timePerFrame.TotalSeconds;
-            this.Effect = effect;
-            this.CharacterVelocity = characterVelocity;
-			this.isLooping = isLooping;
-        }
+        
 
     }
 }

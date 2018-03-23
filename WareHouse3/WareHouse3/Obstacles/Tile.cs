@@ -43,16 +43,16 @@ namespace WareHouse3
     /// </summary>
     struct Tile
     {
-        public SpriteFrame SpriteFrame { get; private set; }
+        //public SpriteFrame SpriteFrame { get; private set; }
         public TileCollision Collision { get; private set; }
 
         /// <summary>
         /// Constructs a new tile.
         /// </summary>
-        public Tile(SpriteFrame spriteFrame, TileCollision collision)
-        {
-            this.SpriteFrame = spriteFrame;
-            this.Collision = collision;
-        }
+        //public Tile(SpriteFrame spriteFrame, TileCollision collision)
+        //{
+        //    this.SpriteFrame = spriteFrame;
+        //    this.Collision = collision;
+        //}
     }
 }
