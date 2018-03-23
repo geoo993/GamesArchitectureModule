@@ -144,7 +144,7 @@ namespace WareHouse3
             celebrateAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyCelebrateSprites, false);
             dieAnimation = new Animation(Vector2.Zero, timePerFrame, SpriteEffects.None, TexturePackerMonoGameDefinitions.Sprites.coyboyDieSprites, false);
 			sprite = new AnimationPlayer(spriteSheet, position, idleAnimation);            // Load animated textures.
-
+            sprite.CurrentSprite.OriginType = SpriteFrame.FrameOrigin.bottomcenter;
             // Calculate bounds within texture size.            
             int width = (int)(sprite.CurrentSprite.Rectangle.Width * 0.4);
             int left = (sprite.CurrentSprite.Rectangle.Width - width) / 2;

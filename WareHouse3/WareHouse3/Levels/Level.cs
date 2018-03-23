@@ -263,9 +263,9 @@ namespace WareHouse3
 				int index = random.Next(variationCount);
                 return LoadTile(BlockA[index], collision);
             } else {
-                var BlockA = TexturePackerMonoGameDefinitions.Sprites.TileBlockBSprites;
+                var BlockB = TexturePackerMonoGameDefinitions.Sprites.TileBlockBSprites;
                 int index = random.Next(variationCount);
-                return LoadTile(BlockA[index], collision);
+                return LoadTile(BlockB[index], collision);
             }
         }
 

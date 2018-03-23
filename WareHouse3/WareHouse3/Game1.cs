@@ -55,7 +55,11 @@ namespace WareHouse3
             
             //graphics.PreferredBackBufferWidth = GameInfo.screenWidth;
             //graphics.PreferredBackBufferHeight = GameInfo.screenHeight;
-            graphics.IsFullScreen = false;
+                        
+#if WINDOWS_PHONE
+            graphics.IsFullScreen = true;
+            TargetElapsedTime = TimeSpan.FromTicks(333333);
+#endif
             
             Content.RootDirectory = "Content";
             
@@ -111,8 +115,8 @@ namespace WareHouse3
             backgroundSprite = this.spriteSheet.Sprite(TexturePackerMonoGameDefinitions.SpriteSheet.Backgrounds_Background);
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
 
-            LoadNextLevel();
-            //InitialiseAnimationManager();
+            //LoadNextLevel();
+            InitialiseAnimationManager();
             //TODO: use this.Content to load your game content here 
         }
         
@@ -137,10 +141,10 @@ namespace WareHouse3
             commandManager.Update();
             
              // Handle polling for our input and handling high-level input
-            HandleInput();
+            //HandleInput();
             
             // update our level, passing down the GameTime along with all of our input states
-            level.Update(gameTime, keyboardState, gamePadState, accelerometerState, Window.CurrentOrientation);
+            //level.Update(gameTime, keyboardState, gamePadState, accelerometerState, Window.CurrentOrientation);
             
             // TODO: Add your update logic here
             //characterAnimationManager.Update(gameTime);
@@ -175,6 +179,33 @@ namespace WareHouse3
             }
 
             wasContinuePressed = continuePressed;
+        }
+        
+        private void LoadNextLevel()
+        {
+            var levels = new[] {
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer0Sprites,
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer1Sprites,
+                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer2Sprites
+            };
+            
+            // move to the next level
+            levelIndex = (levelIndex + 1) % numberOfLevels;
+
+            // Unloads the content for the current level before loading the next one.
+            if (level != null)
+                level.Dispose();
+
+            // Load the level.
+            string levelPath = string.Format("Content/Levels/{0}.txt", levelIndex);
+            using (Stream fileStream = TitleContainer.OpenStream(levelPath))
+                level = new Level(Services, fileStream, levels[levelIndex], spriteSheet);
+        }
+        
+        private void ReloadCurrentLevel()
+        {
+            --levelIndex;
+            LoadNextLevel();
         }
 
         /// <summary>
@@ -242,34 +273,7 @@ namespace WareHouse3
 
             this.characterAnimationManager = new AnimationManager (this.spriteSheet, characterStartPosition, animations);
         }
-        
-        private void LoadNextLevel()
-        {
-            var levels = new[] {
-                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer0Sprites,
-                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer1Sprites,
-                TexturePackerMonoGameDefinitions.Sprites.BackgroundsLayer2Sprites
-            };
-            
-            // move to the next level
-            levelIndex = (levelIndex + 1) % numberOfLevels;
 
-            // Unloads the content for the current level before loading the next one.
-            if (level != null)
-                level.Dispose();
-
-            // Load the level.
-            string levelPath = string.Format("Content/Levels/{0}.txt", levelIndex);
-            using (Stream fileStream = TitleContainer.OpenStream(levelPath))
-                level = new Level(Services, fileStream, levels[levelIndex], spriteSheet);
-        }
-
-        private void ReloadCurrentLevel()
-        {
-            --levelIndex;
-            LoadNextLevel();
-        }
-        
         
     }
 }

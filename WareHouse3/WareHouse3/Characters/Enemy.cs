@@ -51,7 +51,10 @@ namespace WareHouse3
         {
             get
             {
-                return sprite.CurrentSprite.Rectangle;
+                int left = (int)Math.Round(Position.X - sprite.CurrentSprite.Origin.X) + localBounds.X;
+                int top = (int)Math.Round(Position.Y - sprite.CurrentSprite.Origin.Y) + localBounds.Y;
+
+                return new Rectangle(left, top, localBounds.Width, localBounds.Height);
             }
         }
         
@@ -101,7 +104,8 @@ namespace WareHouse3
             idleAnimation = new Animation(Vector2.Zero, TimeSpan.FromSeconds(0.1f), SpriteEffects.None, idleSpriteSet, true);
             runAnimation = new Animation(Vector2.Zero, TimeSpan.FromSeconds(0.15f), SpriteEffects.None, runSpriteSet, true);
             sprite = new AnimationPlayer(spriteSheet, position, idleAnimation);            // Load animated textures.
-
+            sprite.CurrentSprite.OriginType = SpriteFrame.FrameOrigin.bottomcenter;
+            
             // Calculate bounds within texture size.
             int width = (int)(sprite.CurrentSprite.Rectangle.Width * 0.35f);
             int left = (sprite.CurrentSprite.Rectangle.Width - width) / 2;
@@ -174,7 +178,7 @@ namespace WareHouse3
 
             // Draw facing the way the enemy is moving.
             SpriteEffects flip = direction > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteRender.Draw( sprite.CurrentSprite, Position, GemInfo.Color, 0.0f, 1.0f, flip);
+            spriteRender.Draw(sprite.CurrentSprite, Position, GemInfo.Color, 0.0f, 1.0f, flip);
         }
     }
 }
