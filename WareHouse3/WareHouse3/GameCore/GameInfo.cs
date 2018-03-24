@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace WareHouse3
 {
@@ -30,5 +31,12 @@ namespace WareHouse3
         public static readonly int screenHeight = (int)(double)GameManager.manager["ScreenHeight"];
     }
 
-
+    public class Device {
+        public static GraphicsDevice graphicsDevice;
+    }
+    
+    public class Commands {
+        public static readonly CommandManager manager = new CommandManager();
+    }
+    
 }

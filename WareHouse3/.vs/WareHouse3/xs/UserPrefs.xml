@@ -1,41 +1,11 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Game1.cs">
     <Files>
-      <File FileName="WareHouse3/Game1.cs" Line="74" Column="57" />
-      <File FileName="WareHouse3/Characters/Circle.cs" Line="267" Column="56" />
-      <File FileName="WareHouse3/Characters/Box.cs" Line="174" Column="32" />
-      <File FileName="WareHouse3/Extensions/Origin.cs" Line="29" Column="46" />
-      <File FileName="WareHouse3/Extensions/RectangleExtensions.cs" Line="32" Column="37" />
+      <File FileName="WareHouse3/Game1.cs" Line="105" Column="109" />
+      <File FileName="WareHouse3/Characters/Circle.cs" Line="317" Column="13" />
+      <File FileName="WareHouse3/Characters/Box.cs" Line="221" Column="13" />
+      <File FileName="WareHouse3/Extensions/Origin.cs" Line="18" Column="10" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="WareHouse3" expanded="True">
-            <Node name="WareHouse3" expanded="True">
-              <Node name="Animations" expanded="True" />
-              <Node name="Characters" expanded="True" />
-              <Node name="Content" expanded="True">
-                <Node name="Scripts" expanded="True" />
-              </Node>
-              <Node name="Controls" expanded="True" />
-              <Node name="Extensions" expanded="True" />
-              <Node name="GameCore" expanded="True" />
-              <Node name="Levels" expanded="True" />
-              <Node name="Obstacles" expanded="True" />
-              <Node name="Properties" expanded="True" />
-              <Node name="Game1.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State name="__root__">
-          <Node name="WareHouse3" expanded="True">
-            <Node name="WareHouse3" expanded="True" selected="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

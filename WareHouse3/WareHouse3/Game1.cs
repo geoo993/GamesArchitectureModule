@@ -26,12 +26,10 @@ namespace WareHouse3
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        CommandManager commandManager;
 		Vector2 centreScreen;
         Vector2 screenSize;
         Circle circle;
         Box box;
-        Box box2;
         
          #endregion
         
@@ -40,7 +38,6 @@ namespace WareHouse3
         
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            commandManager = new CommandManager();
             IsMouseVisible = true;
             
 
@@ -68,10 +65,7 @@ namespace WareHouse3
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
-            circle = new Circle(new Vector2(0, 0), 40, 4.0f);
-            box = new Box(new Vector2(150, 250), 100, 120, 5.0f);
-            box2 = new Box(new Vector2(350, 250), 60, 150, 2.0f);
+            Device.graphicsDevice = this.GraphicsDevice;
             
             InitializeControlsBindings();
             base.Initialize();
@@ -79,10 +73,8 @@ namespace WareHouse3
 
         private void InitializeControlsBindings()
         {
-            commandManager.AddKeyboardBinding(Keys.Escape, StopGame);
-            //circle.SetKeyoardBindings(commandManager);
-            //box.SetKeyoardBindings(commandManager);
-            box2.SetKeyoardBindings(commandManager);
+            Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
+            
         }
         
         #region Game Actions
@@ -104,10 +96,18 @@ namespace WareHouse3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-          
+
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
+
+            circle = new Circle(new Vector2(130, 70), 40, 4.0f, Color.White, Content.Load<Texture2D>("crate2"));
+            box = new Box(new Vector2(150, 250), 150, 120, 5.0f, Color.White, Content.Load<Texture2D>("crate"));
+            
+            
+			circle.SetKeyoardBindings();
+		    //box.SetKeyoardBindings();
+            
             //TODO: use this.Content to load your game content here 
         }
         
@@ -129,22 +129,23 @@ namespace WareHouse3
         protected override void Update(GameTime gameTime)
         {
             // Update the command manager (updates polling input and fires input events)
-            commandManager.Update();
+            Commands.manager.Update();
 
             // Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
 
             circle.UpdatePosition(screenSize);
             box.UpdatePosition(screenSize);
-            box2.UpdatePosition(screenSize);
 
 
-            if (box2.Intersects(box.BoundingRectangle))
+            if (circle.Intersects(box.BoundingRectangle))
             {
-                System.Diagnostics.Debug.Print("Colliding");
+                //System.Diagnostics.Debug.Print("Colliding");
+                circle.Color = Color.DarkKhaki;
             }
             else
             {
-                System.Diagnostics.Debug.Print("Not Colliding");
+                //System.Diagnostics.Debug.Print("Not Colliding");
+                circle.Color = Color.White;
             }
             
             // TODO: Add your update logic here
@@ -162,10 +163,10 @@ namespace WareHouse3
             //TODO: Add your drawing code here
             this.spriteBatch.Begin();
 
-            circle.Render(spriteBatch, graphics.GraphicsDevice, Color.Red);
+            circle.Render(spriteBatch);
 
-            box.Render(spriteBatch, graphics.GraphicsDevice, Color.Blue);
-            box2.Render(spriteBatch, graphics.GraphicsDevice, Color.Chocolate);
+            box.Render(spriteBatch);
+            //box2.Render(spriteBatch);
             
             this.spriteBatch.End();
 

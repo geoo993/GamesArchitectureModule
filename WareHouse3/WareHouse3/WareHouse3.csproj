@@ -86,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="Content\bin\MacOSX\crate.xnb">
+      <Link>Content\crate.xnb</Link>
+    </None>
+    <None Include="Content\bin\MacOSX\crate2.xnb">
+      <Link>Content\crate2.xnb</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />

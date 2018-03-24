@@ -4,6 +4,7 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/TexturePackerSprites.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/crate.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/crate2.png</File>
   </SourceFiles>
 </SourceFileCollection>

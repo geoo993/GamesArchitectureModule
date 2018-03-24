@@ -12,21 +12,34 @@
 // https://stackoverflow.com/questions/43485700/xna-monogame-detecting-collision-between-circle-and-rectangle-not-working
 // https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
 // https://stackoverflow.com/questions/8645910/checking-collision-circle-with-rectangle-with-c-sharp-xna-4-0
-
+// https://gamedev.stackexchange.com/questions/82324/xna-how-to-change-the-sprite-texture-to-white-color
+// https://stackoverflow.com/questions/5641579/xna-draw-a-filled-circle
+// https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/MonoGame.Extended/ShapeExtensions.cs
+// https://gamedev.stackexchange.com/questions/61737/resize-texture-in-code
 
 using System;
+using System.IO.IsolatedStorage;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace WareHouse3
 {
-
+    
     /// <summary>
     /// Represents a 2D circle.
     /// </summary>
     public class Circle
     {
+        public Color Color;
+        
+        /// <summary>
+        /// texture of the circle
+        /// </summary>
+        public Texture2D texture { get; private set; }
+        private bool hasTexture;
+        
         /// <summary>
         /// circle move speed.
         /// </summary>
@@ -44,6 +57,7 @@ namespace WareHouse3
         //{
         //    get { return origin; }
         //}
+        private Origin.FrameOrigin originType;
         private Vector2 origin;
 
         /// <summary>
@@ -93,22 +107,26 @@ namespace WareHouse3
          /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Circle(Vector2 position, int radius, float speed)
+        public Circle(Vector2 position, int radius, float speed, Color color, Texture2D texture = null)
         {
 			this.radius = radius;
-            this.origin = Origin.GetOrigin(Size, Size, Origin.FrameOrigin.center);
+            this.originType = Origin.FrameOrigin.center;
+            this.origin = Origin.GetOrigin(Size, Size, this.originType);
+            this.texture = texture;
+            this.hasTexture = (texture != null);
+            this.Color = color;
             this.position = position;
             this.moveSpeed = speed;
             this.angle = 0.3f;
             this.localBounds = new Rectangle((int)this.origin.X, (int)this.origin.Y, Size, Size);
         }
         
-        public void SetKeyoardBindings(CommandManager commandManager) 
+        public void SetKeyoardBindings() 
         {
-            commandManager.AddKeyboardBinding(Keys.Left, LeftMovement);
-            commandManager.AddKeyboardBinding(Keys.Right, RightMovement);
-            commandManager.AddKeyboardBinding(Keys.Up, UpMovement);
-            commandManager.AddKeyboardBinding(Keys.Down, DownMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Left, LeftMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Right, RightMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Up, UpMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Down, DownMovement);
         }
         
         private void LeftMovement(ButtonAction buttonState, Vector2 amount)
@@ -153,106 +171,40 @@ namespace WareHouse3
             //System.Diagnostics.Debug.Print(origin.ToString());
         }
         
+        
         /// <summary>
         /// texture area of the circle type 1
         /// </summary>
-        Texture2D CreateCircle(GraphicsDevice graphicsDevice)
+        private Texture2D CreateCircle()
         {
+            Texture2D pixels = new Texture2D(Device.graphicsDevice, Size, Size);
+            Color[] colorData = new Color[Size * Size];
             
-            Texture2D texture = new Texture2D(graphicsDevice, Size, Size);
-            Color[] colorData = new Color[Size*Size];
-        
-            float diam = Size / 2f;
+            float diam = Radius;
             float diamsq = diam * diam;
-        
+            
             for (int x = 0; x < Size; x++)
             {
                 for (int y = 0; y < Size; y++)
                 {
+                    
                     int index = x * Size + y;
+                    
                     Vector2 pos = new Vector2(x - diam, y - diam);
+                    
                     if (pos.LengthSquared() <= diamsq)
                     {
-                        colorData[index] = Color.White;
-                    }
-                    else
-                    {
+                        colorData[index] = this.Color;
+                    } else {
                         colorData[index] = Color.Transparent;
                     }
                 }
             }
         
-            texture.SetData(colorData);
-            return texture;
+            pixels.SetData(colorData);
+            return pixels;
         }
-        
-        /// <summary>
-        /// texture area of the circle type 2
-        /// </summary>
-        Texture2D CreateCircle(GraphicsDevice graphicsDevice, Color color)  { 
-            Texture2D texture = new Texture2D(graphicsDevice, Size, Size); 
-            Color[] c = new Color[texture.Width * texture.Height]; 
-            texture.GetData<Color>(c); 
-            DrawCircle(texture.Width / 2, texture.Height / 2, Radius, color, ref c, texture.Width, texture.Height); 
-            texture.SetData<Color>(c); 
-            return texture; 
-        } 
-        
-        void DrawCircle(int x, int y, int r, Color c, ref Color[] z, int width, int height) 
-        { 
-            int i, j; 
-            for (i = 0; i < 2 * r; i++) 
-            { 
-                if ((y - r + i) >= 0 && (y - r + i) < height) 
-                { 
-                    int len = (int)(Math.Sqrt(Math.Cos(0.5f * Math.PI * (i - r) / r)) * r * 2); 
-                    int xofs = x - len / 2; 
-                    if (xofs < 0) 
-                    { 
-                        len += xofs; 
-                        xofs = 0; 
-                    } 
-                    if (xofs + len >= width) 
-                    { 
-                        len -= (xofs + len) - width; 
-                    } 
-                    int ofs = (y - r + i) * width + xofs; 
-                    for (j = 0; j < len; j++) 
-                        z[ofs + j] = c; 
-                } 
-            } 
-        } 
-        
-        /// <summary>
-        /// texture area of the line
-        /// </summary>
-        public static Texture2D CreateLine(GraphicsDevice graphicsDevice, Vector2 a, Vector2 b, Color col) 
-        { 
-            Texture2D t = new Texture2D(graphicsDevice, 640, 480); 
-            Color[] c = new Color[640 * 480]; 
-            DrawLine((int)a.X, (int)b.X, (int)a.Y, (int)b.Y, c, 640, col); 
-            t.SetData<Color>(c); 
-            return t; 
-        } 
-        static void DrawLine(int x1, int x2, int y1, int y2, Color[] c, int width, Color col) 
-        { 
-            int deltax = x2 - x1;           // The difference in the x's 
-            int deltay = y2 - y1;           // The difference in the y's 
-            int y = y1;                     // Start y off at the first pixel value 
-            int ynum = deltax / 2;          // The starting value for the numerator 
-            for (int x = x1; x <= x2; x++) 
-            { 
-                c[x + (y * width)] = col; 
-                ynum += deltay;           // Increase the numerator by the top of the fraction 
-                if (ynum >= deltax)       // Check if numerator >= denominator 
-                { 
-                    ynum -= deltax;         // Calculate the new numerator value 
-                    y++;                    // Increase the value in front of the numerator (y) 
-                } 
-            } 
-        } 
-        
-        
+   
         /// <summary>
         /// Determines if a circle intersects a rectangle.
         /// </summary>
@@ -277,7 +229,6 @@ namespace WareHouse3
                  return true; // touching
             } 
             
-        
             // now only circles C and D left to test
             // get the distance to the corner
             distX -= rW;
@@ -299,11 +250,19 @@ namespace WareHouse3
         /// <summary>
         /// Render  circle with sprite batch.
         /// </summary>
-        public void Render(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, Color color) {
-            Texture2D texture = CreateCircle(graphicsDevice); 
+        public void Render(SpriteBatch spriteBatch) {
             
-            spriteBatch.Draw(texture, BoundingRectangle, null, color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
-           
+            
+            if (hasTexture == false)
+            {
+				this.texture = CreateCircle();
+                spriteBatch.Draw(texture, BoundingRectangle, null, this.Color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
+
+            } else {
+                var newOrigin = Origin.GetOrigin(texture.Width, texture.Height, this.originType);
+                spriteBatch.Draw(texture, BoundingRectangle, null, this.Color, MathExtensions.DegreeToRadians(angle), newOrigin, SpriteEffects.None, 0f);
+            }
+            
         }
         
         

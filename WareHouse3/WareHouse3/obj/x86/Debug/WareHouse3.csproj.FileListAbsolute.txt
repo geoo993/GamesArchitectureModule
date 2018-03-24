@@ -9,4 +9,5 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/obj/x86/Debug/WareHouse3.pdb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/NLua.dll
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/KeraLua.dll
-/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/TexturePackerSprites.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/crate.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/crate2.xnb

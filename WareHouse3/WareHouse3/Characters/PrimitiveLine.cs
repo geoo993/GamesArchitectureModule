@@ -32,12 +32,6 @@ namespace WareHouse3
         /// </summary>
         public float Depth;
 
-        
-        /// <summary>
-        /// Gets/sets the thickness of the line
-        /// </summary>
-        public int Thickness;
-
         /// <summary>
         /// Gets the number of vectors which make up the primtive line object.
         /// </summary>
@@ -57,10 +51,9 @@ namespace WareHouse3
         {
             // create pixels
             //int radius = 50;
-            Colour = Color.White;
-            Position = new Vector2(0, 0);
-            Depth = 0;
-            Thickness = 10;
+            this.Colour = Color.White;
+            this.Position = new Vector2(0, 0);
+            this.Depth = 0;
 
             vectors = new ArrayList();
            
@@ -130,7 +123,7 @@ namespace WareHouse3
         /// Renders the primtive line object.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch to use to render the primitive line object.</param>
-        public void Render(SpriteBatch spriteBatch)
+        public void Render(SpriteBatch spriteBatch, float thickness)
         {
             if (vectors.Count < 2)
                 return;
@@ -154,7 +147,7 @@ namespace WareHouse3
                     Colour,  
                     angle,  
                     new Vector2(0.5f, 0.5f),  
-                    new Vector2(distance, Thickness),  
+                    new Vector2(distance, thickness),  
                     SpriteEffects.None,  
                     Depth); 
             }
@@ -200,7 +193,6 @@ namespace WareHouse3
             vectors.Add(new Vector2(botRight.X, topLeft.Y)); 
  
             vectors.Add(topLeft); 
-        
         
         } 
         

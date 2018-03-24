@@ -7,6 +7,18 @@ namespace WareHouse3
 {
     public class Box
     {
+        PrimitiveLine boxPrimitive;
+        /// <summary>
+        /// color of the box texture
+        /// </summary>
+        private Color color;
+        
+        /// <summary>
+        /// texture of the box
+        /// </summary>
+        public Texture2D texture { get; private set; }
+        private bool hasTexture;
+        
         /// <summary>
         /// box move speed.
         /// </summary>
@@ -16,7 +28,7 @@ namespace WareHouse3
         /// rotation speed.
         /// </summary>
         private float rotationSpeed;
-        
+
         /// <summary>
         /// Center position of the box.
         /// </summary>
@@ -24,6 +36,7 @@ namespace WareHouse3
         //{
         //    get { return origin; }
         //}
+        private Origin.FrameOrigin originType;
         private Vector2 origin;
 
         /// <summary>
@@ -52,6 +65,7 @@ namespace WareHouse3
             get { return position; }
         }
         private Vector2 position;
+        private readonly Vector2 initialPosition;
         
         /// <summary>
         /// Angle rotation of the box.
@@ -78,25 +92,34 @@ namespace WareHouse3
         }
 
 
-        public Box(Vector2 position, int width, int height, float speed)
+        public Box(Vector2 position, int width, int height, float speed, Color color, Texture2D texture = null)
         {
-            this.origin = Origin.GetOrigin(width, height, Origin.FrameOrigin.center);
+            this.originType = Origin.FrameOrigin.center;
+            this.origin = Origin.GetOrigin(width, height, this.originType);
             this.position = position;
+            this.initialPosition = position;
             this.width = width;
             this.height = height;
             this.moveSpeed = speed;
             this.rotationSpeed = 1.2f;
+            this.color = color;
+            this.texture = texture;
+            this.hasTexture = (texture != null);
             this.localBounds = new Rectangle((int)this.origin.X, (int)this.origin.Y, width, height);
+
+            boxPrimitive = new PrimitiveLine(Device.graphicsDevice);
+            boxPrimitive.CreateBox(position - origin, position + origin);
+
         }
         
-        public void SetKeyoardBindings(CommandManager commandManager) 
+        public void SetKeyoardBindings() 
         {
-            commandManager.AddKeyboardBinding(Keys.Left, LeftMovement);
-            commandManager.AddKeyboardBinding(Keys.Right, RightMovement);
-            commandManager.AddKeyboardBinding(Keys.Up, UpMovement);
-            commandManager.AddKeyboardBinding(Keys.Down, DownMovement);
-            commandManager.AddKeyboardBinding(Keys.A, RotateForward);
-			commandManager.AddKeyboardBinding(Keys.D, RotateBackward);
+            Commands.manager.AddKeyboardBinding(Keys.Left, LeftMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Right, RightMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Up, UpMovement);
+            Commands.manager.AddKeyboardBinding(Keys.Down, DownMovement);
+            Commands.manager.AddKeyboardBinding(Keys.A, RotateForward);
+			Commands.manager.AddKeyboardBinding(Keys.D, RotateBackward);
         }
         
         private void LeftMovement(ButtonAction buttonState, Vector2 amount)
@@ -153,15 +176,15 @@ namespace WareHouse3
             // Make sure that the player does not go out of bounds
             position.X = MathHelper.Clamp(position.X, origin.X, (origin.X + screenSize.X) - Width);
             position.Y = MathHelper.Clamp(position.Y, origin.Y, (origin.Y + screenSize.Y) - Height);
-            
+            boxPrimitive.Position = position - initialPosition;
         }
         
         /// <summary>
         /// texture area of the box
         /// </summary>
-        Texture2D BoxTexture(GraphicsDevice graphicsDevice, Color color) {
-
-            Texture2D rectangle = new Texture2D(graphicsDevice, width, height, false, SurfaceFormat.Color);
+        Texture2D BoxTexture() {
+            
+            Texture2D rectangle = new Texture2D(Device.graphicsDevice, width, height, false, SurfaceFormat.Color);
             
             Color[] colorData = new Color[width * height];
             for (int i = 0; i < width * height; i++)
@@ -193,11 +216,20 @@ namespace WareHouse3
         /// <summary>
         /// Render  box with sprite batch.
         /// </summary>
-        public void Render(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, Color color) {
-            Texture2D texture = BoxTexture(graphicsDevice, color); 
+        public void Render(SpriteBatch spriteBatch) {
             
-            spriteBatch.Draw(texture, BoundingRectangle, null, color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
-           
+            if (hasTexture == false)
+            {
+                this.texture = BoxTexture();
+                spriteBatch.Draw(texture, BoundingRectangle, null, this.color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
+
+            } else {
+                var newOrigin = Origin.GetOrigin(texture.Width, texture.Height, this.originType);
+				spriteBatch.Draw(texture, BoundingRectangle, null, this.color, MathExtensions.DegreeToRadians(angle), newOrigin, SpriteEffects.None, 0f);
+            }
+            
+            boxPrimitive.Render(spriteBatch, 2.0f);
+
         }
     }
 }
