@@ -171,18 +171,22 @@ namespace WareHouse3
         }
         
         /// <summary>
-        /// Determines if a circle intersects a rectangle.
+        /// Determines if a box intersects a rectangle.
         /// </summary>
         /// <returns>True if the circle and rectangle overlap. False otherwise.</returns>
         public bool Intersects(Rectangle rectangle)
         {
-            Vector2 v = new Vector2(MathHelper.Clamp(position.X, rectangle.Left, rectangle.Right),
-                                    MathHelper.Clamp(position.Y, rectangle.Top, rectangle.Bottom));
-
-            Vector2 direction = position - v;
-            float distanceSquared = direction.LengthSquared();
-
-            return ((distanceSquared > 0) && (distanceSquared < width * height));
+			// Get the rectangle half width and height
+			float rW1 = (Width) / 2 ;
+			float rH1 = (Height) / 2;
+            
+            float rW2 = (rectangle.Width) / 2 ;
+            float rH2 = (rectangle.Height) / 2;
+            
+            Rectangle rec1 = new Rectangle((int)(BoundingRectangle.X - rW1), (int)(BoundingRectangle.Y - rH1), BoundingRectangle.Width, BoundingRectangle.Height);
+            Rectangle rec2 = new Rectangle((int)(rectangle.X - rW2), (int)(rectangle.Y - rH2), rectangle.Width, rectangle.Height);
+            
+            return rec1.Intersects(rec2);
         }
         
         

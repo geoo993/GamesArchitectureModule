@@ -31,6 +31,7 @@ namespace WareHouse3
         Vector2 screenSize;
         Circle circle;
         Box box;
+        Box box2;
         
          #endregion
         
@@ -68,8 +69,9 @@ namespace WareHouse3
         {
             // TODO: Add your initialization logic here
             
-            circle = new Circle(new Vector2(0, 0), 50, 20.0f);
-            box = new Box(new Vector2(150, 250), 40, 50, 30.0f);
+            circle = new Circle(new Vector2(0, 0), 40, 4.0f);
+            box = new Box(new Vector2(150, 250), 100, 120, 5.0f);
+            box2 = new Box(new Vector2(350, 250), 60, 150, 2.0f);
             
             InitializeControlsBindings();
             base.Initialize();
@@ -78,8 +80,9 @@ namespace WareHouse3
         private void InitializeControlsBindings()
         {
             commandManager.AddKeyboardBinding(Keys.Escape, StopGame);
-            circle.SetKeyoardBindings(commandManager);
+            //circle.SetKeyoardBindings(commandManager);
             //box.SetKeyoardBindings(commandManager);
+            box2.SetKeyoardBindings(commandManager);
         }
         
         #region Game Actions
@@ -131,7 +134,18 @@ namespace WareHouse3
             // Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
 
             circle.UpdatePosition(screenSize);
-            //box.UpdatePosition(screenSize);
+            box.UpdatePosition(screenSize);
+            box2.UpdatePosition(screenSize);
+
+
+            if (box2.Intersects(box.BoundingRectangle))
+            {
+                System.Diagnostics.Debug.Print("Colliding");
+            }
+            else
+            {
+                System.Diagnostics.Debug.Print("Not Colliding");
+            }
             
             // TODO: Add your update logic here
             base.Update(gameTime);
@@ -150,16 +164,13 @@ namespace WareHouse3
 
             circle.Render(spriteBatch, graphics.GraphicsDevice, Color.Red);
 
-            //box.Render(spriteBatch, graphics.GraphicsDevice, Color.Blue);
+            box.Render(spriteBatch, graphics.GraphicsDevice, Color.Blue);
+            box2.Render(spriteBatch, graphics.GraphicsDevice, Color.Chocolate);
             
             this.spriteBatch.End();
 
             base.Draw(gameTime);
-            
-           
         }
 
-
-        
     }
 }

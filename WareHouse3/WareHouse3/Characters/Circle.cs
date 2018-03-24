@@ -9,6 +9,10 @@
 
 // http://xboxforums.create.msdn.com/forums/t/7414.aspx
 // http://rbwhitaker.wikidot.com/monogame-rotating-sprites
+// https://stackoverflow.com/questions/43485700/xna-monogame-detecting-collision-between-circle-and-rectangle-not-working
+// https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
+// https://stackoverflow.com/questions/8645910/checking-collision-circle-with-rectangle-with-c-sharp-xna-4-0
+
 
 using System;
 using Microsoft.Xna.Framework;
@@ -31,7 +35,7 @@ namespace WareHouse3
         /// <summary>
         /// rotation speed.
         /// </summary>
-        private float rotationSpeed;
+        //private float rotationSpeed;
         
         /// <summary>
         /// Center position of the circle.
@@ -145,7 +149,8 @@ namespace WareHouse3
             position.X = MathHelper.Clamp(position.X, origin.X, (origin.X + screenSize.X) - Size);
             position.Y = MathHelper.Clamp(position.Y, origin.Y, (origin.Y + screenSize.Y) - Size);
         
-            //System.Diagnostics.Debug.Print(BoundingRectangle.Right.ToString());
+            //System.Diagnostics.Debug.Print(BoundingRectangle.Center.ToString());
+            //System.Diagnostics.Debug.Print(origin.ToString());
         }
         
         /// <summary>
@@ -252,16 +257,44 @@ namespace WareHouse3
         /// Determines if a circle intersects a rectangle.
         /// </summary>
         /// <returns>True if the circle and rectangle overlap. False otherwise.</returns>
-        public bool Intersects(Rectangle rectangle)
-        {
-            Vector2 v = new Vector2(MathHelper.Clamp(position.X, rectangle.Left, rectangle.Right),
-                                    MathHelper.Clamp(position.Y, rectangle.Top, rectangle.Bottom));
+        public bool Intersects(Rectangle rectangle) {
+            // Get the rectangle half width and height
+            float rW = (rectangle.Width) / 2 ;
+            float rH = (rectangle.Height) / 2;
+        
+            // Get the positive distance. This exploits the symmetry so that we now are
+            // just solving for one corner of the rectangle (memory tell me it fabs for 
+            // floats but I could be wrong and its abs)
+            float distX = Math.Abs(BoundingRectangle.X - rectangle.X);
+            float distY = Math.Abs(BoundingRectangle.Y - rectangle.Y);
+            
+            if(distX >= (Radius + rW) || distY >= (Radius + rH)){
+                 // outside see diagram circle E
+                 return false;
+            }
+            if(distX < rW || distY < rH){
+                 // inside see diagram circles A and B
+                 return true; // touching
+            } 
+            
+        
+            // now only circles C and D left to test
+            // get the distance to the corner
+            distX -= rW;
+            distY -= rH;
+        
+            // Find distance to corner and compare to circle radius (squared and the sqrt root is not needed
+            if((distX * distX) + (distY * distY) < Radius * Radius) { 
+                // touching see diagram circle C
+                return true; 
+            }
+        
+            // Only option left is circle D that is outside             
+            return false;
 
-            Vector2 direction = position - v;
-            float distanceSquared = direction.LengthSquared();
-
-            return ((distanceSquared > 0) && (distanceSquared < Radius * Radius));
         }
+        
+        
         
         /// <summary>
         /// Render  circle with sprite batch.
