@@ -32,7 +32,12 @@ namespace WareHouse3
     /// </summary>
     public class Circle
     {
-        public Color Color;
+        PrimitiveLine circleBorder;
+        /// <summary>
+        /// color of the box texture
+        /// </summary>
+        public Color color;
+        public Color borderColor;
         
         /// <summary>
         /// texture of the circle
@@ -80,6 +85,7 @@ namespace WareHouse3
             get { return position; }
         }
         private Vector2 position;
+        private readonly Vector2 initialPosition;
         
         /// <summary>
         /// Angle rotation of the circle.
@@ -114,11 +120,16 @@ namespace WareHouse3
             this.origin = Origin.GetOrigin(Size, Size, this.originType);
             this.texture = texture;
             this.hasTexture = (texture != null);
-            this.Color = color;
+            this.color = color;
+            this.borderColor = Color.White;
             this.position = position;
+            this.initialPosition = position;
             this.moveSpeed = speed;
             this.angle = 0.3f;
             this.localBounds = new Rectangle((int)this.origin.X, (int)this.origin.Y, Size, Size);
+            
+            circleBorder = new PrimitiveLine(Device.graphicsDevice, borderColor);
+            circleBorder.CreateCircle(radius, 20);
         }
         
         public void SetKeyoardBindings() 
@@ -166,7 +177,7 @@ namespace WareHouse3
             // Make sure that the player does not go out of bounds
             position.X = MathHelper.Clamp(position.X, origin.X, (origin.X + screenSize.X) - Size);
             position.Y = MathHelper.Clamp(position.Y, origin.Y, (origin.Y + screenSize.Y) - Size);
-        
+            circleBorder.Position = position;
             //System.Diagnostics.Debug.Print(BoundingRectangle.Center.ToString());
             //System.Diagnostics.Debug.Print(origin.ToString());
         }
@@ -194,7 +205,7 @@ namespace WareHouse3
                     
                     if (pos.LengthSquared() <= diamsq)
                     {
-                        colorData[index] = this.Color;
+                        colorData[index] = this.color;
                     } else {
                         colorData[index] = Color.Transparent;
                     }
@@ -256,13 +267,14 @@ namespace WareHouse3
             if (hasTexture == false)
             {
 				this.texture = CreateCircle();
-                spriteBatch.Draw(texture, BoundingRectangle, null, this.Color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, BoundingRectangle, null, this.color, MathExtensions.DegreeToRadians(angle), origin, SpriteEffects.None, 0f);
 
             } else {
                 var newOrigin = Origin.GetOrigin(texture.Width, texture.Height, this.originType);
-                spriteBatch.Draw(texture, BoundingRectangle, null, this.Color, MathExtensions.DegreeToRadians(angle), newOrigin, SpriteEffects.None, 0f);
+                spriteBatch.Draw(texture, BoundingRectangle, null, this.color, MathExtensions.DegreeToRadians(angle), newOrigin, SpriteEffects.None, 0f);
             }
             
+            circleBorder.Render(spriteBatch, 2.0f, this.borderColor);
         }
         
         

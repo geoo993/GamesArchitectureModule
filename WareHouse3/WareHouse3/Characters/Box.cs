@@ -11,7 +11,8 @@ namespace WareHouse3
         /// <summary>
         /// color of the box texture
         /// </summary>
-        private Color color;
+        public Color color;
+        public Color borderColor;
         
         /// <summary>
         /// texture of the box
@@ -103,11 +104,12 @@ namespace WareHouse3
             this.moveSpeed = speed;
             this.rotationSpeed = 1.2f;
             this.color = color;
+            this.borderColor = Color.White;
             this.texture = texture;
             this.hasTexture = (texture != null);
             this.localBounds = new Rectangle((int)this.origin.X, (int)this.origin.Y, width, height);
 
-            boxPrimitive = new PrimitiveLine(Device.graphicsDevice);
+            boxPrimitive = new PrimitiveLine(Device.graphicsDevice, borderColor);
             boxPrimitive.CreateBox(position - origin, position + origin);
 
         }
@@ -228,7 +230,7 @@ namespace WareHouse3
 				spriteBatch.Draw(texture, BoundingRectangle, null, this.color, MathExtensions.DegreeToRadians(angle), newOrigin, SpriteEffects.None, 0f);
             }
             
-            boxPrimitive.Render(spriteBatch, 2.0f);
+            boxPrimitive.Render(spriteBatch, 2.0f, this.borderColor);
 
         }
     }

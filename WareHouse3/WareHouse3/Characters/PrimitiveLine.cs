@@ -47,11 +47,11 @@ namespace WareHouse3
         /// Creates a new primitive line object.
         /// </summary>
         /// <param name="graphicsDevice">The Graphics Device object to use.</param>
-        public PrimitiveLine(GraphicsDevice graphicsDevice)
+        public PrimitiveLine(GraphicsDevice graphicsDevice, Color color)
         {
             // create pixels
             //int radius = 50;
-            this.Colour = Color.White;
+            this.Colour = color;
             this.Position = new Vector2(0, 0);
             this.Depth = 0;
 
@@ -123,8 +123,12 @@ namespace WareHouse3
         /// Renders the primtive line object.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch to use to render the primitive line object.</param>
-        public void Render(SpriteBatch spriteBatch, float thickness)
+        public void Render(SpriteBatch spriteBatch, float thickness, Color? color = null)
         {
+            if (color != null) {
+                Colour = color.Value;
+            }
+            
             if (vectors.Count < 2)
                 return;
 

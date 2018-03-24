@@ -140,12 +140,12 @@ namespace WareHouse3
             if (circle.Intersects(box.BoundingRectangle))
             {
                 //System.Diagnostics.Debug.Print("Colliding");
-                circle.Color = Color.DarkKhaki;
+                circle.color = Color.DarkKhaki;
             }
             else
             {
                 //System.Diagnostics.Debug.Print("Not Colliding");
-                circle.Color = Color.White;
+                circle.color = Color.White;
             }
             
             // TODO: Add your update logic here
