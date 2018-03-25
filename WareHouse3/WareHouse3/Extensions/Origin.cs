@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 
 namespace WareHouse3
 {
-    public class Origin
+    public class FrameOrigin
     {
-        public enum FrameOrigin {
+        public enum OriginType {
             left,
             right,
             center,
@@ -17,25 +17,25 @@ namespace WareHouse3
             bottomCenter
         }
 
-        public static Vector2 GetOrigin(int width, int height, FrameOrigin type) {
+        public static Vector2 GetOrigin(int width, int height, OriginType type) {
             switch (type) {
-				case FrameOrigin.topLeft:
+				case OriginType.topLeft:
 					return new Vector2(0.0f, 0.0f);
-				case FrameOrigin.topCenter:
+				case OriginType.topCenter:
 					return new Vector2((width / 2.0f), 0.0f);
-				case FrameOrigin.topRight:
+				case OriginType.topRight:
 					return new Vector2(width, 0.0f);
-                case FrameOrigin.left:
+                case OriginType.left:
                     return new Vector2(0.0f, (height / 2.0f));
-                case FrameOrigin.center:
+                case OriginType.center:
                     return new Vector2((width / 2.0f), (height / 2.0f));
-                case FrameOrigin.right:
+                case OriginType.right:
                     return new Vector2(width, (height / 2.0f));
-                case FrameOrigin.bottomLeft:
+                case OriginType.bottomLeft:
                     return new Vector2(0.0f, height);
-				case FrameOrigin.bottomCenter:
+				case OriginType.bottomCenter:
 					return new Vector2((width / 2.0f), height);
-                case FrameOrigin.bottomRight:
+                case OriginType.bottomRight:
 					return new Vector2(width, height);
                 default:
                     return new Vector2(0.0f, 0.0f);

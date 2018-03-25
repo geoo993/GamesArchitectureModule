@@ -28,8 +28,8 @@ namespace WareHouse3
         SpriteBatch spriteBatch;
 		Vector2 centreScreen;
         Vector2 screenSize;
-        Circle circle;
-        Box box;
+        Ball ball;
+        Character character;
         
          #endregion
         
@@ -101,12 +101,13 @@ namespace WareHouse3
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
 
-            circle = new Circle(new Vector2(130, 70), 40, 4.0f, Color.White, Content.Load<Texture2D>("crate2"));
-            box = new Box(new Vector2(150, 250), 150, 120, 5.0f, Color.White, Content.Load<Texture2D>("crate"));
+            ball = new Ball(new Vector2(130, 520), 40, 4.0f, 10.0f, ColorExtension.Random);
+            character = new Character(new Vector2(150, 250), 50, 50, 5.0f, 10.0f, Color.White, Content.Load<Texture2D>("crate"));
+
+            ball.EnableParticles = true;
             
-            
-			circle.SetKeyoardBindings();
-		    //box.SetKeyoardBindings();
+		    ball.SetKeyoardBindings();
+		    //character.SetKeyoardBindings();
             
             //TODO: use this.Content to load your game content here 
         }
@@ -130,22 +131,22 @@ namespace WareHouse3
         {
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
-
+            
             // Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
 
-            circle.UpdatePosition(screenSize);
-            box.UpdatePosition(screenSize);
-
-
-            if (circle.Intersects(box.BoundingRectangle))
+            ball.UpdatePosition(gameTime, screenSize);
+            character.UpdatePosition(gameTime, screenSize);
+            
+            
+            if (ball.Intersects(character.BoundingRectangle))
             {
                 //System.Diagnostics.Debug.Print("Colliding");
-                circle.color = Color.DarkKhaki;
+                character.Color = Color.DarkKhaki;
             }
             else
             {
                 //System.Diagnostics.Debug.Print("Not Colliding");
-                circle.color = Color.White;
+                character.Color = Color.White;
             }
             
             // TODO: Add your update logic here
@@ -163,10 +164,9 @@ namespace WareHouse3
             //TODO: Add your drawing code here
             this.spriteBatch.Begin();
 
-            circle.Render(spriteBatch);
+            ball.Render(spriteBatch);
 
-            box.Render(spriteBatch);
-            //box2.Render(spriteBatch);
+            character.Render(spriteBatch);
             
             this.spriteBatch.End();
 

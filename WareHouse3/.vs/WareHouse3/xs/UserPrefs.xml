@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Characters/PrimitiveLine.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Characters/Ball.cs">
     <Files>
-      <File FileName="WareHouse3/Game1.cs" Line="148" Column="25" />
-      <File FileName="WareHouse3/Characters/Circle.cs" Line="130" Column="40" />
-      <File FileName="WareHouse3/Characters/Box.cs" Line="112" Column="13" />
-      <File FileName="WareHouse3/Characters/PrimitiveLine.cs" Line="129" Column="37" />
+      <File FileName="WareHouse3/Game1.cs" Line="91" Column="9" />
+      <File FileName="WareHouse3/Shapes/Circle.cs" Line="140" Column="37" />
+      <File FileName="WareHouse3/Shapes/Box.cs" Line="30" Column="74" />
+      <File FileName="WareHouse3/Shapes/Shape.cs" Line="72" Column="17" />
+      <File FileName="WareHouse3/Characters/Ball.cs" Line="155" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

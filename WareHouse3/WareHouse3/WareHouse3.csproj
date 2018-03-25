@@ -78,11 +78,15 @@
     <Compile Include="Levels\Level.cs" />
     <Compile Include="GameCore\GameInfo.cs" />
     <Compile Include="GameCore\GameManager.cs" />
-    <Compile Include="Characters\Circle.cs" />
-    <Compile Include="Characters\Box.cs" />
     <Compile Include="Extensions\Origin.cs" />
-    <Compile Include="Characters\PrimitiveLine.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Extensions\ColorExtension.cs" />
+    <Compile Include="Shapes\Box.cs" />
+    <Compile Include="Shapes\Circle.cs" />
+    <Compile Include="Shapes\PrimitiveLine.cs" />
+    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Characters\Ball.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -125,6 +129,7 @@
     <Folder Include="GameCore\" />
     <Folder Include="Content\Levels\" />
     <Folder Include="Assets\" />
+    <Folder Include="Shapes\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
