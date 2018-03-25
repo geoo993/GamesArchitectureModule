@@ -8,6 +8,7 @@ namespace WareHouse3
 {
     public class Ball: Circle
     {
+    
         /// <summary>
         /// trail particle of the ball
         /// </summary>
@@ -27,14 +28,14 @@ namespace WareHouse3
         /// the movement speed the ball
         /// </summary>
         private Vector2 Velocity;
+        private Vector2 Acceleration;
         
         /// <summary>
         /// find out if the ball is in the air
         /// </summary>
         public bool HasJumped { get; private set; }
-        private bool JumpCountState = false;
-        private int JumpingCount = 0;
-        
+        private JumpState JumpState;
+       
         /// <summary>
         /// is the left and right keyboard buttons pressed
         /// </summary>
@@ -45,6 +46,7 @@ namespace WareHouse3
         {
             this.HasJumped = true;
             this.particles = new List<Circle>();
+            this.JumpState = new JumpState();
         }
         
         protected override void LeftMovement(ButtonAction buttonState, Vector2 amount)
@@ -94,84 +96,30 @@ namespace WareHouse3
    
         protected override void JumpMovement(ButtonAction buttonState, Vector2 amount)
         {
-            if (buttonState == ButtonAction.DOWN && HasJumped == false)
+            if (buttonState == ButtonAction.PRESSED )
             {
-                Position.Y -= JumpSpeed;
-                Velocity.Y = -(JumpSpeed / 2);
-                HasJumped = true;
                 
-                
-                /*
-                if(JumpingCount > 0)
-                {
-                    //ySpeed = speedMax;
-                    JumpingCount = 0;
-                    JumpCountState = true;
+                if (HasJumped && JumpState.IsFirstJump) {
+                    JumpState.mode = JumpState.Mode.second;
+                    Acceleration.Y = 6.0f;//JumpSpeed;
                     HasJumped = true;
                 }
-                if(HasJumped == false)
+                
+                
+                if(HasJumped == false && JumpState.IsGrounded )
                 {
-                    //ySpeed = speedMax;
+                    JumpState.mode = JumpState.Mode.first;
+                    Acceleration.Y = 5.0f;//JumpSpeed;
                     HasJumped = true;
                 }
-                */
                 
             }
         }
-        
-        public void PlayerMovement()
-        {
-            //// left of screen
-            //if(myShape.x-(lenggth*2)< 0)
-            //{   
-            //    leftSpeed = 0;  
-            //    leftForce = 0;
-            //}
-			//if(left == true)
-			//{
-			//	rightSpeed = 4;  
-			//	rightForce = 1.5;
-			//	myShape.x -=  leftSpeed * leftSpeed;
-			//} 
-            
-            //// right of screen
-            //if(myShape.x+(lenggth*2)> stage.width)
-            //{
-            //    rightSpeed = 0;  
-            //    rightForce = 0;
-            //}
-            //if(right == true)
-            //{   
-            //    leftSpeed = 3;
-            //    leftForce = 1.5; 
-            //    myShape.x +=  rightSpeed * rightForce;
-            //}
-            
-            if(HasJumped == true)
-            {
-                if(JumpCountState == false)
-                {
-                    JumpingCount++;
-                }
-                
-                //ySpeed -= gravity;
-                //myShape.y -= ySpeed;
-                
-            }
-            if(HasJumped == false)
-            {
-                JumpingCount = 0;
-                JumpCountState = false;
-            }
-                
-            
-            
-        }
-        
         
         public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
         {
     
+           
             this.Position += this.Velocity;
             
             if (LeftPressed == false && RightPressed == false) {
@@ -179,29 +127,43 @@ namespace WareHouse3
             }
             
             if (HasJumped) {
-                float i = 1;
-                Velocity.Y += Gravity.Y * i;
+                //float i = 1;
+                //Velocity.Y += Gravity.Y * i;
 
                 if (EnableParticles)
                 {
                     AddParticle(Position);
                 }
+                
+                //
+                //if(JumpCountState == false)
+                //{
+                //    JumpingCount++;
+                //}
+
+                this.Acceleration.Y -= 0.5f;//Gravity.Y;
+                this.Velocity.Y -= Acceleration.Y;
             }
 
-            if (BoundingRectangle.Bottom >= screenSize.Y + Origin.Y) {
-                HasJumped = false;
-            } else {
-                HasJumped = true;
-            }
 
             if (HasJumped == false) {
                 Velocity.Y = 0.0f;
+                
+                
+                //JumpingCount = 0;
+                //JumpCountState = false;
             }
+            
+            if (BoundingRectangle.Bottom >= screenSize.Y) {
+                if (Velocity.Y >= 0.0f) { JumpState.mode = JumpState.Mode.grounded; }
+                HasJumped = false;
+			} else {
+				HasJumped = true;
+			}
             
             UpdateParticles();
             
             base.UpdatePosition(gameTime, screenSize);
-            
         }
        
         private void AddParticle(Vector2 position)

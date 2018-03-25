@@ -101,7 +101,7 @@ namespace WareHouse3
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
 
-            ball = new Ball(new Vector2(130, 520), 40, 4.0f, 10.0f, ColorExtension.Random);
+            ball = new Ball(new Vector2(100, 560), 40, 4.0f, 10.0f, ColorExtension.Random);
             character = new Character(new Vector2(150, 250), 50, 50, 5.0f, 10.0f, Color.White, Content.Load<Texture2D>("crate"));
 
             ball.EnableParticles = true;

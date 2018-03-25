@@ -73,8 +73,8 @@ namespace WareHouse3
                 this.Height = (int)(InitialHeight * Scale);
                 this.Origin = InitialOrigin * Scale;
                 this.LocalBounds = new Rectangle((int)this.Origin.X, (int)this.Origin.Y, Width, Height);
-                int left = (int)Math.Round(Position.X - Origin.X) + LocalBounds.X;
-                int top = (int)Math.Round(Position.Y - Origin.Y) + LocalBounds.Y;
+                int left = (int)Math.Round(Position.X - Origin.X);// + LocalBounds.X;
+                int top = (int)Math.Round(Position.Y - Origin.Y);// + LocalBounds.Y;
                 
                 return new Rectangle(left, top, LocalBounds.Width, LocalBounds.Height);
             }
@@ -170,13 +170,8 @@ namespace WareHouse3
             if (HasTexture == false)
             {
                 Texture = CreateTexture();
-                //spriteBatch.Draw(Texture, Position, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Origin, Scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Origin, SpriteEffects.None, Depth);
-            } else {
-                var newOrigin = FrameOrigin.GetOrigin(Texture.Width, Texture.Height, this.originType);
-                //spriteBatch.Draw(Texture, Position, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), newOrigin, Scale, SpriteEffects.None, 0f);
-                spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), newOrigin, SpriteEffects.None, Depth);
-            }
+            } 
+			spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Vector2.Zero, SpriteEffects.None, Depth);
 
         }
     }
