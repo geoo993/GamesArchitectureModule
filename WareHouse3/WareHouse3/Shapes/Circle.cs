@@ -58,9 +58,8 @@ namespace WareHouse3
             get { return Radius * 2; }
         }
         public int Radius { get; private set; }
-
-      
-         /// <summary>
+        
+        /// <summary>
         /// Constructs a new circle.
         /// </summary>
         public Circle(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null)
@@ -131,15 +130,12 @@ namespace WareHouse3
         
         public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
         {
-            base.UpdatePosition(gameTime, screenSize);
-            
-            // Make sure that the player does not go out of bounds
-            Position.X = MathHelper.Clamp(Position.X, Origin.X, (Origin.X + screenSize.X) - Size);
-            Position.Y = MathHelper.Clamp(Position.Y, Origin.Y, (Origin.Y + screenSize.Y) - Size);
+			base.UpdatePosition(gameTime, screenSize);
 
             Radius = this.Width / 2;
             CircleBorder.CreateCircle(Radius, 20);
-			CircleBorder.Position = Position;
+            CircleBorder.Position = Position;
+            
         }
         
         /// <summary>
@@ -189,8 +185,8 @@ namespace WareHouse3
             // Get the positive distance. This exploits the symmetry so that we now are
             // just solving for one corner of the rectangle (memory tell me it fabs for 
             // floats but I could be wrong and its abs)
-            float distX = Math.Abs(BoundingRectangle.X - rectangle.X);
-            float distY = Math.Abs(BoundingRectangle.Y - rectangle.Y);
+            float distX = Math.Abs(BoundingRectangle.Center.X - rectangle.Center.X);
+            float distY = Math.Abs(BoundingRectangle.Center.Y - rectangle.Center.Y);
             
             if(distX >= (Radius + rW) || distY >= (Radius + rH)){
                  // outside see diagram circle E
@@ -225,7 +221,6 @@ namespace WareHouse3
             
             CircleBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
         }
-        
         
     }
 }

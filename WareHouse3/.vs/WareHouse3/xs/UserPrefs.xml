@@ -1,13 +1,16 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Extensions/Origin.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Extensions/ColorExtension.cs">
     <Files>
-      <File FileName="WareHouse3/Game1.cs" Line="104" Column="48" />
-      <File FileName="WareHouse3/Shapes/Circle.cs" Line="53" Column="9" />
-      <File FileName="WareHouse3/Shapes/Box.cs" Line="30" Column="74" />
-      <File FileName="WareHouse3/Shapes/Shape.cs" Line="68" Column="43" />
-      <File FileName="WareHouse3/Characters/Ball.cs" Line="61" Column="52" />
-      <File FileName="WareHouse3/Extensions/JumpState.cs" Line="1" Column="1" />
-      <File FileName="WareHouse3/Extensions/Origin.cs" Line="15" Column="24" />
+      <File FileName="WareHouse3/Game1.cs" Line="27" Column="1" />
+      <File FileName="WareHouse3/Shapes/Circle.cs" Line="138" Column="13" />
+      <File FileName="WareHouse3/Characters/Ball.cs" Line="239" Column="14" />
+      <File FileName="WareHouse3/Shapes/Shape.cs" Line="207" Column="1" />
+      <File FileName="WareHouse3/Extensions/Origin.cs" Line="36" Column="34" />
+      <File FileName="WareHouse3/Characters/Character.cs" Line="69" Column="11" />
+      <File FileName="WareHouse3/Shapes/Box.cs" Line="100" Column="10" />
+      <File FileName="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua" Line="3" Column="18" />
+      <File FileName="WareHouse3/Extensions/MathExtensions.cs" Line="17" Column="2" />
+      <File FileName="WareHouse3/Extensions/ColorExtension.cs" Line="12" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

@@ -30,7 +30,7 @@ namespace WareHouse3
         public Box(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null)
         : base(position, width, height, color, texture)
         {
-            
+           
             this.MoveSpeed = speed;
             this.RotationSpeed = 1.2f;
             this.JumpSpeed = jump;
@@ -98,13 +98,15 @@ namespace WareHouse3
         
         public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
         {
-            base.UpdatePosition(gameTime, screenSize);
+            this.LeftBoundary = 0.0f;
+            this.RightBoundary = screenSize.X;
+            this.Ground = screenSize.Y;
+            this.Ceiling = 0.0f;
             
-            // Make sure that the player does not go out of bounds
-            Position.X = MathHelper.Clamp(Position.X, Origin.X, (Origin.X + screenSize.X) - Width);
-            Position.Y = MathHelper.Clamp(Position.Y, Origin.Y, (Origin.Y + screenSize.Y) - Height);
-			
+			base.UpdatePosition(gameTime, screenSize);
+            
             BoxBorder.CreateBox(Position - Origin, Position + Origin);
+            
         }
         
         

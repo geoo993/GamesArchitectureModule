@@ -22,14 +22,15 @@ namespace WareHouse3
     public class Game1 : Game
     {
         #region Fields
-        private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f);
-        
+        private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f); 
+        Random random = new Random(DateTime.Now.Millisecond); 
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 		Vector2 centreScreen;
         Vector2 screenSize;
         Ball ball;
-        Character character;
+        List<Character> obstacles;
         
          #endregion
         
@@ -100,15 +101,9 @@ namespace WareHouse3
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
-
-            ball = new Ball(new Vector2(100, 560), 40, 4.0f, 10.0f, ColorExtension.Random);
-            character = new Character(new Vector2(150, 250), 50, 50, 5.0f, 10.0f, Color.White, Content.Load<Texture2D>("crate"));
-
-            ball.EnableParticles = true;
-            
+            ball = new Ball(new Vector2(100, 560), 20, 8.0f, 5.0f, RandomColor(random));
 		    ball.SetKeyoardBindings();
-		    //character.SetKeyoardBindings();
-            
+            SetupObstacles();
             //TODO: use this.Content to load your game content here 
         }
         
@@ -121,6 +116,15 @@ namespace WareHouse3
             // TODO: Unload any non ContentManager content here
         }
         
+        
+        void SetupObstacles () {
+            
+            obstacles = new List<Character>();
+
+            for (int i = 0; i < 10; i++) {
+				obstacles.Add( new Character(new Vector2(random.Next(0, 600), random.Next(0, 600)), random.Next(50, 200), random.Next(20, 80), (float)random.Next(-20, 20)/20.0f, 10.0f, RandomColor(random)) );
+            }
+        }
     
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -131,22 +135,13 @@ namespace WareHouse3
         {
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
-            
-            // Save the previous state of the keyboard and game pad so we can determinesingle key/button presses
 
-            ball.UpdatePosition(gameTime, screenSize);
-            character.UpdatePosition(gameTime, screenSize);
-            
-            
-            if (ball.Intersects(character.BoundingRectangle))
+            ball.UpdateCollisions(obstacles, screenSize);
+			ball.UpdatePosition(gameTime, screenSize);
+
+            foreach (Character obstacle in obstacles)
             {
-                //System.Diagnostics.Debug.Print("Colliding");
-                character.Color = Color.DarkKhaki;
-            }
-            else
-            {
-                //System.Diagnostics.Debug.Print("Not Colliding");
-                character.Color = Color.White;
+				obstacle.UpdatePosition(gameTime, screenSize);
             }
             
             // TODO: Add your update logic here
@@ -166,12 +161,24 @@ namespace WareHouse3
 
             ball.Render(spriteBatch);
 
-            character.Render(spriteBatch);
+            foreach (Character obstacle in obstacles)
+            {
+				obstacle.Render(spriteBatch);
+            }
             
             this.spriteBatch.End();
 
             base.Draw(gameTime);
+        
         }
+        
+        public Color RandomColor(Random r) {
+            byte red = (byte)r.Next(0, 255);
+            byte green = (byte)r.Next(0, 255);
+            byte blue = (byte)r.Next(0, 255);
 
+            return new Color(red, green, blue);
+        }
+        
     }
 }

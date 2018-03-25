@@ -87,7 +87,7 @@
     <Compile Include="Shapes\PrimitiveLine.cs" />
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Characters\Ball.cs" />
-    <Compile Include="Extensions\JumpState.cs" />
+    <Compile Include="Characters\MotionState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
