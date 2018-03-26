@@ -80,7 +80,7 @@
     <Compile Include="GameCore\GameManager.cs" />
     <Compile Include="Extensions\Origin.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
-    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\Obstacle.cs" />
     <Compile Include="Extensions\ColorExtension.cs" />
     <Compile Include="Shapes\Box.cs" />
     <Compile Include="Shapes\Circle.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="Shapes\Shape.cs" />
     <Compile Include="Characters\Ball.cs" />
     <Compile Include="Characters\MotionState.cs" />
+    <Compile Include="GameCore\Camera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

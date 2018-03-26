@@ -12,28 +12,9 @@ namespace WareHouse3
         /// </summary>
         PrimitiveLine BoxBorder;
         
-        /// <summary>
-        /// circle move speed.
-        /// </summary>
-        public float MoveSpeed { get; private set; }
-        
-        /// <summary>
-        /// jump speed.
-        /// </summary>
-        public float JumpSpeed { get; private set; }
-        
-        /// <summary>
-        /// rotation speed.
-        /// </summary>
-        public float RotationSpeed { get; private set; }
-        
         public Box(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null)
-        : base(position, width, height, color, texture)
+        : base(position, width, height, speed, jump, color, texture)
         {
-           
-            this.MoveSpeed = speed;
-            this.RotationSpeed = 1.2f;
-            this.JumpSpeed = jump;
             BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
     
@@ -43,7 +24,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.X -= MoveSpeed;
+                Position.X -= MoveSpeed.X;
             }
         }
         
@@ -53,7 +34,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.X += MoveSpeed;
+                Position.X += MoveSpeed.X;
             } 
             
         }
@@ -64,7 +45,7 @@ namespace WareHouse3
 
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.Y -= MoveSpeed;
+                Position.Y -= MoveSpeed.Y;
             }
         }
         
@@ -74,7 +55,7 @@ namespace WareHouse3
 
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.Y += MoveSpeed;
+                Position.Y += MoveSpeed.Y;
             }
         }
        
@@ -96,14 +77,10 @@ namespace WareHouse3
             }
         }
         
-        public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
+        public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
-            this.LeftBoundary = 0.0f;
-            this.RightBoundary = screenSize.X;
-            this.Ground = screenSize.Y;
-            this.Ceiling = 0.0f;
-            
-			base.UpdatePosition(gameTime, screenSize);
+           
+			base.UpdatePosition(gameTime, mapSize);
             
             BoxBorder.CreateBox(Position - Origin, Position + Origin);
             

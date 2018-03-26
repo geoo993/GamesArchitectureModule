@@ -1,34 +1,26 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace WareHouse3
 {
-    public class EnemyInfo
+    public class ObstatclesInfo
     {
-        public static readonly float Speed = 100.0f;
+        public static readonly float MaxSpeed = (int)(double)GameManager.manager["ObstatclesMaxSpeed"];
+        public static readonly int NumberOfObstacles = (int)(double)GameManager.manager["NumberOfObstacles"];
     }
     
-    public class GemInfo
-    {
-        public static readonly float BounceHeight = 0.18f;
-        public static readonly float BounceRate = 6.0f;
-        public static readonly Color Color = Color.Red;
-    }
-    
-    public class TileInfo {
-        
-        public const int Width = 40;
-        public const int Height = 32;
-
-        public static readonly Vector2 Size = new Vector2(Width, Height);
-
-    }
-     
     public class GameInfo
     {
-        public static readonly int screenWidth = (int)(double)GameManager.manager["ScreenWidth"];
-        public static readonly int screenHeight = (int)(double)GameManager.manager["ScreenHeight"];
+        public static readonly int ScreenWidth = (int)(double)GameManager.manager["ScreenWidth"];
+        public static readonly int ScreenHeight = (int)(double)GameManager.manager["ScreenHeight"];
+        public static readonly int MapWidth = (int)(double)GameManager.manager["MapWidth"];
+        public static readonly int MapHeight = (int)(double)GameManager.manager["MapHeight"];
+        public static readonly Camera Camera = new Camera();  
+        public static readonly Random Random = new Random(DateTime.Now.Millisecond);
+        public static GameStates GameStates { get; set; }
+       
     }
 
     public class Device {
@@ -37,6 +29,22 @@ namespace WareHouse3
     
     public class Commands {
         public static readonly CommandManager manager = new CommandManager();
+    }
+    
+    public class GameStates
+    {
+    
+        public enum GameState
+        {
+            Splash,
+            Menu,
+            Game, 
+            Credits,
+        }
+
+        public GameStates()
+        {
+        }
     }
     
 }

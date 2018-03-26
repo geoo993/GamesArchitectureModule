@@ -24,17 +24,6 @@ namespace WareHouse3
         public bool EnableParticles;
         
         /// <summary>
-        /// the speed in which the ball falls down
-        /// </summary>
-        readonly Vector2 Gravity = new Vector2(0, 0.45f);
-        
-        /// <summary>
-        /// the movement speed the ball
-        /// </summary>
-        private Vector2 Velocity;
-        private Vector2 Acceleration;
-        
-        /// <summary>
         /// find out if the ball is in the air
         /// </summary>
         private bool HasJumped { get; set; }
@@ -67,7 +56,7 @@ namespace WareHouse3
         {
             if (buttonState == ButtonAction.DOWN)
             {
-                Velocity.X = -MoveSpeed;
+                Velocity.X = -MoveSpeed.X;
                 LeftPressed = true;
             }
             
@@ -81,7 +70,7 @@ namespace WareHouse3
         {
             if (buttonState == ButtonAction.DOWN)
             {
-                Velocity.X = MoveSpeed;
+                Velocity.X = MoveSpeed.X;
                 RightPressed = true;
             } 
             
@@ -116,22 +105,23 @@ namespace WareHouse3
             }
         }
         
-        public void UpdateBoundaries(Character obstacle, Vector2 screenSize) {
+        public void UpdateBoundaries(Obstacle obstacle, Vector2 mapSize) {
             
             this.LeftBoundary = (obstacle.BoundingRectangle.Right <= this.Position.X) ? obstacle.BoundingRectangle.Right : 0.0f;
-            this.RightBoundary = (obstacle.BoundingRectangle.Left > this.Position.X) ? obstacle.BoundingRectangle.Left : screenSize.X;
+            this.RightBoundary = (obstacle.BoundingRectangle.Left > this.Position.X) ? obstacle.BoundingRectangle.Left : mapSize.X;
             bool horizontalBoundary = (this.Position.X > obstacle.BoundingRectangle.Left &&
                                        this.Position.X < obstacle.BoundingRectangle.Right);
             
-            this.Ground = (this.BoundingRectangle.Bottom <= obstacle.BoundingRectangle.Top && horizontalBoundary) ? obstacle.BoundingRectangle.Top : this.Ground = screenSize.Y;
+            this.Ground = (this.BoundingRectangle.Bottom <= obstacle.BoundingRectangle.Top && horizontalBoundary) ? obstacle.BoundingRectangle.Top : this.Ground = mapSize.Y;
             this.Ceiling = (this.BoundingRectangle.Top >= obstacle.BoundingRectangle.Bottom && horizontalBoundary) ? obstacle.BoundingRectangle.Bottom : 0.0f;
         }
 
-        public void UpdateCollisions(List<Character> obstacles, Vector2 screenSize)
+        public void UpdateCollisions(List<Obstacle> obstacles, Vector2 mapSize)
         {
 
             var obstacle = ClosestObstacle(obstacles);
-			UpdateBoundaries(obstacle, screenSize);
+			UpdateBoundaries(obstacle, mapSize);
+
             
             if (this.Intersects(obstacle.BoundingRectangle))
             {
@@ -144,19 +134,19 @@ namespace WareHouse3
                 //System.Diagnostics.Debug.Print("Not Colliding");
                 obstacle.Color = obstacle.InitialColor;
                 this.LeftBoundary = 0.0f;
-                this.RightBoundary = screenSize.X;
+                this.RightBoundary = mapSize.X;
             }
             
         }
 
-        public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
+        public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
 
             this.Position += this.Velocity;
-
+            
             BallMovement(Ground);
             
-            base.UpdatePosition(gameTime, screenSize);
+            base.UpdatePosition(gameTime, mapSize);
         }
         
         
@@ -217,10 +207,9 @@ namespace WareHouse3
        
         private void AddParticle(Vector2 position)
         {
-            Random r = new Random(DateTime.Now.Millisecond); 
-            byte red = (byte)r.Next(0, 255);
-            byte green = (byte)r.Next(0, 255);
-            byte blue = (byte)r.Next(0, 255);
+            byte red = (byte)GameInfo.Random.Next(0, 255);
+            byte green = (byte)GameInfo.Random.Next(0, 255);
+            byte blue = (byte)GameInfo.Random.Next(0, 255);
             Color col =  new Color(red, green, blue);
         
             Circle particle = new Circle(position, Radius, 0.0f, 0.0f, col);
@@ -246,7 +235,7 @@ namespace WareHouse3
         }
         
         
-        public Character ClosestObstacle(List<Character> obstacles)
+        public Obstacle ClosestObstacle(List<Obstacle> obstacles)
         {
             // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
             return obstacles

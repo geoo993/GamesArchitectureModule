@@ -10,6 +10,32 @@ namespace WareHouse3
     {
        
         /// <summary>
+        /// movement speed of the shape.
+        /// </summary>
+        public Vector2 MoveSpeed;
+        
+        /// <summary>
+        /// jump speed.
+        /// </summary>
+        public float JumpSpeed { get; private set; }
+        
+        /// <summary>
+        /// rotation speed.
+        /// </summary>
+        public float RotationSpeed { get; private set; }
+        
+        /// <summary>
+        /// the speed in which the shape falls down
+        /// </summary>
+        public readonly Vector2 Gravity = new Vector2(0, 0.45f);
+
+        /// <summary>
+        /// the physics movement speed the shape
+        /// </summary>
+        public Vector2 Velocity;
+        public Vector2 Acceleration;
+        
+        /// <summary>
         /// color of the shape texture
         /// </summary>
         public Color Color;
@@ -110,7 +136,7 @@ namespace WareHouse3
             }
         }
         
-        protected Shape(Vector2 position, int width, int height, Color color, Texture2D texture = null)
+        protected Shape(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null)
         {
             this.originType = FrameOrigin.OriginType.center;
             this.Origin = FrameOrigin.GetOrigin(width, height, this.originType);
@@ -118,20 +144,23 @@ namespace WareHouse3
             this.Position = position;
             this.InitialPosition = position;
             this.LeftBoundary = 0.0f;
-            this.RightBoundary = 0.0f;
+            this.RightBoundary = GameInfo.MapWidth;
+            this.Ground = GameInfo.MapHeight;
             this.Ceiling = 0.0f;
-            this.Ground = 0.0f;
+            this.MoveSpeed = new Vector2(speed, speed);
+            this.RotationSpeed = 1.0f;
+            this.JumpSpeed = jump;
             this.Angle = 0.0f;
             this.Width = width;
             this.InitialWidth = width;
             this.Height = height;
             this.InitialHeight = height;
-            this.Color = color;
-            this.InitialColor = color;
-            this.Opacity = 1.0f;
             this.Scale = 1.0f;
             this.Depth = 0.0f;
+            this.Color = color;
+            this.InitialColor = color;
             this.BorderColor = Color.White;
+			this.Opacity = 1.0f;
             this.Texture = texture;
             this.HasTexture = (texture != null);
             this.MotionState = new MotionState();
@@ -145,8 +174,8 @@ namespace WareHouse3
             Commands.manager.AddKeyboardBinding(Keys.Up, UpMovement);
             Commands.manager.AddKeyboardBinding(Keys.Down, DownMovement);
 			Commands.manager.AddKeyboardBinding(Keys.Space, JumpMovement);
-            Commands.manager.AddKeyboardBinding(Keys.A, RotateForward);
-            Commands.manager.AddKeyboardBinding(Keys.D, RotateBackward);
+            Commands.manager.AddKeyboardBinding(Keys.Z, RotateForward);
+            Commands.manager.AddKeyboardBinding(Keys.X, RotateBackward);
         }
         
         protected virtual void LeftMovement(ButtonAction buttonState, Vector2 amount)
@@ -200,7 +229,7 @@ namespace WareHouse3
             
         }
        
-        public virtual void UpdatePosition(GameTime gameTime, Vector2 screenSize)
+        public virtual void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
             CurrentMode();
             

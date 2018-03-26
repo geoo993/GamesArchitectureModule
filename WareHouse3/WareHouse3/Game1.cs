@@ -23,14 +23,13 @@ namespace WareHouse3
     {
         #region Fields
         private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f); 
-        Random random = new Random(DateTime.Now.Millisecond); 
-
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 		Vector2 centreScreen;
         Vector2 screenSize;
         Ball ball;
-        List<Character> obstacles;
+        List<Obstacle> obstacles;
         
          #endregion
         
@@ -51,8 +50,8 @@ namespace WareHouse3
 #else
             // set the backbuffer size to something that will work well on both xbox
             // and windows.
-            graphics.PreferredBackBufferWidth = GameInfo.screenWidth;
-            graphics.PreferredBackBufferHeight = GameInfo.screenHeight;
+            graphics.PreferredBackBufferWidth = GameInfo.ScreenWidth;
+            graphics.PreferredBackBufferHeight = GameInfo.ScreenHeight;
 #endif
 
         }
@@ -67,7 +66,9 @@ namespace WareHouse3
         {
             // TODO: Add your initialization logic here
             Device.graphicsDevice = this.GraphicsDevice;
-            
+            GameInfo.Camera.ViewportWidth = graphics.GraphicsDevice.Viewport.Width;
+            GameInfo.Camera.ViewportHeight = graphics.GraphicsDevice.Viewport.Height;
+
             InitializeControlsBindings();
             base.Initialize();
         }
@@ -101,12 +102,24 @@ namespace WareHouse3
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
-            ball = new Ball(new Vector2(100, 560), 20, 8.0f, 5.0f, RandomColor(random));
+            ball = new Ball(new Vector2(400, GameInfo.MapHeight), 20, 8.0f, 5.0f, RandomColor(GameInfo.Random));
 		    ball.SetKeyoardBindings();
             SetupObstacles();
+            
+            GameInfo.Camera.CenterOn(ball);
+            GameInfo.Camera.SetKeyoardBindings();
             //TODO: use this.Content to load your game content here 
         }
         
+		void SetupObstacles () {
+			
+			obstacles = new List<Obstacle>();
+			for (int i = 0; i < ObstatclesInfo.NumberOfObstacles; i++) {
+				obstacles.Add( new Obstacle(
+                new Vector2(GameInfo.Random.Next(0, GameInfo.MapWidth), GameInfo.Random.Next(0, GameInfo.MapHeight)), GameInfo.Random.Next(20, 100), GameInfo.Random.Next(20, 100), (float)GameInfo.Random.Next(-(int)ObstatclesInfo.MaxSpeed, (int)ObstatclesInfo.MaxSpeed)/20.0f, 0.0f, RandomColor(GameInfo.Random)) );
+			}
+		}
+		
          /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
@@ -117,15 +130,6 @@ namespace WareHouse3
         }
         
         
-        void SetupObstacles () {
-            
-            obstacles = new List<Character>();
-
-            for (int i = 0; i < 10; i++) {
-				obstacles.Add( new Character(new Vector2(random.Next(0, 600), random.Next(0, 600)), random.Next(50, 200), random.Next(20, 80), (float)random.Next(-20, 20)/20.0f, 10.0f, RandomColor(random)) );
-            }
-        }
-    
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -135,18 +139,125 @@ namespace WareHouse3
         {
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
+            var mapSize = new Vector2(GameInfo.MapWidth, GameInfo.MapHeight);
+            
+            ball.UpdateCollisions(obstacles, mapSize);
+			ball.UpdatePosition(gameTime, mapSize);
 
-            ball.UpdateCollisions(obstacles, screenSize);
-			ball.UpdatePosition(gameTime, screenSize);
-
-            foreach (Character obstacle in obstacles)
+            UpdateObstaclesMovement(obstacles);
+            
+            foreach (Obstacle obstacle in obstacles)
             {
-				obstacle.UpdatePosition(gameTime, screenSize);
+				obstacle.UpdatePosition(gameTime, mapSize);
             }
             
+            GameInfo.Camera.CenterOn(ball, false);
+            //GameInfo.Camera.UpdateInputs();
+            
+            //System.Diagnostics.Debug.Print("Camera Position "+ GameInfo.Camera.Position.ToString());
             // TODO: Add your update logic here
             base.Update(gameTime);
         }
+        
+        
+        public void UpdateObstaclesMovement(List<Obstacle> circles) 
+        {   
+            if (circles.Count <= 0 ) {
+                return;
+            }
+            
+            Obstacle tempBall1;            
+            Obstacle tempBall2;
+            
+            
+            for (int i = 0; i < circles.Count; i++)
+            {
+                
+                tempBall1 = circles[i];
+
+                for (int k = 0; k < circles.Count; k++)
+                {
+                    tempBall2 = circles[k];
+                    
+                    if (tempBall1 == tempBall2) continue;
+
+                    if (CircularCollision(tempBall1, tempBall2))
+                    {
+                        CollideBalls(tempBall1, tempBall2);
+                        
+                        if(CircularCollision(tempBall1,tempBall2))
+                        {
+                            
+                            tempBall1.MoveSpeed *= -1;
+                            tempBall2.MoveSpeed *= -1;
+                            
+                            // go in different directions
+                            tempBall1.Position += tempBall1.MoveSpeed;
+                            
+                            tempBall2.Position -= tempBall2.MoveSpeed;
+                        }
+                        
+                    }
+                }
+
+            }
+            
+        }
+        
+        public void CollideBalls(Circle circle1, Circle circle2)
+        {
+            float dx = circle1.Position.X - circle2.Position.X;
+            float dy = circle1.Position.Y - circle2.Position.Y;
+            float collisionAngle = (float)Math.Atan2(dy, dx);
+            
+            var speed1 = Math.Sqrt( (circle1.MoveSpeed.X * circle1.MoveSpeed.X) + (circle1.MoveSpeed.Y * circle1.MoveSpeed.Y));
+            var speed2 = Math.Sqrt( (circle2.MoveSpeed.X * circle2.MoveSpeed.X) + (circle2.MoveSpeed.Y * circle2.MoveSpeed.Y));
+            
+            var direction1 = Math.Atan2(circle1.MoveSpeed.Y, circle1.MoveSpeed.X);
+            var direction2 = Math.Atan2(circle2.MoveSpeed.Y, circle2.MoveSpeed.X);
+            
+            var velocityX1 = speed1 * Math.Cos(direction1 - collisionAngle);
+            var velocityY1 = speed1 * Math.Sin(direction1 - collisionAngle);         
+            var velocityX2 = speed2 * Math.Cos(direction2 - collisionAngle);
+            var velocityY2 = speed2 * Math.Sin(direction2 - collisionAngle);
+            
+            var mass1 = (circle1.Width / 2);
+            var mass2 = (circle2.Width / 2);
+            
+            var finalVelocityX1 = ((mass1 - mass2) * velocityX1 + (mass2 + mass2) * velocityX2) / (mass1 + mass2);
+            var finalVelocityX2 = ((mass1 + mass1) * velocityX1 + (mass2 - mass1) * velocityX2) / (mass1 + mass2);
+            
+            var finalVelocityY1 = velocityY1;
+            var finalVelocityY2 = velocityY2;
+            
+            circle1.MoveSpeed.X = (float)(Math.Cos(collisionAngle) * finalVelocityX1 + Math.Cos(collisionAngle + Math.PI / 2) * finalVelocityY1);
+            circle1.MoveSpeed.Y = (float)(Math.Sin(collisionAngle) * finalVelocityX1 + Math.Sin(collisionAngle + Math.PI / 2) * finalVelocityY1);
+            circle2.MoveSpeed.X = (float)(Math.Cos(collisionAngle) * finalVelocityX2 + Math.Cos(collisionAngle + Math.PI / 2) * finalVelocityY2);
+            circle2.MoveSpeed.Y = (float)(Math.Sin(collisionAngle) * finalVelocityX2 + Math.Sin(collisionAngle + Math.PI / 2) * finalVelocityY2);
+            
+            circle1.Position += circle1.MoveSpeed;
+            circle2.Position += circle2.MoveSpeed;
+        }
+     
+        private bool CircularCollision(Circle mc1, Circle mc2)
+        {
+            var radiusOfBoth = mc1.Radius + mc2.Radius;
+            var distance = getDistance(mc1.Position, mc2.Position);
+            
+            return (distance <= radiusOfBoth);
+        }
+        
+        private float getDistance(Vector2 start, Vector2 end)
+        {
+           
+            float dx = end.X - start.X;
+            float dy = end.Y - start.Y;
+            
+            float distance = (float)Math.Sqrt( dx * dx + dy * dy);
+            return distance;
+        }
+        
+        
         
         /// <summary>
         /// This is called when the game should draw itself.
@@ -157,11 +268,12 @@ namespace WareHouse3
             graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //TODO: Add your drawing code here
-            this.spriteBatch.Begin();
+            //this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+            this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
 
             ball.Render(spriteBatch);
 
-            foreach (Character obstacle in obstacles)
+            foreach (Obstacle obstacle in obstacles)
             {
 				obstacle.Render(spriteBatch);
             }

@@ -1,3 +1,6 @@
-ScreenWidth = 800
-ScreenHeight = 600
-NumberOfObstacles = 100;
+ScreenWidth = 1200
+ScreenHeight = 720
+MapWidth = 3600
+MapHeight = 2160
+NumberOfObstacles = 50
+ObstatclesMaxSpeed = 40

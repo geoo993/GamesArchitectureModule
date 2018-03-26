@@ -35,22 +35,7 @@ namespace WareHouse3
 		/// circle border 
 		/// </summary>
         PrimitiveLine CircleBorder;
-       
-        /// <summary>
-        /// circle move speed.
-        /// </summary>
-        public float MoveSpeed { get; private set; }
-        
-        /// <summary>
-        /// jump speed.
-        /// </summary>
-        public float JumpSpeed { get; private set; }
-        
-        /// <summary>
-        /// rotation speed.
-        /// </summary>
-        public float RotationSpeed { get; private set; }
-        
+
         /// <summary>
         /// Radius of the circle.
         /// </summary>
@@ -63,12 +48,9 @@ namespace WareHouse3
         /// Constructs a new circle.
         /// </summary>
         public Circle(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null)
-        : base(position, radius * 2, radius * 2, color, texture)
+        : base(position, radius * 2, radius * 2, speed, jump, color, texture)
         {
 			this.Radius = radius;
-            this.MoveSpeed = speed;
-            this.RotationSpeed = 1.0f;
-            this.JumpSpeed = jump;
             CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
         
@@ -78,7 +60,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.X -= MoveSpeed;
+                Position.X -= MoveSpeed.X;
             }
         }
         
@@ -88,7 +70,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.X += MoveSpeed;
+                Position.X += MoveSpeed.X;
             }
         }
         
@@ -97,7 +79,7 @@ namespace WareHouse3
             base.UpMovement(buttonState, amount);
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.Y -= MoveSpeed;
+                Position.Y -= MoveSpeed.Y;
             }
         }
         
@@ -106,7 +88,7 @@ namespace WareHouse3
             base.DownMovement(buttonState, amount);
             if (buttonState == ButtonAction.DOWN)
             {
-                Position.Y += MoveSpeed;
+                Position.Y += MoveSpeed.Y;
             }
         }
         
@@ -128,10 +110,10 @@ namespace WareHouse3
             }
         }
         
-        public override void UpdatePosition(GameTime gameTime, Vector2 screenSize)
+        public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
-			base.UpdatePosition(gameTime, screenSize);
-
+			base.UpdatePosition(gameTime, mapSize);
+            
             Radius = this.Width / 2;
             CircleBorder.CreateCircle(Radius, 20);
             CircleBorder.Position = Position;
@@ -212,6 +194,63 @@ namespace WareHouse3
             return false;
         }
         
+        public bool IntersectsCircle(Rectangle rectangle)
+        {
+            // https://stackoverflow.com/questions/24559585/how-to-create-a-circle-variable-in-monogame-and-detect-collision-with-other-circ
+            // the first thing we want to know is if any of the corners intersect
+            var corners = new[]
+            {
+                new Point(rectangle.Top, rectangle.Left),
+                new Point(rectangle.Top, rectangle.Right),
+                new Point(rectangle.Bottom, rectangle.Right),
+                new Point(rectangle.Bottom, rectangle.Left)
+            };
+    
+            foreach (var corner in corners)
+            {
+                if (ContainsPoint(corner))
+                    return true;
+            }
+    
+            // next we want to know if the left, top, right or bottom edges overlap
+            if (BoundingRectangle.Center.X - Radius > rectangle.Right || BoundingRectangle.Center.X + Radius < rectangle.Left)
+                return false;
+    
+            if (BoundingRectangle.Center.Y - Radius > rectangle.Bottom || BoundingRectangle.Center.Y + Radius < rectangle.Top)
+                return false;
+    
+            return true;
+        }
+    
+        public bool Intersects(Circle circle)
+        {
+            // put simply, if the distance between the circle centre's is less than
+            // their combined radius
+            var centre0 = new Vector2(circle.BoundingRectangle.Center.X, circle.BoundingRectangle.Center.Y);
+            var centre1 = new Vector2(BoundingRectangle.Center.X, BoundingRectangle.Center.Y);
+            return Vector2.Distance(centre0, centre1) < Radius + circle.Radius;
+        }
+    
+        public bool ContainsPoint(Point point)
+        {
+            var vector2 = new Vector2(point.X - BoundingRectangle.Center.X, point.Y - BoundingRectangle.Center.Y);
+            return vector2.Length() <= Radius;
+        }
+        
+        /*
+        //https://stackoverflow.com/questions/8645910/checking-collision-circle-with-rectangle-with-c-sharp-xna-4-0
+        public bool Intersects(Rectangle rectangle)
+        {
+            Vector2 v = new Vector2(MathHelper.Clamp(BoundingRectangle.Center.X, rectangle.Left, rectangle.Right),
+                                    MathHelper.Clamp(BoundingRectangle.Center.Y, rectangle.Top, rectangle.Bottom));
+    
+            Vector2 direction = BoundingRectangle.Center - v;
+            float distanceSquared = direction.LengthSquared();
+    
+            return ((distanceSquared > 0) && (distanceSquared < Radius * Radius));
+        }
+        */
+        
         /// <summary>
         /// Render  circle with sprite batch.
         /// </summary>
@@ -221,6 +260,8 @@ namespace WareHouse3
             
             CircleBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
         }
+        
+        
         
     }
 }
