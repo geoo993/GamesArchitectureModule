@@ -29,7 +29,7 @@ namespace WareHouse3
     /// <summary>
     /// Represents a 2D circle.
     /// </summary>
-    public class Circle: Shape
+    public class Circle: Tile
     {
 		/// <summary>
 		/// circle border 
@@ -47,69 +47,13 @@ namespace WareHouse3
         /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Circle(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null)
-        : base(position, radius * 2, radius * 2, speed, jump, color, texture)
+        public Circle(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, radius * 2, radius * 2, speed, jump, color, texture, collision)
         {
 			this.Radius = radius;
             CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
-        
-        protected override void LeftMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.LeftMovement(buttonState, amount);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.X -= MoveSpeed.X;
-            }
-        }
-        
-        protected override void RightMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RightMovement(buttonState, amount);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.X += MoveSpeed.X;
-            }
-        }
-        
-        protected override void UpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.UpMovement(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.Y -= MoveSpeed.Y;
-            }
-        }
-        
-        protected override void DownMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.DownMovement(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.Y += MoveSpeed.Y;
-            }
-        }
-        
-        protected override void RotateForward(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RotateForward(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Angle += RotationSpeed;
-            }
-        }
-        
-        protected override void RotateBackward(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RotateBackward(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Angle -= RotationSpeed;
-            }
-        }
-        
+     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
 			base.UpdatePosition(gameTime, mapSize);
@@ -262,6 +206,92 @@ namespace WareHouse3
         }
         
         
+        public static void UpdateObstaclesMovement(List<Circle> tiles) 
+        {   
+            if (tiles.Count <= 0 ) {
+                return;
+            }
+            
+            Circle tempBall1;            
+            Circle tempBall2;
+            
+            
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                
+                tempBall1 = tiles[i];
+
+                for (int k = 0; k < tiles.Count; k++)
+                {
+                    tempBall2 = tiles[k];
+                    
+                    if (tempBall1 == tempBall2) continue;
+
+                    if (CircularCollision(tempBall1, tempBall2))
+                    {
+                        CollideBalls(tempBall1, tempBall2);
+                        
+                        if(CircularCollision(tempBall1,tempBall2))
+                        {
+                            
+                            tempBall1.MoveSpeed *= -1;
+                            tempBall2.MoveSpeed *= -1;
+                            
+                            // go in different directions
+                            tempBall1.Position += tempBall1.MoveSpeed;
+                            
+                            tempBall2.Position -= tempBall2.MoveSpeed;
+                        }
+                        
+                    }
+                }
+
+            }
+            
+        }
+        
+        public static void CollideBalls(Circle circle1, Circle circle2)
+        {
+            float dx = circle1.Position.X - circle2.Position.X;
+            float dy = circle1.Position.Y - circle2.Position.Y;
+            float collisionAngle = (float)Math.Atan2(dy, dx);
+            
+            var speed1 = Math.Sqrt( (circle1.MoveSpeed.X * circle1.MoveSpeed.X) + (circle1.MoveSpeed.Y * circle1.MoveSpeed.Y));
+            var speed2 = Math.Sqrt( (circle2.MoveSpeed.X * circle2.MoveSpeed.X) + (circle2.MoveSpeed.Y * circle2.MoveSpeed.Y));
+            
+            var direction1 = Math.Atan2(circle1.MoveSpeed.Y, circle1.MoveSpeed.X);
+            var direction2 = Math.Atan2(circle2.MoveSpeed.Y, circle2.MoveSpeed.X);
+            
+            var velocityX1 = speed1 * Math.Cos(direction1 - collisionAngle);
+            var velocityY1 = speed1 * Math.Sin(direction1 - collisionAngle);         
+            var velocityX2 = speed2 * Math.Cos(direction2 - collisionAngle);
+            var velocityY2 = speed2 * Math.Sin(direction2 - collisionAngle);
+            
+            var mass1 = (circle1.Width / 2);
+            var mass2 = (circle2.Width / 2);
+            
+            var finalVelocityX1 = ((mass1 - mass2) * velocityX1 + (mass2 + mass2) * velocityX2) / (mass1 + mass2);
+            var finalVelocityX2 = ((mass1 + mass1) * velocityX1 + (mass2 - mass1) * velocityX2) / (mass1 + mass2);
+            
+            var finalVelocityY1 = velocityY1;
+            var finalVelocityY2 = velocityY2;
+            
+            circle1.MoveSpeed.X = (float)(Math.Cos(collisionAngle) * finalVelocityX1 + Math.Cos(collisionAngle + Math.PI / 2) * finalVelocityY1);
+            circle1.MoveSpeed.Y = (float)(Math.Sin(collisionAngle) * finalVelocityX1 + Math.Sin(collisionAngle + Math.PI / 2) * finalVelocityY1);
+            circle2.MoveSpeed.X = (float)(Math.Cos(collisionAngle) * finalVelocityX2 + Math.Cos(collisionAngle + Math.PI / 2) * finalVelocityY2);
+            circle2.MoveSpeed.Y = (float)(Math.Sin(collisionAngle) * finalVelocityX2 + Math.Sin(collisionAngle + Math.PI / 2) * finalVelocityY2);
+            
+            circle1.Position += circle1.MoveSpeed;
+            circle2.Position += circle2.MoveSpeed;
+        }
+     
+        public static bool CircularCollision(Circle mc1, Circle mc2)
+        {
+            var radiusOfBoth = mc1.Radius + mc2.Radius;
+            var distance = MathExtensions.GetDistance(mc1.Position, mc2.Position);
+            
+            return (distance <= radiusOfBoth);
+        }
         
     }
 }

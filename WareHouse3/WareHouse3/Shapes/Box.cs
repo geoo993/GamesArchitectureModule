@@ -5,78 +5,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WareHouse3
 {
-    public class Box: Shape
+    public class Box: Tile
     {
         /// <summary>
         /// box border 
         /// </summary>
         PrimitiveLine BoxBorder;
         
-        public Box(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null)
-        : base(position, width, height, speed, jump, color, texture)
+        public Box(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, width, height, speed, jump, color, texture, collision)
         {
             BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
     
-        protected override void LeftMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.LeftMovement(buttonState, amount);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.X -= MoveSpeed.X;
-            }
-        }
-        
-        protected override void RightMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RightMovement(buttonState, amount);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.X += MoveSpeed.X;
-            } 
-            
-        }
-        
-        protected override void UpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.UpMovement(buttonState, amount);
-
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.Y -= MoveSpeed.Y;
-            }
-        }
-        
-        protected override void DownMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            base.DownMovement(buttonState, amount);
-
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Position.Y += MoveSpeed.Y;
-            }
-        }
-       
-        protected override void RotateForward(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RotateForward(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Angle += RotationSpeed;
-            }
-        }
-        
-        protected override void RotateBackward(ButtonAction buttonState, Vector2 amount)
-        {
-            base.RotateBackward(buttonState, amount);
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Angle -= RotationSpeed;
-            }
-        }
-        
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
            

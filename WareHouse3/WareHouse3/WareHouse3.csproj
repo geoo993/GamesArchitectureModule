@@ -83,11 +83,11 @@
     <Compile Include="Shapes\Box.cs" />
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\PrimitiveLine.cs" />
-    <Compile Include="Shapes\Shape.cs" />
+    <Compile Include="Shapes\Tile.cs" />
     <Compile Include="Characters\Ball.cs" />
     <Compile Include="Characters\MotionState.cs" />
     <Compile Include="GameCore\Camera.cs" />
-    <Compile Include="Obstacles\Tile.cs" />
+    <Compile Include="Obstacles\Dummies.cs" />
     <Compile Include="Levels\Loader.cs" />
   </ItemGroup>
   <ItemGroup>

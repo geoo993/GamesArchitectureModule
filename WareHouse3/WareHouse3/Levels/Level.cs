@@ -27,7 +27,8 @@ namespace WareHouse3
     /// </summary>
     class Level 
     {
-        private Tile[,] tiles;   
+        private Tile[,] tiles; 
+        private Ball Ball;  
         
         // Level game state.
         private Random random = new Random(354668); // Arbitrary, but constant seed
@@ -52,6 +53,7 @@ namespace WareHouse3
         /// </summary>
         public TileCollision GetCollision(int x, int y)
         {
+            
             // Prevent escaping past the level ends.
             if (x < 0 || x >= Width)
                 return TileCollision.Impassable;
@@ -100,17 +102,81 @@ namespace WareHouse3
         /// <param name="fileStream">
         /// A stream containing the tile data.
         /// </param>
-        public Level(IServiceProvider serviceProvider, Stream fileStream)
+        public Level(IServiceProvider serviceProvider, Stream fileStream, CommandManager manager)
         {
             // Create a new content manager to load content used just by this level.
             content = new ContentManager(serviceProvider, "Content");
             
             loader = new Loader(fileStream);
-            //loader.ReadTextFileComplete();
-
+            
+            SetKeyoardBindings(manager);
             LoadTiles(fileStream);
         }
         
+         private void SetKeyoardBindings(CommandManager manager) 
+        {
+            manager.AddKeyboardBinding(Keys.Left, LeftMovement);
+            manager.AddKeyboardBinding(Keys.Right, RightMovement);
+            manager.AddKeyboardBinding(Keys.Up, UpMovement);
+            manager.AddKeyboardBinding(Keys.Down, DownMovement);
+            manager.AddKeyboardBinding(Keys.Space, JumpMovement);
+        }
+    
+        void LeftMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            Ball.IsLeft(buttonState);
+            
+            if (buttonState == ButtonAction.DOWN)
+            {
+                
+            }
+            
+            if (buttonState == ButtonAction.UP)
+            {
+               
+            } 
+        }
+        
+        void RightMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            Ball.IsRight(buttonState);
+            
+            if (buttonState == ButtonAction.DOWN)
+            {
+                
+            } 
+            
+            if (buttonState == ButtonAction.UP)
+            {
+                
+            } 
+        }
+        
+        void UpMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+                Ball.IsScaledUp();
+            }
+        }
+        
+        
+        void DownMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+                Ball.IsScaledDown();
+            }
+        }
+   
+        void JumpMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.PRESSED)
+            {
+                Ball.IsJump();
+            }
+        }
+     
         /// <summary>
         /// Iterates over every tile in the structure file and loads its
         /// appearance and behavior. This method also validates that the
@@ -161,6 +227,9 @@ namespace WareHouse3
                     }
                 }
             }
+            
+            System.Diagnostics.Debug.Print("Width "+ Width.ToString()); // 20
+            System.Diagnostics.Debug.Print("Height "+ Height.ToString()); // 15
 
         }
         
@@ -183,6 +252,10 @@ namespace WareHouse3
         {
             switch (tileType)
             {
+                 // Ball
+                case '1':
+                    return LoadPlayerTile(x, y);
+                    
                 // Blank space
                 case '.':
                     return LoadEmptyTile();
@@ -224,7 +297,7 @@ namespace WareHouse3
         private Tile LoadTile(string name, Vector2 position, TileCollision collision)
         {
             //var texture = Content.Load<Texture2D>("Tiles/" + name);
-            return new Tile(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, GameInfo.Instance.RandomColor(), null, collision);
+            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, GameInfo.Instance.RandomColor(), null, collision);
             
         }
         
@@ -245,6 +318,24 @@ namespace WareHouse3
         }
         
         /// <summary>
+        /// Instantiates a player, puts him in the level, and remembers where to put him when he is resurrected.
+        /// </summary>
+        private Tile LoadPlayerTile(int x, int y)
+        {
+            if (Ball != null)
+                throw new NotSupportedException("A level may only have one starting point.");
+
+            Rectangle rect = GetBounds(x, y);
+            Vector2 start = RectangleExtensions.GetBottomCenter(rect);
+            
+            Ball = new Ball(start, rect.Width, 8.0f, 5.0f, GameInfo.Instance.RandomColor(), null, TileCollision.Passable);
+            GameInfo.Camera.CenterOn(Ball);
+
+
+            return Ball;
+        }
+        
+        /// <summary>
         /// Unloads the level content.
         /// </summary>
         public void Dispose()
@@ -260,8 +351,10 @@ namespace WareHouse3
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Vector2 mapSize)
         {
+            GameInfo.Camera.CenterOn(Ball, false);
+            Ball.UpdatePosition(gameTime, mapSize);
             
         }
         #endregion
@@ -275,6 +368,7 @@ namespace WareHouse3
         {
            
             DrawTiles(spriteBatch);
+			Ball.Render(spriteBatch);
 
         }
 

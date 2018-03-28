@@ -42,8 +42,8 @@ namespace WareHouse3
         /// </summary>
         public List<Rectangle> Obstacles;
         
-        public Ball(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null)
-        : base(position, radius, speed, jump, color, texture)
+        public Ball(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, radius, speed, jump, color, texture, collision)
         {
             this.EnableParticles = true;
             this.HasJumped = true;
@@ -52,58 +52,6 @@ namespace WareHouse3
             this.AvailableJumps = MaxJumps;
         }
         
-        protected override void LeftMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Velocity.X = -MoveSpeed.X;
-                LeftPressed = true;
-            }
-            
-            if (buttonState == ButtonAction.UP)
-            {
-                LeftPressed = false;
-            } 
-        }
-        
-        protected override void RightMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Velocity.X = MoveSpeed.X;
-                RightPressed = true;
-            } 
-            
-            if (buttonState == ButtonAction.UP)
-            {
-				RightPressed = false;
-            } 
-        }
-        
-        protected override void UpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Scale += 0.01f;
-            }
-        }
-        
-        
-        protected override void DownMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Scale -= 0.01f;
-            }
-        }
-   
-        protected override void JumpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.PRESSED)
-            {
-				DoJump = true;
-            }
-        }
         
         public void UpdateBoundaries(Tile tile, Vector2 mapSize) {
             
@@ -116,23 +64,61 @@ namespace WareHouse3
             this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
         }
 
+        public void IsLeft(ButtonAction buttonState) {
+            if (buttonState == ButtonAction.DOWN)
+            {
+                Velocity.X = -MoveSpeed.X;
+                LeftPressed = true;
+            }
+            
+            if (buttonState == ButtonAction.UP)
+            {
+                LeftPressed = false;
+            } 
+        }
+        
+        public void IsRight(ButtonAction buttonState) {
+             if (buttonState == ButtonAction.DOWN)
+            {
+                Velocity.X = MoveSpeed.X;
+                RightPressed = true;
+            } 
+            
+            if (buttonState == ButtonAction.UP)
+            {
+                RightPressed = false;
+            } 
+        }
+        
+        public void IsJump() {
+            DoJump = true;
+        }
+        
+        public void IsScaledUp() {
+            Scale += 0.01f;
+        }
+        
+        public void IsScaledDown() {
+            Scale -= 0.01f;
+        }
+        
         public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
         {
 
-            var obstacle = ClosestObstacle(tiles);
-			UpdateBoundaries(obstacle, mapSize);
+            var tile = ClosestObstacle(tiles);
+			UpdateBoundaries(tile, mapSize);
 
             
-            if (this.Intersects(obstacle.BoundingRectangle))
+            if (this.Intersects(tile.BoundingRectangle))
             {
                 
                 //System.Diagnostics.Debug.Print("Colliding");
-				obstacle.Color = Color.White;
+				tile.Color = Color.White;
             }
             else
             {
                 //System.Diagnostics.Debug.Print("Not Colliding");
-                obstacle.Color = obstacle.InitialColor;
+                tile.Color = tile.InitialColor;
                 this.LeftBoundary = 0.0f;
                 this.RightBoundary = mapSize.X;
             }

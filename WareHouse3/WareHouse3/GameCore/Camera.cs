@@ -114,9 +114,9 @@ namespace WareHouse3
        }
      
        // Center the camera on a specific cell in the map
-       public void CenterOn( Shape shape, bool smooth = false)
+       public void CenterOn( Tile tile, bool smooth = false)
        {
-            var newPosition = CenteredPosition(shape, true);
+            var newPosition = CenteredPosition(tile, true);
             if (smooth) {
 				SmoothMovement(Position, newPosition, 5.0f);
             } else {
@@ -125,11 +125,11 @@ namespace WareHouse3
           
        }
      
-       private Vector2 CenteredPosition( Shape shape, bool clampToMap = false )
+       private Vector2 CenteredPosition( Tile tile, bool clampToMap = false )
        {
-            SpriteWidth = shape.Width;
-            SpriteHeight = shape.Height;
-            var cameraPosition = new Vector2( shape.Position.X, shape.Position.Y);
+            SpriteWidth = tile.Width;
+            SpriteHeight = tile.Height;
+            var cameraPosition = new Vector2( tile.Position.X, tile.Position.Y);
             var cameraCenteredOnTilePosition = new Vector2( cameraPosition.X + SpriteWidth / 2, cameraPosition.Y + SpriteHeight / 2 );
             if ( clampToMap )
             {
