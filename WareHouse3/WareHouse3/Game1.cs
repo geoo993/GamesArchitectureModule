@@ -29,7 +29,8 @@ namespace WareHouse3
 		Vector2 centreScreen;
         Vector2 screenSize;
         Ball ball;
-        List<Obstacle> obstacles;
+        //List<Tile> tiles;
+        private Level level;
         
          #endregion
         
@@ -102,22 +103,35 @@ namespace WareHouse3
             centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
             screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
 
-            ball = new Ball(new Vector2(400, GameInfo.MapHeight), 20, 8.0f, 5.0f, RandomColor(GameInfo.Random));
+            ball = new Ball(new Vector2(400, GameInfo.MapHeight), 20, 8.0f, 5.0f, GameInfo.Instance.RandomColor());
 		    ball.SetKeyoardBindings();
-            SetupObstacles();
+            //SetupObstacles();
             
             GameInfo.Camera.CenterOn(ball);
             GameInfo.Camera.SetKeyoardBindings();
-            //TODO: use this.Content to load your game content here 
+
+            LoadLevel();
+        }
+        
+        private void LoadLevel()
+        {
+            // Unloads the content for the current level before loading the next one.
+            if (level != null)
+                level.Dispose();
+
+            // Load the level.
+            string levelPath = string.Format("Content/Levels/level.txt");
+            using (Stream fileStream = TitleContainer.OpenStream(levelPath))
+                level = new Level(Services, fileStream);
         }
         
 		void SetupObstacles () {
 			
-			obstacles = new List<Obstacle>();
-			for (int i = 0; i < ObstatclesInfo.NumberOfObstacles; i++) {
-				obstacles.Add( new Obstacle(
-                new Vector2(GameInfo.Random.Next(0, GameInfo.MapWidth), GameInfo.Random.Next(0, GameInfo.MapHeight)), GameInfo.Random.Next(20, 100), GameInfo.Random.Next(20, 100), (float)GameInfo.Random.Next(-(int)ObstatclesInfo.MaxSpeed, (int)ObstatclesInfo.MaxSpeed)/20.0f, 0.0f, RandomColor(GameInfo.Random)) );
-			}
+			//tiles = new List<Tile>();
+			//for (int i = 0; i < ObstatclesInfo.NumberOfObstacles; i++) {
+			//	tiles.Add( new Tile(
+            //    new Vector2(GameInfo.Random.Next(0, GameInfo.MapWidth), GameInfo.Random.Next(0, GameInfo.MapHeight)), GameInfo.Random.Next(20, 100), GameInfo.Random.Next(20, 100), (float)GameInfo.Random.Next(-(int)ObstatclesInfo.MaxSpeed, (int)ObstatclesInfo.MaxSpeed)/20.0f, 0.0f, RandomColor(GameInfo.Random)) );
+			//}
 		}
 		
          /// <summary>
@@ -141,43 +155,48 @@ namespace WareHouse3
             Commands.manager.Update();
             var mapSize = new Vector2(GameInfo.MapWidth, GameInfo.MapHeight);
             
-            ball.UpdateCollisions(obstacles, mapSize);
+            //ball.UpdateCollisions(tiles, mapSize);
 			ball.UpdatePosition(gameTime, mapSize);
 
-            UpdateObstaclesMovement(obstacles);
+            //UpdateObstaclesMovement(tiles);
             
-            foreach (Obstacle obstacle in obstacles)
-            {
-				obstacle.UpdatePosition(gameTime, mapSize);
-            }
+    //        foreach (Tile tile in tiles)
+    //        {
+				//tile.UpdatePosition(gameTime, mapSize);
+            //}
             
             GameInfo.Camera.CenterOn(ball, false);
             //GameInfo.Camera.UpdateInputs();
             
             //System.Diagnostics.Debug.Print("Camera Position "+ GameInfo.Camera.Position.ToString());
             // TODO: Add your update logic here
+            
+            // update our level, passing down the GameTime along with all of our input states
+            level.Update(gameTime);
+            
+            
             base.Update(gameTime);
         }
         
         
-        public void UpdateObstaclesMovement(List<Obstacle> circles) 
+        public void UpdateObstaclesMovement(List<Tile> tiles) 
         {   
-            if (circles.Count <= 0 ) {
+            if (tiles.Count <= 0 ) {
                 return;
             }
             
-            Obstacle tempBall1;            
-            Obstacle tempBall2;
+            Tile tempBall1;            
+            Tile tempBall2;
             
             
-            for (int i = 0; i < circles.Count; i++)
+            for (int i = 0; i < tiles.Count; i++)
             {
                 
-                tempBall1 = circles[i];
+                tempBall1 = tiles[i];
 
-                for (int k = 0; k < circles.Count; k++)
+                for (int k = 0; k < tiles.Count; k++)
                 {
-                    tempBall2 = circles[k];
+                    tempBall2 = tiles[k];
                     
                     if (tempBall1 == tempBall2) continue;
 
@@ -272,25 +291,18 @@ namespace WareHouse3
             this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
 
             ball.Render(spriteBatch);
-
-            foreach (Obstacle obstacle in obstacles)
-            {
-				obstacle.Render(spriteBatch);
-            }
+            
+            level.Draw(gameTime, spriteBatch);
+    //        foreach (Tile tile in tiles)
+    //        {
+				//tile.Render(spriteBatch);
+            //}
             
             this.spriteBatch.End();
 
             base.Draw(gameTime);
         
         }
-        
-        public Color RandomColor(Random r) {
-            byte red = (byte)r.Next(0, 255);
-            byte green = (byte)r.Next(0, 255);
-            byte blue = (byte)r.Next(0, 255);
-
-            return new Color(red, green, blue);
-        }
-        
+       
     }
 }

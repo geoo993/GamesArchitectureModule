@@ -20,7 +20,35 @@ namespace WareHouse3
         public static readonly Camera Camera = new Camera();  
         public static readonly Random Random = new Random(DateTime.Now.Millisecond);
         public static GameStates GameStates { get; set; }
-       
+        
+        private static GameInfo mInstance = null;
+        public static GameInfo Instance
+        {
+              get
+              {
+                   if (mInstance == null)
+                   {
+                        mInstance = new GameInfo();
+                   }
+                 return mInstance;
+              }
+             
+              set { mInstance = value; }
+        }
+        
+        public Color RandomColor() {
+            byte red = (byte)Random.Next(0, 255);
+            byte green = (byte)Random.Next(0, 255);
+            byte blue = (byte)Random.Next(0, 255);
+
+            return new Color(red, green, blue);
+        }
+        
+    }
+    
+    public class TileInfo {
+        public static int UnitWidth = (int)(double)GameManager.manager["TileWidth"];
+        public static int UnitHeight = (int)(double)GameManager.manager["TileHeight"];
     }
 
     public class Device {

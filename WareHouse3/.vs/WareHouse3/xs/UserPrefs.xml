@@ -1,13 +1,18 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Levels/level.txt">
     <Files>
-      <File FileName="WareHouse3/Game1.cs" Line="237" Column="13" />
-      <File FileName="WareHouse3/Shapes/Circle.cs" Line="47" Column="22" />
+      <File FileName="WareHouse3/Game1.cs" Line="295" Column="47" />
+      <File FileName="WareHouse3/Shapes/Circle.cs" Line="129" Column="1" />
       <File FileName="WareHouse3/Shapes/Box.cs" Line="56" Column="50" />
-      <File FileName="WareHouse3/Characters/Ball.cs" Line="238" Column="24" />
+      <File FileName="WareHouse3/Characters/Ball.cs" Line="116" Column="118" />
       <File FileName="WareHouse3/Shapes/Shape.cs" Line="15" Column="24" />
-      <File FileName="WareHouse3/GameCore/Camera.cs" Line="19" Column="28" />
-      <File FileName="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua" Line="6" Column="24" />
+      <File FileName="WareHouse3/GameCore/Camera.cs" Line="6" Column="4" />
+      <File FileName="WareHouse3/Levels/Level.cs" Line="246" Column="9" />
+      <File FileName="WareHouse3/Obstacles/Tile.cs" Line="41" Column="61" />
+      <File FileName="WareHouse3/Levels/Loader.cs" Line="96" Column="1" />
+      <File FileName="WareHouse3/GameCore/GameInfo.cs" Line="46" Column="9" />
+      <File FileName="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Levels/level.txt" Line="1" Column="21" />
+      <File FileName="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua" Line="8" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

@@ -105,21 +105,21 @@ namespace WareHouse3
             }
         }
         
-        public void UpdateBoundaries(Obstacle obstacle, Vector2 mapSize) {
+        public void UpdateBoundaries(Tile tile, Vector2 mapSize) {
             
-            this.LeftBoundary = (obstacle.BoundingRectangle.Right <= this.Position.X) ? obstacle.BoundingRectangle.Right : 0.0f;
-            this.RightBoundary = (obstacle.BoundingRectangle.Left > this.Position.X) ? obstacle.BoundingRectangle.Left : mapSize.X;
-            bool horizontalBoundary = (this.Position.X > obstacle.BoundingRectangle.Left &&
-                                       this.Position.X < obstacle.BoundingRectangle.Right);
+            this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
+            this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
+            bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
+                                       this.Position.X < tile.BoundingRectangle.Right);
             
-            this.Ground = (this.BoundingRectangle.Bottom <= obstacle.BoundingRectangle.Top && horizontalBoundary) ? obstacle.BoundingRectangle.Top : this.Ground = mapSize.Y;
-            this.Ceiling = (this.BoundingRectangle.Top >= obstacle.BoundingRectangle.Bottom && horizontalBoundary) ? obstacle.BoundingRectangle.Bottom : 0.0f;
+            this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : this.Ground = mapSize.Y;
+            this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
         }
 
-        public void UpdateCollisions(List<Obstacle> obstacles, Vector2 mapSize)
+        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
         {
 
-            var obstacle = ClosestObstacle(obstacles);
+            var obstacle = ClosestObstacle(tiles);
 			UpdateBoundaries(obstacle, mapSize);
 
             
@@ -178,7 +178,7 @@ namespace WareHouse3
 
                 if (EnableParticles)
                 {
-                    AddParticle(Position);
+                    //AddParticle(Position);
                 }
                 
                 this.Acceleration.Y -= Gravity.Y;
@@ -201,7 +201,7 @@ namespace WareHouse3
                 HasJumped = true;
             }
             
-			UpdateParticles();
+			//UpdateParticles();
             
         }
        
@@ -235,10 +235,10 @@ namespace WareHouse3
         }
         
         
-        public Obstacle ClosestObstacle(List<Obstacle> obstacles)
+        public Tile ClosestObstacle(List<Tile> tiles)
         {
             // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
-            return obstacles
+            return tiles
                 .OrderBy(o => (o.Position - Position).LengthSquared())
                 .FirstOrDefault();
         }

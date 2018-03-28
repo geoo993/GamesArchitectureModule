@@ -1,13 +1,16 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PlatformerLab2/Game1.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PlatformerLab2/Level.cs">
     <Files>
       <File FileName="PlatformerLab2/Game1.cs" Line="190" Column="1" />
-      <File FileName="PlatformerLab2/Level.cs" Line="105" Column="1" />
+      <File FileName="PlatformerLab2/Level.cs" Line="133" Column="23" />
       <File FileName="PlatformerLab2/Loader.cs" Line="79" Column="33" />
       <File FileName="PlatformerLab2/GameInfo.cs" Line="14" Column="34" />
-      <File FileName="PlatformerLab2/Enemy.cs" Line="149" Column="1" />
+      <File FileName="PlatformerLab2/Enemy.cs" Line="77" Column="23" />
       <File FileName="PlatformerLab2/PlatformerContent/XML/info.xml" Line="4" Column="15" />
       <File FileName="PlatformerLab2/Gem.cs" Line="115" Column="8" />
+      <File FileName="PlatformerLab2/Animation.cs" Line="1" Column="1" />
+      <File FileName="PlatformerLab2/AnimationPlayer.cs" Line="46" Column="23" />
+      <File FileName="PlatformerLab2/Tile.cs" Line="52" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

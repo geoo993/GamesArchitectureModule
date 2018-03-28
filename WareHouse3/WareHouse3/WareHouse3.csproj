@@ -73,14 +73,12 @@
     <Compile Include="Controls\TouchCollectionExtensions.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\Animation.cs" />
-    <Compile Include="Obstacles\Tile.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="GameCore\GameInfo.cs" />
     <Compile Include="GameCore\GameManager.cs" />
     <Compile Include="Extensions\Origin.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
-    <Compile Include="Characters\Obstacle.cs" />
     <Compile Include="Extensions\ColorExtension.cs" />
     <Compile Include="Shapes\Box.cs" />
     <Compile Include="Shapes\Circle.cs" />
@@ -89,6 +87,8 @@
     <Compile Include="Characters\Ball.cs" />
     <Compile Include="Characters\MotionState.cs" />
     <Compile Include="GameCore\Camera.cs" />
+    <Compile Include="Obstacles\Tile.cs" />
+    <Compile Include="Levels\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -112,6 +112,9 @@
     <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Scripts\GameManager.lua">
       <Link>Content\Scripts\GameManager.lua</Link>
     </Content>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level.txt">
+      <Link>Content\Levels\level.txt</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -132,6 +135,7 @@
     <Folder Include="Content\Levels\" />
     <Folder Include="Assets\" />
     <Folder Include="Shapes\" />
+    <Folder Include="Obstacles\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

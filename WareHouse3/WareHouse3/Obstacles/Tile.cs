@@ -1,23 +1,17 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// Tile.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TexturePackerLoader;
+
+// https://www.youtube.com/watch?v=ZLxIShw-7ac
 
 namespace WareHouse3
 {
+
     /// <summary>
     /// Controls the collision detection and response behavior of a tile.
     /// </summary>
-    enum TileCollision
+    public enum TileCollision
     {
         /// <summary>
         /// A passable tile is one which does not hinder player motion at all.
@@ -38,21 +32,107 @@ namespace WareHouse3
         Platform = 2,
     }
 
-    /// <summary>
-    /// Stores the appearance and collision behavior of a tile.
-    /// </summary>
-    struct Tile
+    
+    public class Tile : Circle
     {
-        //public SpriteFrame SpriteFrame { get; private set; }
-        public TileCollision Collision { get; private set; }
+		public TileCollision Collision { get; private set; }
 
-        /// <summary>
-        /// Constructs a new tile.
-        /// </summary>
-        //public Tile(SpriteFrame spriteFrame, TileCollision collision)
-        //{
-        //    this.SpriteFrame = spriteFrame;
-        //    this.Collision = collision;
-        //}
+        public Tile(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, width, speed, jump, color, texture)
+        {
+            this.Collision = collision;
+        }
+
+        protected override void LeftMovement(ButtonAction buttonState, Vector2 amount)
+        {
+
+            if (buttonState == ButtonAction.DOWN)
+            {
+
+            }
+        }
+
+        protected override void RightMovement(ButtonAction buttonState, Vector2 amount)
+        {
+
+            if (buttonState == ButtonAction.DOWN)
+            {
+
+            }
+        }
+
+        protected override void UpMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+
+            }
+        }
+
+
+        protected override void DownMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+
+            }
+        }
+
+        protected override void JumpMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+
+            }
+        }
+
+        protected override void RotateForward(ButtonAction buttonState, Vector2 amount)
+        {
+
+        }
+
+        protected override void RotateBackward(ButtonAction buttonState, Vector2 amount)
+        {
+
+        }
+
+        public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
+        {
+
+            if (BoundingRectangle.Left <= LeftBoundary)
+            {
+                MoveSpeed.X = Math.Abs(MoveSpeed.X);
+            }
+            else if (BoundingRectangle.Right >= RightBoundary)
+            {
+                MoveSpeed.X = -MoveSpeed.X;
+            }
+
+            if (BoundingRectangle.Top <= Ceiling)
+            {
+                MoveSpeed.Y = Math.Abs(MoveSpeed.Y);
+            }
+            else if (BoundingRectangle.Bottom >= Ground)
+            {
+                MoveSpeed.Y = -MoveSpeed.Y;
+            }
+
+            Position += MoveSpeed;
+
+
+            base.UpdatePosition(gameTime, mapSize);
+        }
+
+        public override bool Intersects(Rectangle rectangle)
+        {
+            return base.Intersects(rectangle);
+        }
+        
+        public override void Render(SpriteBatch spriteBatch) 
+        {
+
+			base.Render(spriteBatch);
+        }
+        
     }
 }

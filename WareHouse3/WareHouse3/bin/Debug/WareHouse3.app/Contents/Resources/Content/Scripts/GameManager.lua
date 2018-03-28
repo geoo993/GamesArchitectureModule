@@ -4,3 +4,5 @@ MapWidth = 3600
 MapHeight = 2160
 NumberOfObstacles = 50
 ObstatclesMaxSpeed = 40
+TileWidth = 50
+TileHeight = 50
