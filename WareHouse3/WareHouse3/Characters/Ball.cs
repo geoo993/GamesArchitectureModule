@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 // https://www.gamedev.net/forums/topic/610640-xnac-method-for-jumping/
 // https://stackoverflow.com/questions/20705928/how-can-i-double-jump-in-my-platform-game-code
@@ -36,14 +37,17 @@ namespace WareHouse3
         /// is the left and right keyboard buttons pressed
         /// </summary>
         private bool LeftPressed, RightPressed;
-
+    
+        private Tile PreviousTileCollided = null;
+        private bool IsCollisionEnter;
+        
         /// <summary>
         /// colliding obstacles
         /// </summary>
         public List<Rectangle> Obstacles;
         
-        public Ball(Vector2 position, int radius, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, radius, speed, jump, color, texture, collision)
+        public Ball(Vector2 position, int radius, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, radius, speed, jump, mass, color, texture, collision)
         {
             this.EnableParticles = true;
             this.HasJumped = true;
@@ -101,7 +105,7 @@ namespace WareHouse3
             this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
         }
         
-        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
+        public void UpdateCollisions(List<Tile> tiles, List<SoundEffect> notes, Vector2 mapSize)
         {
 
             var tile = ClosestTile(tiles);
@@ -109,9 +113,9 @@ namespace WareHouse3
 			UpdateBoundaries(tile, mapSize);
             
             System.Diagnostics.Debug.Print("");
-            System.Diagnostics.Debug.Print("Position"+Position.ToString());
-            System.Diagnostics.Debug.Print("Tile Position"+tile.Position.ToString());
-            System.Diagnostics.Debug.Print("Number of Tiles"+tiles.Count.ToString());
+            //System.Diagnostics.Debug.Print("Position"+Position.ToString());
+            //System.Diagnostics.Debug.Print("Tile Position"+tile.Position.ToString());
+            //System.Diagnostics.Debug.Print("Number of Tiles"+tiles.Count.ToString());
             
             
             if (tile.Intersects(BoundingRectangle))
@@ -119,6 +123,17 @@ namespace WareHouse3
                 
                 //System.Diagnostics.Debug.Print("Colliding");
 				tile.Color = Color.Blue;
+                int random = GameInfo.Random.Next(notes.Count);
+                
+				if (PreviousTileCollided != null && PreviousTileCollided != tile) {
+                    PreviousTileCollided = null;
+				}
+                
+                if (PreviousTileCollided == null) {
+                    PreviousTileCollided = tile;
+                    notes[random].Play();
+                }
+                
             }
             else
             {
@@ -126,6 +141,7 @@ namespace WareHouse3
                 tile.Color = tile.InitialColor;
                 this.LeftBoundary = 0.0f;
                 this.RightBoundary = mapSize.X;
+                this.PreviousTileCollided = null;
             }
             
         }
@@ -172,8 +188,10 @@ namespace WareHouse3
                     //AddParticle(Position);
                 }
                 
-                this.Acceleration.Y -= Gravity.Y;
-                this.Velocity.Y -= Acceleration.Y;
+                Acceleration.Y -= Gravity.Y ;
+                
+                Velocity.Y -= (this.MotionState.IsFalling) ? Acceleration.Y * (1.0f / Mass) : Acceleration.Y;
+                
             }
 
 
@@ -203,7 +221,7 @@ namespace WareHouse3
             byte blue = (byte)GameInfo.Random.Next(0, 255);
             Color col =  new Color(red, green, blue);
         
-            Circle particle = new Circle(position, Radius, 0.0f, 0.0f, col);
+            Circle particle = new Circle(position, Radius, 0.0f, 0.0f, 1.0f, col);
             particles.Add(particle);
         }
         

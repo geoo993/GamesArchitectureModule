@@ -5,12 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WareHouse3
 {
-    public class ObstatclesInfo
-    {
-        public static readonly float MaxSpeed = (int)(double)GameManager.manager["ObstatclesMaxSpeed"];
-        public static readonly int NumberOfObstacles = (int)(double)GameManager.manager["NumberOfObstacles"];
-    }
-    
+   
     public class GameInfo
     {
         public static readonly int ScreenWidth = (int)(double)GameManager.manager["ScreenWidth"];

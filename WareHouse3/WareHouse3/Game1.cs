@@ -26,8 +26,6 @@ namespace WareHouse3
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-		Vector2 centreScreen;
-        Vector2 screenSize;
         
         private Level level;
         
@@ -65,10 +63,10 @@ namespace WareHouse3
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Device.graphicsDevice = this.GraphicsDevice;
-            GameInfo.Camera.ViewportWidth = graphics.GraphicsDevice.Viewport.Width;
-            GameInfo.Camera.ViewportHeight = graphics.GraphicsDevice.Viewport.Height;
-            Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
+            Device.graphicsDevice = graphics.GraphicsDevice;
+			Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
+            GameInfo.Camera.SetKeyoardBindings();
+            
             base.Initialize();
         }
 
@@ -92,11 +90,6 @@ namespace WareHouse3
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            centreScreen = new Vector2 (this.GraphicsDevice.Viewport.Width / 2, this.GraphicsDevice.Viewport.Height / 2);
-            screenSize = new Vector2 (this.GraphicsDevice.Viewport.Width, this.GraphicsDevice.Viewport.Height);
-
-            GameInfo.Camera.SetKeyoardBindings();
-            
             LoadLevel();
         }
         
@@ -132,10 +125,7 @@ namespace WareHouse3
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
             
-            var mapSize = new Vector2(GameInfo.MapWidth, GameInfo.MapHeight);
-            System.Diagnostics.Debug.Print("Map Size"+mapSize.ToString());
-            
-            level.Update(gameTime, mapSize);
+            level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
             
             base.Update(gameTime);
         }

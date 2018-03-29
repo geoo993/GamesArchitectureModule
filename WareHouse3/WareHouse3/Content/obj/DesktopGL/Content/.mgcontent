@@ -6,5 +6,13 @@
   <SourceFiles>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/crate.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/crate2.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note1.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note2.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note3.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note4.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note5.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note6.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note7.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note8.wav</File>
   </SourceFiles>
 </SourceFileCollection>

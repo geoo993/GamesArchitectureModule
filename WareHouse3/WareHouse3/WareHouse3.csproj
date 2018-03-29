@@ -115,6 +115,30 @@
     <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level.txt">
       <Link>Content\Levels\level.txt</Link>
     </Content>
+    <Content Include="Content\bin\MacOSX\note1.xnb">
+      <Link>Content\Sounds\note1.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note2.xnb">
+      <Link>Content\Sounds\note2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note3.xnb">
+      <Link>Content\Sounds\note3.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note4.xnb">
+      <Link>Content\Sounds\note4.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note5.xnb">
+      <Link>Content\Sounds\note5.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note6.xnb">
+      <Link>Content\Sounds\note6.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note7.xnb">
+      <Link>Content\Sounds\note7.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\note8.xnb">
+      <Link>Content\Sounds\note8.xnb</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -136,6 +160,7 @@
     <Folder Include="Assets\" />
     <Folder Include="Shapes\" />
     <Folder Include="Obstacles\" />
+    <Folder Include="Content\Sounds\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

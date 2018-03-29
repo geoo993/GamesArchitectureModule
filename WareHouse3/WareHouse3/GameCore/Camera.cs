@@ -30,8 +30,18 @@ namespace WareHouse3
      
        // Height and width of the viewport window which we need to adjust
        // any time the player resizes the game window.
-       public int ViewportWidth { get; set; }
-       public int ViewportHeight { get; set; }
+       private int ViewportWidth {
+            get {
+				return Device.graphicsDevice.Viewport.Width;
+            }
+       }
+       private int ViewportHeight
+        {
+            get
+            {
+                return Device.graphicsDevice.Viewport.Height;
+            }
+        }
 
        private int SpriteWidth;
        private int SpriteHeight;

@@ -61,6 +61,7 @@ namespace WareHouse3
         /// </summary>
         public Vector2 Velocity;
         public Vector2 Acceleration;
+        public float Mass;
         
         /// <summary>
         /// color of the shape texture
@@ -163,7 +164,7 @@ namespace WareHouse3
             }
         }
         
-        protected Tile(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        protected Tile(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         {
             this.originType = FrameOrigin.OriginType.center;
             this.Origin = FrameOrigin.GetOrigin(width, height, this.originType);
@@ -177,6 +178,9 @@ namespace WareHouse3
             this.MoveSpeed = new Vector2(speed, speed);
             this.RotationSpeed = 1.0f;
             this.JumpSpeed = jump;
+            this.Velocity = Vector2.Zero;
+            this.Acceleration = Vector2.Zero;
+            this.Mass = mass;
             this.Angle = 0.0f;
             this.Width = width;
             this.InitialWidth = width;

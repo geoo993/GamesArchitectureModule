@@ -27,8 +27,10 @@ namespace WareHouse3
     /// </summary>
     class Level 
     {
-        private List<Tile> Tiles; 
+        private List<Tile> Tiles;
+        private List<SoundEffect> Notes; 
         private Ball Ball;  
+        
         
         // Level game state.
         private Random random = new Random(354668); // Arbitrary, but constant seed
@@ -108,6 +110,7 @@ namespace WareHouse3
             
             SetKeyoardBindings(manager);
             LoadTiles(fileStream);
+            LoadXylophoneNotes(8);
         }
         
          private void SetKeyoardBindings(CommandManager manager) 
@@ -214,6 +217,19 @@ namespace WareHouse3
             
         }
         
+        void LoadXylophoneNotes(int numberOfNotes) {
+        
+            Notes = new List<SoundEffect>(numberOfNotes);
+            for (int i = 1; i < (numberOfNotes + 1); i++)
+            {
+                
+                Notes.Add(content.Load<SoundEffect>("Sounds/note"+i.ToString()));
+            }
+            
+            System.Diagnostics.Debug.Print("number of notes added "+Notes.Count);
+            
+        }
+        
         
         /// <summary>
         /// Loads an individual tile's appearance and behavior.
@@ -233,24 +249,26 @@ namespace WareHouse3
         {
             switch (tileType)
             {
-                 // Ball
+                 // Passable
                 case '1':
-                    return LoadPlayerTile(x, y);
-                    
+                    return LoadPlayerTile(x, y, TileCollision.Passable);
                 // Blank space
                 case '.':
                     return LoadEmptyTile();
-                // Platform block
+                    // Passable block
+                case '$':
+                    return LoadVarietyTile("Collectable", x, y, TileCollision.Passable);
+                // Impassable block
                 case '~':
-                    return LoadVarietyTile("BlockB", x, y, TileCollision.Platform);
-
-                // Passable block
-                case ':':
-                    return LoadVarietyTile("BlockB", x, y, TileCollision.Passable);
+                    return LoadVarietyTile("Trolley", x, y, TileCollision.Impassable);
 
                 // Impassable block
+                case ':':
+                    return LoadVarietyTile("PackageBox", x, y, TileCollision.Impassable);
+
+                // Platform block
                 case '#':
-                    return LoadVarietyTile("BlockA", x, y, TileCollision.Impassable);
+                    return LoadVarietyTile("Platform", x, y, TileCollision.Platform);
 
                 // Unknown tile type character
                 default:
@@ -278,7 +296,7 @@ namespace WareHouse3
         private Tile LoadTile(string name, Vector2 position, TileCollision collision)
         {
             //var texture = Content.Load<Texture2D>("Tiles/" + name);
-            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, GameInfo.Instance.RandomColor(), null, collision);
+            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, GameInfo.Instance.RandomColor(), null, collision);
         }
         
         /// <summary>
@@ -300,7 +318,7 @@ namespace WareHouse3
         /// <summary>
         /// Instantiates a player, puts him in the level, and remembers where to put him when he is resurrected.
         /// </summary>
-        private Tile LoadPlayerTile(int x, int y)
+        private Tile LoadPlayerTile(int x, int y, TileCollision collision)
         {
             if (Ball != null)
                 throw new NotSupportedException("A level may only have one starting point.");
@@ -308,10 +326,10 @@ namespace WareHouse3
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
-            Ball = new Ball(start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, GameInfo.Instance.RandomColor(), null, TileCollision.Passable);
+            Ball = new Ball(start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, 1.0f, GameInfo.Instance.RandomColor(), null, collision);
             GameInfo.Camera.CenterOn(Ball);
 
-            return Ball;
+            return null;
         }
         
         /// <summary>
@@ -335,11 +353,12 @@ namespace WareHouse3
             
             GameInfo.Camera.CenterOn(Ball, false);
             
-			Ball.UpdateCollisions(Tiles, mapSize);
+			Ball.UpdateCollisions(Tiles, Notes, mapSize);
             Ball.UpdatePosition(gameTime, mapSize);
             
             foreach (Tile tile in Tiles)
             {
+            
                 tile.UpdatePosition(gameTime, mapSize);
             }
 

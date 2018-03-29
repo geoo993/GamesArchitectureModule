@@ -11,3 +11,11 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/KeraLua.dll
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/crate.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/crate2.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note1.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note2.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note3.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note4.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note5.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note6.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note7.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/note8.xnb

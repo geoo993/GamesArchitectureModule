@@ -12,8 +12,8 @@ namespace WareHouse3
         /// </summary>
         PrimitiveLine BoxBorder;
         
-        public Box(Vector2 position, int width, int height, float speed, float jump, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, width, height, speed, jump, color, texture, collision)
+        public Box(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, width, height, speed, jump, mass, color, texture, collision)
         {
             BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
