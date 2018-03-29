@@ -17,6 +17,9 @@ namespace WareHouse3
         public static readonly int ScreenHeight = (int)(double)GameManager.manager["ScreenHeight"];
         public static readonly int MapWidth = (int)(double)GameManager.manager["MapWidth"];
         public static readonly int MapHeight = (int)(double)GameManager.manager["MapHeight"];
+        public static readonly int LevelHorizontalLength = (int)(double)GameManager.manager["LevelHorizontalLength"];
+        public static readonly int LevelVerticalLength = (int)(double)GameManager.manager["LevelVerticalLength"];
+    
         public static readonly Camera Camera = new Camera();  
         public static readonly Random Random = new Random(DateTime.Now.Millisecond);
         public static GameStates GameStates { get; set; }
@@ -44,6 +47,11 @@ namespace WareHouse3
             return new Color(red, green, blue);
         }
         
+    }
+    
+    public class BallInfo {
+        public static int BallSpeed = (int)(double)GameManager.manager["BallSpeed"];
+        public static int BallJumpSpeed = (int)(double)GameManager.manager["BallJumpSpeed"];
     }
     
     public class TileInfo {

@@ -61,7 +61,6 @@ namespace WareHouse3
             Radius = this.Width / 2;
             CircleBorder.CreateCircle(Radius, 20);
             CircleBorder.Position = Position;
-            
         }
         
         /// <summary>

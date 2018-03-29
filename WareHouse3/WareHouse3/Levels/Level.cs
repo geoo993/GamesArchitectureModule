@@ -27,7 +27,7 @@ namespace WareHouse3
     /// </summary>
     class Level 
     {
-        private Tile[,] tiles; 
+        private List<Tile> Tiles; 
         private Ball Ball;  
         
         // Level game state.
@@ -51,17 +51,18 @@ namespace WareHouse3
         /// impossible to escape past the left or right edges, but allowing things
         /// to jump beyond the top of the level and fall off the bottom.
         /// </summary>
-        public TileCollision GetCollision(int x, int y)
+        public TileCollision GetCollision(int index, int x, int y)
         {
             
             // Prevent escaping past the level ends.
-            if (x < 0 || x >= Width)
+            if (x < 0 || x >= HorizontalLength)
                 return TileCollision.Impassable;
             // Allow jumping past the level top and falling through the bottom.
-            if (y < 0 || y >= Height)
+            if (y < 0 || y >= VerticalLength)
                 return TileCollision.Passable;
 
-            return tiles[x, y].Collision;
+            //return tiles[x, y].Collision;
+            return Tiles[index].Collision;
         }
 
         /// <summary>
@@ -73,20 +74,14 @@ namespace WareHouse3
         }
 
         /// <summary>
-        /// Width of level measured in tiles.
+        /// horizontal length distance of the level measured in tiles.
         /// </summary>
-        public int Width
-        {
-            get { return tiles.GetLength(0); }
-        }
+        private int HorizontalLength;
 
         /// <summary>
-        /// Height of the level measured in tiles.
+        /// vertical length distance of the level measured in tiles.
         /// </summary>
-        public int Height
-        {
-            get { return tiles.GetLength(1); }
-        }
+        private int VerticalLength;
 
         #endregion
 
@@ -108,6 +103,8 @@ namespace WareHouse3
             content = new ContentManager(serviceProvider, "Content");
             
             loader = new Loader(fileStream);
+            HorizontalLength = GameInfo.LevelHorizontalLength;
+            VerticalLength = GameInfo.LevelVerticalLength;
             
             SetKeyoardBindings(manager);
             LoadTiles(fileStream);
@@ -120,8 +117,18 @@ namespace WareHouse3
             manager.AddKeyboardBinding(Keys.Up, UpMovement);
             manager.AddKeyboardBinding(Keys.Down, DownMovement);
             manager.AddKeyboardBinding(Keys.Space, JumpMovement);
+            //manager.AddKeyboardBinding(Keys.Escape, StopGame);
         }
-    
+        
+        //public void StopGame(ButtonAction buttonState, Vector2 amount)
+        //{
+        //    if (buttonState == ButtonAction.DOWN)
+        //    {
+                
+        //    }
+        //}
+
+
         void LeftMovement(ButtonAction buttonState, Vector2 amount)
         {
             Ball.IsLeft(buttonState);
@@ -188,49 +195,23 @@ namespace WareHouse3
         private void LoadTiles(Stream fileStream)
         {
             // Load the level and ensure all of the lines are the same length.
-            int width;
             List<string> lines = new List<string>();
-            
-            /*
-            using (StreamReader reader = new StreamReader(fileStream))
-            {
-                string line = reader.ReadLine();
-                width = line.Length;
-                while (line != null)
-                {
-                    lines.Add(line);
-                    if (line.Length != width)
-                        throw new Exception(String.Format("The length of line {0} is different from all preceeding lines.", lines.Count));
-                    line = reader.ReadLine();
-                }
-            }
-            */
-            
-             //StreamReader code removed here
-             
+            Tiles = new List<Tile>();
+         
             lines = loader.ReadLinesFromTextFile();
-            width = lines[0].Length;
-            
-            // Allocate the tile grid.
-            tiles = new Tile[width, lines.Count];
-
             // Loop over every tile position,
-            for (int y = 0; y < Height; ++y)
+            for (int y = 0; y < VerticalLength; ++y)
             {
-                for (int x = 0; x < Width; ++x)
+                for (int x = 0; x < HorizontalLength; ++x)
                 {
-                    // to load each tile.
                     char tileType = lines[y][x];
                     var tile = LoadTile(tileType, x, y);
                     if ( tile != null) {
-						tiles[x, y] = tile;
+                        Tiles.Add(tile);
                     }
                 }
             }
             
-            System.Diagnostics.Debug.Print("Width "+ Width.ToString()); // 20
-            System.Diagnostics.Debug.Print("Height "+ Height.ToString()); // 15
-
         }
         
         
@@ -298,7 +279,6 @@ namespace WareHouse3
         {
             //var texture = Content.Load<Texture2D>("Tiles/" + name);
             return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, GameInfo.Instance.RandomColor(), null, collision);
-            
         }
         
         /// <summary>
@@ -328,9 +308,8 @@ namespace WareHouse3
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
-            Ball = new Ball(start, rect.Width, 8.0f, 5.0f, GameInfo.Instance.RandomColor(), null, TileCollision.Passable);
+            Ball = new Ball(start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, GameInfo.Instance.RandomColor(), null, TileCollision.Passable);
             GameInfo.Camera.CenterOn(Ball);
-
 
             return Ball;
         }
@@ -353,9 +332,17 @@ namespace WareHouse3
         /// </summary>
         public void Update(GameTime gameTime, Vector2 mapSize)
         {
+            
             GameInfo.Camera.CenterOn(Ball, false);
+            
+			Ball.UpdateCollisions(Tiles, mapSize);
             Ball.UpdatePosition(gameTime, mapSize);
             
+            foreach (Tile tile in Tiles)
+            {
+                tile.UpdatePosition(gameTime, mapSize);
+            }
+
         }
         #endregion
         
@@ -367,8 +354,8 @@ namespace WareHouse3
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
            
-            DrawTiles(spriteBatch);
 			Ball.Render(spriteBatch);
+            DrawTiles(spriteBatch);
 
         }
 
@@ -377,17 +364,10 @@ namespace WareHouse3
         /// </summary>
         private void DrawTiles(SpriteBatch spriteBatch)
         {
-            // For each tile position
-            for (int y = 0; y < Height; ++y)
-            {
-                for (int x = 0; x < Width; ++x)
-                {
-                    // If there is a visible tile in that position
-                    var tile = tiles[x, y];
-                    if (tile != null) {
-						tile.Render(spriteBatch);
-                    }
-                    
+          
+            foreach(Tile tile in Tiles) {
+                if (tile != null) {
+                    tile.Render(spriteBatch);
                 }
             }
         }

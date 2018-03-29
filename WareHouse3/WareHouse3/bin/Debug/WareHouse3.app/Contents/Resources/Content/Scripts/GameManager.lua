@@ -6,3 +6,7 @@ NumberOfObstacles = 50
 ObstatclesMaxSpeed = 40
 TileWidth = 100
 TileHeight = 50
+BallSpeed = 10
+BallJumpSpeed = 5
+LevelHorizontalLength = 36
+LevelVerticalLength = 44

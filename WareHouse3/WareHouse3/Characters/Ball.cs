@@ -51,18 +51,6 @@ namespace WareHouse3
             this.Obstacles = new List<Rectangle>();
             this.AvailableJumps = MaxJumps;
         }
-        
-        
-        public void UpdateBoundaries(Tile tile, Vector2 mapSize) {
-            
-            this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
-            this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
-            bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
-                                       this.Position.X < tile.BoundingRectangle.Right);
-            
-            this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : this.Ground = mapSize.Y;
-            this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
-        }
 
         public void IsLeft(ButtonAction buttonState) {
             if (buttonState == ButtonAction.DOWN)
@@ -102,18 +90,35 @@ namespace WareHouse3
             Scale -= 0.01f;
         }
         
+        public void UpdateBoundaries(Tile tile, Vector2 mapSize) {
+            
+            this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
+            this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
+            bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
+                                       this.Position.X < tile.BoundingRectangle.Right);
+            
+            this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : this.Ground = mapSize.Y;
+            this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
+        }
+        
         public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
         {
 
-            var tile = ClosestObstacle(tiles);
-			UpdateBoundaries(tile, mapSize);
-
+            var tile = ClosestTile(tiles);
             
-            if (this.Intersects(tile.BoundingRectangle))
+			UpdateBoundaries(tile, mapSize);
+            
+            System.Diagnostics.Debug.Print("");
+            System.Diagnostics.Debug.Print("Position"+Position.ToString());
+            System.Diagnostics.Debug.Print("Tile Position"+tile.Position.ToString());
+            System.Diagnostics.Debug.Print("Number of Tiles"+tiles.Count.ToString());
+            
+            
+            if (tile.Intersects(BoundingRectangle))
             {
                 
                 //System.Diagnostics.Debug.Print("Colliding");
-				tile.Color = Color.White;
+				tile.Color = Color.Blue;
             }
             else
             {
@@ -221,7 +226,7 @@ namespace WareHouse3
         }
         
         
-        public Tile ClosestObstacle(List<Tile> tiles)
+        public Tile ClosestTile(List<Tile> tiles)
         {
             // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
             return tiles

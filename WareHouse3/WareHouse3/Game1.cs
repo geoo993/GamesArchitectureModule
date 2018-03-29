@@ -68,17 +68,10 @@ namespace WareHouse3
             Device.graphicsDevice = this.GraphicsDevice;
             GameInfo.Camera.ViewportWidth = graphics.GraphicsDevice.Viewport.Width;
             GameInfo.Camera.ViewportHeight = graphics.GraphicsDevice.Viewport.Height;
-
-            InitializeControlsBindings();
+            Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
             base.Initialize();
         }
 
-        private void InitializeControlsBindings()
-        {
-            Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
-            
-        }
-        
         #region Game Actions
         public void StopGame(ButtonAction buttonState, Vector2 amount)
         {
@@ -138,16 +131,11 @@ namespace WareHouse3
         {
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
+            
             var mapSize = new Vector2(GameInfo.MapWidth, GameInfo.MapHeight);
+            System.Diagnostics.Debug.Print("Map Size"+mapSize.ToString());
             
-            //GameInfo.Camera.UpdateInputs();
-            
-            //System.Diagnostics.Debug.Print("Camera Position "+ GameInfo.Camera.Position.ToString());
-            // TODO: Add your update logic here
-            
-            // update our level, passing down the GameTime along with all of our input states
             level.Update(gameTime, mapSize);
-            
             
             base.Update(gameTime);
         }
@@ -167,10 +155,6 @@ namespace WareHouse3
             this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
             
             level.Draw(gameTime, spriteBatch);
-    //        foreach (Tile tile in tiles)
-    //        {
-				//tile.Render(spriteBatch);
-            //}
             
             this.spriteBatch.End();
 
