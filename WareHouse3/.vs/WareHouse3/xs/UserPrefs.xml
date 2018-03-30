@@ -5,9 +5,8 @@
       <File FileName="WareHouse3/Shapes/Circle.cs" Line="25" Column="36" />
       <File FileName="WareHouse3/Shapes/Box.cs" Line="29" Column="1" />
       <File FileName="WareHouse3/Shapes/Tile.cs" Line="251" Column="28" />
-      <File FileName="WareHouse3/Characters/Ball.cs" Line="160" Column="26" />
-      <File FileName="WareHouse3/Levels/Level.cs" Line="353" Column="103" />
-      <File FileName="WareHouse3/Extensions/RectangleExtensions.cs" Line="30" Column="31" />
+      <File FileName="WareHouse3/Characters/Ball.cs" Line="199" Column="86" />
+      <File FileName="WareHouse3/Levels/Level.cs" Line="282" Column="53" />
       <File FileName="WareHouse3/bin/Debug/WareHouse3.app/Contents/Resources/Content/Levels/level.txt" Line="43" Column="37" />
     </Files>
   </MonoDevelop.Ide.Workbench>

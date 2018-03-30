@@ -39,7 +39,7 @@ namespace WareHouse3
         /// is the left and right keyboard buttons pressed
         /// </summary>
         private bool LeftPressed, RightPressed;
-        private float PreviousBottom, PreviousTop;
+        private Rectangle PreviousBounds;
         
         private Tile PreviousTileCollided = null;
         
@@ -154,45 +154,37 @@ namespace WareHouse3
         {
 
             var tile = Level.ClosestTile(tiles, Position);
+            bool IsIntersecting = false;
+			TileCollision collision = tile.Collision;
+			Rectangle tileBounds = tile.BoundingRectangle;
             
-            TileCollision collision = tile.Collision;
-            Rectangle tileBounds = tile.BoundingRectangle;
-            if (collision != TileCollision.Passable && Intersects(tileBounds))
-            {
-                // Determine collision depth (with direction) and magnitude.
-                Vector2 depth = RectangleExtensions.GetIntersectionDepth(BoundingRectangle, tileBounds);
-                if (depth != Vector2.Zero)
-                {
-                    float absDepthX = Math.Abs(depth.X);
-                    float absDepthY = Math.Abs(depth.Y);
-
-                    // Resolve the collision along the shallow axis.
-                    if (absDepthY < absDepthX || collision == TileCollision.Platform)
-                    {
-                    
-                        // If we crossed the top of a tile, we are on the ground.
-                        if (PreviousBottom <= tileBounds.Top) {
-
-                            this.Ground = tileBounds.Top;
-                        } 
-                        
-                        // If we crossed the bottom of a tile, we are hitting the tile from bellow.
-                        if (PreviousTop >= tileBounds.Bottom) {
-
-                            this.Ceiling = tileBounds.Bottom;
-                        } 
-                        
-                    }
-                    
-                }
+            
+            if (Intersects(tileBounds)) {
+                IsIntersecting = true;
             } else {
-                this.Ceiling = 0.0f;
                 this.Ground = mapSize.Y;
+                this.Ceiling = 0.0f;
+                IsIntersecting = false;
             }
-
-            // Save the new bounds bottom.
-            PreviousBottom = BoundingRectangle.Bottom;
-            PreviousTop = BoundingRectangle.Top;
+                        
+            if (collision != TileCollision.Passable)
+            {
+               
+                bool horizontalBoundary = (PreviousBounds.Center.X > tileBounds.Left && PreviousBounds.Center.X < tileBounds.Right);
+				// If we crossed the top of a tile, we are on the ground.
+				// If we crossed the bottom of a tile, we are hitting the tile from bellow.
+				if (PreviousBounds.Bottom <= tileBounds.Top) {// && horizontalBoundary) {
+					this.Ground = tileBounds.Top + 1;
+				} else if (PreviousBounds.Top >= tileBounds.Bottom) {// && horizontalBoundary) {
+					this.Ceiling = tileBounds.Bottom - 1;
+				} else if (horizontalBoundary == false && IsIntersecting == false) {
+                    this.Ground = mapSize.Y;
+                    this.Ceiling = 0.0f;
+                }
+            }
+            
+            // Save the new bounds.
+            PreviousBounds = BoundingRectangle;
         }
 
 
