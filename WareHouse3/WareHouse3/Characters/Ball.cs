@@ -41,6 +41,8 @@ namespace WareHouse3
         private bool LeftPressed, RightPressed;
         private Rectangle PreviousBounds;
         
+        private bool IsIntersecting = false;
+        private bool OnCollisionEnter;
         private Tile PreviousTileCollided = null;
         
         /// <summary>
@@ -48,8 +50,8 @@ namespace WareHouse3
         /// </summary>
         public List<Rectangle> Obstacles;
         
-        public Ball(Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, radius, speed, jump, mass, color, note, texture, collision)
+        public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
         {
             this.EnableParticles = true;
             this.HasJumped = true;
@@ -57,6 +59,8 @@ namespace WareHouse3
             this.Obstacles = new List<Rectangle>();
             this.AvailableJumps = MaxJumps;
             this.Level = level;
+            this.PreviousTileCollided = this;
+            this.IsBorderEnabled = true;
         }
 
         public void IsLeft(ButtonAction buttonState) {
@@ -97,74 +101,44 @@ namespace WareHouse3
             Scale -= 0.01f;
         }
        
-        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
-        {
-
-            var tile = Level.ClosestTile(tiles, Position);
             
-			this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
-			this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
-			bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
-			                           this.Position.X < tile.BoundingRectangle.Right);
-			
-			this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : mapSize.Y;
-			this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
-            
-            //System.Diagnostics.Debug.Print("");
-            //System.Diagnostics.Debug.Print("Position"+Position.ToString());
-            //System.Diagnostics.Debug.Print("Tile Position"+tile.Position.ToString());
-            //System.Diagnostics.Debug.Print("Number of Tiles"+tiles.Count.ToString());
-            
-            
-            if (tile.Intersects(BoundingRectangle))
-            {
-
-                //System.Diagnostics.Debug.Print("Colliding");
-                //tile.Color = Color.Blue;
-                int random = GameInfo.Random.Next(0);//notes.Count);
-                
-				if (PreviousTileCollided != null && PreviousTileCollided != tile) {
-                    PreviousTileCollided = null;
-				}
-                
-                if (PreviousTileCollided == null) {
-                    PreviousTileCollided = tile;
-                    //notes[random].Play();
-                }
-                
-            }
-            else
-            {
-                //System.Diagnostics.Debug.Print("Not Colliding");
-                //tile.Color = tile.InitialColor;
-                this.LeftBoundary = 0.0f;
-                this.RightBoundary = mapSize.X;
-                this.PreviousTileCollided = null;
-            }
-            
-        }
-        
         /// <summary>
         /// Detects and resolves all collisions between the player and his neighboring
         /// tiles. When a collision is detected, the player is pushed away along one
         /// axis to prevent overlapping. There is some special logic for the Y axis to
         /// handle platforms which behave differently depending on direction of movement.
         /// </summary>
-        public void HandleCollisions(List<Tile> tiles, Vector2 mapSize)
+        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
         {
 
             var tile = Level.ClosestTile(tiles, Position);
-            bool IsIntersecting = false;
+           
 			TileCollision collision = tile.Collision;
 			Rectangle tileBounds = tile.BoundingRectangle;
             
-            
             if (Intersects(tileBounds)) {
                 IsIntersecting = true;
+                
+                
+                if (OnCollisionEnter == false && PreviousTileCollided.Name != tile.Name) {
+                    OnCollisionEnter = true;
+                }
+                
+                if (OnCollisionEnter && PreviousTileCollided.Name == tile.Name) {
+                    OnCollisionEnter = false;
+                }
+                
+				PreviousTileCollided = tile;
+                
+                if (OnCollisionEnter && tile.Note != null) {
+                    tile.Note.Play();
+                }
+            
             } else {
                 this.Ground = mapSize.Y;
                 this.Ceiling = 0.0f;
                 IsIntersecting = false;
+                OnCollisionEnter = false;
             }
                         
             if (collision != TileCollision.Passable)
@@ -193,8 +167,7 @@ namespace WareHouse3
 
             this.Position += this.Velocity;
 
-            HandleCollisions(Level.Tiles, mapSize);
-            //UpdateCollisions(Tiles, mapSize);
+            UpdateCollisions(Level.Tiles, mapSize);
             
             BallMovement(Ground);
             
@@ -266,7 +239,7 @@ namespace WareHouse3
             byte blue = (byte)GameInfo.Random.Next(0, 255);
             Color col =  new Color(red, green, blue);
         
-            Circle particle = new Circle(position, Radius, 0.0f, 0.0f, 1.0f, col, null);
+            Circle particle = new Circle("",position, Radius, 0.0f, 0.0f, 1.0f, col, null);
             particles.Add(particle);
         }
         

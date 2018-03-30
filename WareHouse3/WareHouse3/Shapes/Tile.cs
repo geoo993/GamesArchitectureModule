@@ -37,7 +37,15 @@ namespace WareHouse3
        
         public TileCollision Collision { get; private set; }
 
+        /// <summary>
+        /// xylophone sound note of the tile if any
+        /// </summary>
         public SoundEffect Note { get; private set; } 
+        
+        /// <summary>
+        /// tile name
+        /// </summary>
+        public String Name { get; private set; } 
        
         /// <summary>
         /// movement speed of the shape.
@@ -167,8 +175,9 @@ namespace WareHouse3
             }
         }
         
-        protected Tile(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        protected Tile(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         {
+            this.Name = name;
             this.originType = FrameOrigin.OriginType.center;
             this.Origin = FrameOrigin.GetOrigin(width, height, this.originType);
             this.InitialOrigin = this.Origin;

@@ -12,8 +12,8 @@ namespace WareHouse3
     public class Dummies : Circle
     {
 		
-        public Dummies(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, width, speed, jump, mass, color, note, texture, collision)
+        public Dummies(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(name, position, width, speed, jump, mass, color, note, texture, collision)
         {
             
         }

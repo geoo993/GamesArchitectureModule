@@ -11,21 +11,24 @@ namespace WareHouse3
         /// <summary>
         /// box border 
         /// </summary>
-        PrimitiveLine BoxBorder;
+        private PrimitiveLine BoxBorder;
+        public bool IsBorderEnabled { get; set; }
 
-        public Box(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, width, height, speed, jump, mass, color, note, texture, collision)
+        public Box(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(name, position, width, height, speed, jump, mass, color, note, texture, collision)
         {
-            BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
-           
+            this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
+            this.IsBorderEnabled = false;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
            
 			base.UpdatePosition(gameTime, mapSize);
-            
-            BoxBorder.CreateBox(Position - Origin, Position + Origin);
+
+            if (IsBorderEnabled) {
+                BoxBorder.CreateBox(Position - Origin, Position + Origin);
+            }
         }
         
         
@@ -72,8 +75,11 @@ namespace WareHouse3
         public override void Render(SpriteBatch spriteBatch) {
             
             base.Render(spriteBatch);
-            
-            BoxBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+
+            if (IsBorderEnabled)
+            {
+                BoxBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+            }
 
         }
         

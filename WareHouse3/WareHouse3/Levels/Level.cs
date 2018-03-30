@@ -320,7 +320,7 @@ namespace WareHouse3
                 note = null;
             } 
             
-            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
+            return new Box(name+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
         }
         
         /// <summary>
@@ -350,7 +350,7 @@ namespace WareHouse3
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
-            Ball = new Ball(this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, 5.0f, GameInfo.Instance.RandomColor(), null, null, collision);
+            Ball = new Ball("Ball", this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, 5.0f, GameInfo.Instance.RandomColor(), null, null, collision);
 
             return null;
         }

@@ -35,7 +35,8 @@ namespace WareHouse3
 		/// <summary>
 		/// circle border 
 		/// </summary>
-        PrimitiveLine CircleBorder;
+        private PrimitiveLine CircleBorder;
+        public bool IsBorderEnabled { get; set; }
 
         /// <summary>
         /// Radius of the circle.
@@ -48,11 +49,12 @@ namespace WareHouse3
         /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Circle(Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, radius * 2, radius * 2, speed, jump, mass, color, note, texture, collision)
+        public Circle(String name, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(name, position, radius * 2, radius * 2, speed, jump, mass, color, note, texture, collision)
         {
 			this.Radius = radius;
-            CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
+            this.IsBorderEnabled = false;
+            this.CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
      
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -60,8 +62,11 @@ namespace WareHouse3
 			base.UpdatePosition(gameTime, mapSize);
             
             Radius = this.Width / 2;
-            CircleBorder.CreateCircle(Radius, 20);
-            CircleBorder.Position = Position;
+            if (IsBorderEnabled)
+            {
+                CircleBorder.CreateCircle(Radius, 20);
+                CircleBorder.Position = Position;
+            }
         }
         
         /// <summary>
@@ -201,8 +206,11 @@ namespace WareHouse3
         public override void Render(SpriteBatch spriteBatch) {
 
             base.Render(spriteBatch);
-            
-            CircleBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+
+            if (IsBorderEnabled)
+            {
+                CircleBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+            }
         }
         
         
