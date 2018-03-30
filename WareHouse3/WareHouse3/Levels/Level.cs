@@ -8,6 +8,8 @@
 #endregion
 
 using System;
+using System.Linq;
+
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -25,10 +27,9 @@ namespace WareHouse3
     /// The level owns the player and controls the game's win and lose
     /// conditions as well as scoring.
     /// </summary>
-    class Level 
+    public class Level 
     {
-        private List<Tile> Tiles;
-        private List<SoundEffect> Notes; 
+        public List<Tile> Tiles;
         private Ball Ball;  
         
         
@@ -53,7 +54,7 @@ namespace WareHouse3
         /// impossible to escape past the left or right edges, but allowing things
         /// to jump beyond the top of the level and fall off the bottom.
         /// </summary>
-        public TileCollision GetCollision(int index, int x, int y)
+        public TileCollision GetCollision(int x, int y)
         {
             
             // Prevent escaping past the level ends.
@@ -64,7 +65,7 @@ namespace WareHouse3
                 return TileCollision.Passable;
 
             //return tiles[x, y].Collision;
-            return Tiles[index].Collision;
+            return ClosestTile(Tiles, new Vector2(x * TileInfo.UnitWidth, y * TileInfo.UnitHeight)).Collision;
         }
 
         /// <summary>
@@ -73,6 +74,15 @@ namespace WareHouse3
         public Rectangle GetBounds(int x, int y)
         {
             return new Rectangle(x * TileInfo.UnitWidth, y * TileInfo.UnitHeight, TileInfo.UnitWidth, TileInfo.UnitHeight);
+        }
+        
+         
+        public Tile ClosestTile(List<Tile> tiles, Vector2 position)
+        {
+            // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
+            return tiles
+                .OrderBy(o => (o.Position - position).LengthSquared())
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -110,7 +120,6 @@ namespace WareHouse3
             
             SetKeyoardBindings(manager);
             LoadTiles(fileStream);
-            LoadXylophoneNotes(8);
         }
         
          private void SetKeyoardBindings(CommandManager manager) 
@@ -217,20 +226,6 @@ namespace WareHouse3
             
         }
         
-        void LoadXylophoneNotes(int numberOfNotes) {
-        
-            Notes = new List<SoundEffect>(numberOfNotes);
-            for (int i = 1; i < (numberOfNotes + 1); i++)
-            {
-                
-                Notes.Add(content.Load<SoundEffect>("Sounds/note"+i.ToString()));
-            }
-            
-            System.Diagnostics.Debug.Print("number of notes added "+Notes.Count);
-            
-        }
-        
-        
         /// <summary>
         /// Loads an individual tile's appearance and behavior.
         /// </summary>
@@ -254,21 +249,37 @@ namespace WareHouse3
                     return LoadPlayerTile(x, y, TileCollision.Passable);
                 // Blank space
                 case '.':
-                    return LoadEmptyTile();
+                    return LoadEmptyTile(TileCollision.Passable);
+                case 'A':
+                    return LoadVarietyTile("NoteA", 6, x, y, Color.White, TileCollision.Platform);
+                case 'B':
+                    return LoadVarietyTile("NoteB", 7, x, y, Color.White, TileCollision.Platform);
+                case 'C':
+                    return LoadVarietyTile("NoteC", 1, x, y, Color.White, TileCollision.Platform);
+                case 'K':
+                    return LoadVarietyTile("NoteC2", 8, x, y, Color.White, TileCollision.Platform);
+                case 'D':
+                    return LoadVarietyTile("NoteD", 2, x, y, Color.White, TileCollision.Platform);
+                case 'E':
+                    return LoadVarietyTile("NoteE", 3, x, y, Color.White, TileCollision.Platform);
+                case 'F':
+                    return LoadVarietyTile("NoteF", 4, x, y, Color.White, TileCollision.Platform);
+                case 'G':
+                    return LoadVarietyTile("NoteG", 5, x, y, Color.White,  TileCollision.Platform);
                     // Passable block
                 case '$':
-                    return LoadVarietyTile("Collectable", x, y, TileCollision.Passable);
+                    return LoadVarietyTile("Collectable", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Passable);
                 // Impassable block
                 case '~':
-                    return LoadVarietyTile("Trolley", x, y, TileCollision.Impassable);
+                    return LoadVarietyTile("Trolley", 0,  x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
 
                 // Impassable block
                 case ':':
-                    return LoadVarietyTile("PackageBox", x, y, TileCollision.Impassable);
+                    return LoadVarietyTile("PackageBox", 0, x, y,  GameInfo.Instance.RandomColor(),  TileCollision.Impassable);
 
                 // Platform block
                 case '#':
-                    return LoadVarietyTile("Platform", x, y, TileCollision.Platform);
+                    return LoadVarietyTile("Platform", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Platform);
 
                 // Unknown tile type character
                 default:
@@ -276,9 +287,9 @@ namespace WareHouse3
             }
         }
         
-        private Tile LoadEmptyTile()
+        private Tile LoadEmptyTile(TileCollision collision)
         {
-            return null;//new Tile(Vector2.Zero, 1, 1, 0.0f, 0.0f, Color.Transparent, null, TileCollision.Passable);
+            return null;//new Box(Vector2.Zero, 1, 1, 0.0f, 0.0f, 1.0f, Color.Transparent, null, null, collision);
         }
         
         
@@ -293,10 +304,23 @@ namespace WareHouse3
         /// The tile collision type for the new tile.
         /// </param>
         /// <returns>The new tile.</returns>
-        private Tile LoadTile(string name, Vector2 position, TileCollision collision)
+        private Tile LoadTile(string name, int index, Vector2 position, Color color, TileCollision collision)
         {
-            //var texture = Content.Load<Texture2D>("Tiles/" + name);
-            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, GameInfo.Instance.RandomColor(), null, collision);
+            Texture2D texture; 
+            SoundEffect note; 
+            
+            //<- file creating stuff here -> 
+            try { 
+            //<-- try to load the file --> 
+                texture = Content.Load<Texture2D>("Notes/" + name);
+                note = content.Load<SoundEffect>("Sounds/note"+index);
+            } catch {
+                //<--print exception--> 
+                texture = null;
+                note = null;
+            } 
+            
+            return new Box(position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
         }
         
         /// <summary>
@@ -309,10 +333,10 @@ namespace WareHouse3
         /// <param name="variationCount">
         /// The number of variations in this group.
         /// </param>
-        private Tile LoadVarietyTile(string name, int x, int y, TileCollision collision)
+        private Tile LoadVarietyTile(string name, int index, int x, int y, Color color, TileCollision collision)
         {
             Point position = GetBounds(x, y).Center;
-            return LoadTile(name, new Vector2(position.X, position.Y), collision);
+            return LoadTile(name, index, new Vector2(position.X, position.Y), color, collision);
         }
         
         /// <summary>
@@ -326,8 +350,7 @@ namespace WareHouse3
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
-            Ball = new Ball(start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, 1.0f, GameInfo.Instance.RandomColor(), null, collision);
-            GameInfo.Camera.CenterOn(Ball);
+            Ball = new Ball(this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, 5.0f, GameInfo.Instance.RandomColor(), null, null, collision);
 
             return null;
         }
@@ -352,8 +375,7 @@ namespace WareHouse3
         {
             
             GameInfo.Camera.CenterOn(Ball, false);
-            
-			Ball.UpdateCollisions(Tiles, Notes, mapSize);
+           
             Ball.UpdatePosition(gameTime, mapSize);
             
             foreach (Tile tile in Tiles)
@@ -373,8 +395,8 @@ namespace WareHouse3
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
            
-			Ball.Render(spriteBatch);
             DrawTiles(spriteBatch);
+			Ball.Render(spriteBatch);
 
         }
 

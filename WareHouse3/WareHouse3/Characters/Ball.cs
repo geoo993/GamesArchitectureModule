@@ -13,6 +13,8 @@ namespace WareHouse3
 
     public class Ball: Circle
     {
+    
+        private Level Level { get; set; }
    
         /// <summary>
         /// trail particle of the ball
@@ -37,23 +39,24 @@ namespace WareHouse3
         /// is the left and right keyboard buttons pressed
         /// </summary>
         private bool LeftPressed, RightPressed;
-    
+        private float PreviousBottom, PreviousTop;
+        
         private Tile PreviousTileCollided = null;
-        private bool IsCollisionEnter;
         
         /// <summary>
         /// colliding obstacles
         /// </summary>
         public List<Rectangle> Obstacles;
         
-        public Ball(Vector2 position, int radius, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, radius, speed, jump, mass, color, texture, collision)
+        public Ball(Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, radius, speed, jump, mass, color, note, texture, collision)
         {
             this.EnableParticles = true;
             this.HasJumped = true;
             this.particles = new List<Circle>();
             this.Obstacles = new List<Rectangle>();
             this.AvailableJumps = MaxJumps;
+            this.Level = level;
         }
 
         public void IsLeft(ButtonAction buttonState) {
@@ -93,26 +96,21 @@ namespace WareHouse3
         public void IsScaledDown() {
             Scale -= 0.01f;
         }
-        
-        public void UpdateBoundaries(Tile tile, Vector2 mapSize) {
-            
-            this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
-            this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
-            bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
-                                       this.Position.X < tile.BoundingRectangle.Right);
-            
-            this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : this.Ground = mapSize.Y;
-            this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
-        }
-        
-        public void UpdateCollisions(List<Tile> tiles, List<SoundEffect> notes, Vector2 mapSize)
+       
+        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
         {
 
-            var tile = ClosestTile(tiles);
+            var tile = Level.ClosestTile(tiles, Position);
             
-			UpdateBoundaries(tile, mapSize);
+			this.LeftBoundary = (tile.BoundingRectangle.Right <= this.Position.X) ? tile.BoundingRectangle.Right : 0.0f;
+			this.RightBoundary = (tile.BoundingRectangle.Left > this.Position.X) ? tile.BoundingRectangle.Left : mapSize.X;
+			bool horizontalBoundary = (this.Position.X > tile.BoundingRectangle.Left &&
+			                           this.Position.X < tile.BoundingRectangle.Right);
+			
+			this.Ground = (this.BoundingRectangle.Bottom <= tile.BoundingRectangle.Top && horizontalBoundary) ? tile.BoundingRectangle.Top : mapSize.Y;
+			this.Ceiling = (this.BoundingRectangle.Top >= tile.BoundingRectangle.Bottom && horizontalBoundary) ? tile.BoundingRectangle.Bottom : 0.0f;
             
-            System.Diagnostics.Debug.Print("");
+            //System.Diagnostics.Debug.Print("");
             //System.Diagnostics.Debug.Print("Position"+Position.ToString());
             //System.Diagnostics.Debug.Print("Tile Position"+tile.Position.ToString());
             //System.Diagnostics.Debug.Print("Number of Tiles"+tiles.Count.ToString());
@@ -120,10 +118,10 @@ namespace WareHouse3
             
             if (tile.Intersects(BoundingRectangle))
             {
-                
+
                 //System.Diagnostics.Debug.Print("Colliding");
-				tile.Color = Color.Blue;
-                int random = GameInfo.Random.Next(notes.Count);
+                //tile.Color = Color.Blue;
+                int random = GameInfo.Random.Next(0);//notes.Count);
                 
 				if (PreviousTileCollided != null && PreviousTileCollided != tile) {
                     PreviousTileCollided = null;
@@ -131,25 +129,80 @@ namespace WareHouse3
                 
                 if (PreviousTileCollided == null) {
                     PreviousTileCollided = tile;
-                    notes[random].Play();
+                    //notes[random].Play();
                 }
                 
             }
             else
             {
                 //System.Diagnostics.Debug.Print("Not Colliding");
-                tile.Color = tile.InitialColor;
+                //tile.Color = tile.InitialColor;
                 this.LeftBoundary = 0.0f;
                 this.RightBoundary = mapSize.X;
                 this.PreviousTileCollided = null;
             }
             
         }
+        
+        /// <summary>
+        /// Detects and resolves all collisions between the player and his neighboring
+        /// tiles. When a collision is detected, the player is pushed away along one
+        /// axis to prevent overlapping. There is some special logic for the Y axis to
+        /// handle platforms which behave differently depending on direction of movement.
+        /// </summary>
+        public void HandleCollisions(List<Tile> tiles, Vector2 mapSize)
+        {
+
+            var tile = Level.ClosestTile(tiles, Position);
+            
+            TileCollision collision = tile.Collision;
+            Rectangle tileBounds = tile.BoundingRectangle;
+            if (collision != TileCollision.Passable && Intersects(tileBounds))
+            {
+                // Determine collision depth (with direction) and magnitude.
+                Vector2 depth = RectangleExtensions.GetIntersectionDepth(BoundingRectangle, tileBounds);
+                if (depth != Vector2.Zero)
+                {
+                    float absDepthX = Math.Abs(depth.X);
+                    float absDepthY = Math.Abs(depth.Y);
+
+                    // Resolve the collision along the shallow axis.
+                    if (absDepthY < absDepthX || collision == TileCollision.Platform)
+                    {
+                    
+                        // If we crossed the top of a tile, we are on the ground.
+                        if (PreviousBottom <= tileBounds.Top) {
+
+                            this.Ground = tileBounds.Top;
+                        } 
+                        
+                        // If we crossed the bottom of a tile, we are hitting the tile from bellow.
+                        if (PreviousTop >= tileBounds.Bottom) {
+
+                            this.Ceiling = tileBounds.Bottom;
+                        } 
+                        
+                    }
+                    
+                }
+            } else {
+                this.Ceiling = 0.0f;
+                this.Ground = mapSize.Y;
+            }
+
+            // Save the new bounds bottom.
+            PreviousBottom = BoundingRectangle.Bottom;
+            PreviousTop = BoundingRectangle.Top;
+        }
+
 
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
 
             this.Position += this.Velocity;
+
+            HandleCollisions(Level.Tiles, mapSize);
+            //UpdateCollisions(Tiles, mapSize);
             
             BallMovement(Ground);
             
@@ -221,7 +274,7 @@ namespace WareHouse3
             byte blue = (byte)GameInfo.Random.Next(0, 255);
             Color col =  new Color(red, green, blue);
         
-            Circle particle = new Circle(position, Radius, 0.0f, 0.0f, 1.0f, col);
+            Circle particle = new Circle(position, Radius, 0.0f, 0.0f, 1.0f, col, null);
             particles.Add(particle);
         }
         
@@ -243,15 +296,6 @@ namespace WareHouse3
             }
         }
         
-        
-        public Tile ClosestTile(List<Tile> tiles)
-        {
-            // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
-            return tiles
-                .OrderBy(o => (o.Position - Position).LengthSquared())
-                .FirstOrDefault();
-        }
-       
 
         public override bool Intersects(Rectangle rectangle)
         {

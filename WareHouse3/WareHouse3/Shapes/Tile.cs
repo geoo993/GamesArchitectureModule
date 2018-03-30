@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WareHouse3
 {
@@ -35,6 +36,8 @@ namespace WareHouse3
     {
        
         public TileCollision Collision { get; private set; }
+
+        public SoundEffect Note { get; private set; } 
        
         /// <summary>
         /// movement speed of the shape.
@@ -164,7 +167,7 @@ namespace WareHouse3
             }
         }
         
-        protected Tile(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        protected Tile(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         {
             this.originType = FrameOrigin.OriginType.center;
             this.Origin = FrameOrigin.GetOrigin(width, height, this.originType);
@@ -195,6 +198,7 @@ namespace WareHouse3
             this.Texture = texture;
             this.HasTexture = (texture != null);
             this.Collision = collision;
+            this.Note = note;
             this.MotionState = new MotionState();
             this.LocalBounds = new Rectangle((int)this.Origin.X, (int)this.Origin.Y, width, height);
         }

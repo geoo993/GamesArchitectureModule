@@ -3,7 +3,7 @@
   <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note8.wav</SourceFile>
   <SourceTime>2017-12-27T17:40:27+00:00</SourceTime>
   <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/bin/MacOSX/note8.xnb</DestFile>
-  <DestTime>2018-03-29T15:51:10+01:00</DestTime>
+  <DestTime>2018-03-29T18:32:16+01:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

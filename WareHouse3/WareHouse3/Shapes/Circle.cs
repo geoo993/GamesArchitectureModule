@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WareHouse3
 {
@@ -47,8 +48,8 @@ namespace WareHouse3
         /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Circle(Vector2 position, int radius, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, radius * 2, radius * 2, speed, jump, mass, color, texture, collision)
+        public Circle(Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, radius * 2, radius * 2, speed, jump, mass, color, note, texture, collision)
         {
 			this.Radius = radius;
             CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);

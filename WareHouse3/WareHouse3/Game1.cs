@@ -27,6 +27,9 @@ namespace WareHouse3
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
+        // Global content.
+        private SpriteFont hudFont;
+        
         private Level level;
         
          #endregion
@@ -89,7 +92,8 @@ namespace WareHouse3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            hudFont = Content.Load<SpriteFont>("Fonts/CandyScript");
+            
             LoadLevel();
         }
         
@@ -127,6 +131,8 @@ namespace WareHouse3
             
             level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
             
+            //System.Diagnostics.Debug.Print("Camera Position"+ GameInfo.Camera.Position);
+            
             base.Update(gameTime);
         }
         
@@ -144,12 +150,39 @@ namespace WareHouse3
             //this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
             
+			DrawHud();
             level.Draw(gameTime, spriteBatch);
+
             
             this.spriteBatch.End();
 
             base.Draw(gameTime);
         
+        }
+        
+        private void DrawHud()
+        {
+            Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
+            Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - 100, GameInfo.Camera.Position.Y - (titleSafeArea.Height / 2.0f) + 10);
+           
+            
+            // Draw time remaining. Uses modulo division to cause blinking when the
+            // player is running out of time.
+            string timeString = "Play Xylophone song";
+            Color timeColor = Color.Yellow;
+            
+            DrawShadowedString(hudFont, timeString, hudLocation, timeColor, Color.Yellow);
+
+            // Draw score
+            float timeHeight = hudFont.MeasureString(timeString).Y;
+            DrawShadowedString(hudFont, "SCORE: ", hudLocation + new Vector2(0.0f, timeHeight * 1.2f), Color.Yellow, Color.Yellow);
+           
+        }
+
+        private void DrawShadowedString(SpriteFont font, string value, Vector2 position, Color color, Color borderColor)
+        {
+            spriteBatch.DrawString(font, value, position + new Vector2(1.0f, 1.0f), borderColor);
+            spriteBatch.DrawString(font, value, position, color);
         }
        
     }

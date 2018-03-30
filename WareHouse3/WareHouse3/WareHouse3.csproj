@@ -92,12 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
-    <None Include="Content\bin\MacOSX\crate.xnb">
-      <Link>Content\crate.xnb</Link>
-    </None>
-    <None Include="Content\bin\MacOSX\crate2.xnb">
-      <Link>Content\crate2.xnb</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -139,6 +133,33 @@
     <Content Include="Content\bin\MacOSX\note8.xnb">
       <Link>Content\Sounds\note8.xnb</Link>
     </Content>
+    <Content Include="Content\bin\MacOSX\NoteA.xnb">
+      <Link>Content\Notes\NoteA.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteB.xnb">
+      <Link>Content\Notes\NoteB.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteC.xnb">
+      <Link>Content\Notes\NoteC.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteC2.xnb">
+      <Link>Content\Notes\NoteC2.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteD.xnb">
+      <Link>Content\Notes\NoteD.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteE.xnb">
+      <Link>Content\Notes\NoteE.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteF.xnb">
+      <Link>Content\Notes\NoteF.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\NoteG.xnb">
+      <Link>Content\Notes\NoteG.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\CandyScript.xnb">
+      <Link>Content\Fonts\CandyScript.xnb</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -161,6 +182,8 @@
     <Folder Include="Shapes\" />
     <Folder Include="Obstacles\" />
     <Folder Include="Content\Sounds\" />
+    <Folder Include="Content\Notes\" />
+    <Folder Include="Content\Fonts\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

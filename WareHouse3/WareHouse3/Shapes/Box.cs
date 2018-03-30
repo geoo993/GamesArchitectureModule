@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WareHouse3
 {
@@ -11,11 +12,12 @@ namespace WareHouse3
         /// box border 
         /// </summary>
         PrimitiveLine BoxBorder;
-        
-        public Box(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, width, height, speed, jump, mass, color, texture, collision)
+
+        public Box(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, width, height, speed, jump, mass, color, note, texture, collision)
         {
             BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
+           
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -24,7 +26,6 @@ namespace WareHouse3
 			base.UpdatePosition(gameTime, mapSize);
             
             BoxBorder.CreateBox(Position - Origin, Position + Origin);
-            
         }
         
         

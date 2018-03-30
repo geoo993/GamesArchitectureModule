@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 // https://www.youtube.com/watch?v=ZLxIShw-7ac
 
@@ -11,8 +12,8 @@ namespace WareHouse3
     public class Dummies : Circle
     {
 		
-        public Dummies(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
-        : base(position, width, speed, jump, mass, color, texture, collision)
+        public Dummies(Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        : base(position, width, speed, jump, mass, color, note, texture, collision)
         {
             
         }
