@@ -75,20 +75,21 @@
     <Compile Include="Animations\Animation.cs" />
     <Compile Include="Extensions\RectangleExtensions.cs" />
     <Compile Include="Levels\Level.cs" />
-    <Compile Include="GameCore\GameInfo.cs" />
-    <Compile Include="GameCore\GameManager.cs" />
-    <Compile Include="Extensions\Origin.cs" />
+    <Compile Include="GameInfo\GameInfo.cs" />
     <Compile Include="Extensions\MathExtensions.cs" />
     <Compile Include="Extensions\ColorExtension.cs" />
     <Compile Include="Shapes\Box.cs" />
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\PrimitiveLine.cs" />
-    <Compile Include="Shapes\Tile.cs" />
-    <Compile Include="Characters\Ball.cs" />
-    <Compile Include="Characters\MotionState.cs" />
-    <Compile Include="GameCore\Camera.cs" />
-    <Compile Include="Obstacles\Dummies.cs" />
+    <Compile Include="Ball\Ball.cs" />
+    <Compile Include="Collectables\Dummies.cs" />
     <Compile Include="Levels\Loader.cs" />
+    <Compile Include="Utilities\FrameCounter.cs" />
+    <Compile Include="Utilities\Camera.cs" />
+    <Compile Include="Utilities\Origin.cs" />
+    <Compile Include="Tile\MotionState.cs" />
+    <Compile Include="Tile\Tile.cs" />
+    <Compile Include="Utilities\SmoothFramerate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -176,14 +177,16 @@
     </NativeReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GameCore\" />
+    <Folder Include="GameInfo\" />
     <Folder Include="Content\Levels\" />
     <Folder Include="Assets\" />
     <Folder Include="Shapes\" />
-    <Folder Include="Obstacles\" />
+    <Folder Include="Collectables\" />
     <Folder Include="Content\Sounds\" />
     <Folder Include="Content\Notes\" />
     <Folder Include="Content\Fonts\" />
+    <Folder Include="Utilities\" />
+    <Folder Include="Tile\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteA.png</SourceFile>
-  <SourceTime>2018-03-29T18:30:38+01:00</SourceTime>
+  <SourceTime>2018-03-31T00:48:55+01:00</SourceTime>
   <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/bin/DesktopGL/Content/NoteA.xnb</DestFile>
-  <DestTime>2018-03-29T18:40:45+01:00</DestTime>
+  <DestTime>2018-03-31T00:53:10+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

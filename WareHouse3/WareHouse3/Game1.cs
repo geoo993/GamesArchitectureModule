@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics.Tracing;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,7 +20,9 @@ namespace WareHouse3
     public class Game1 : Game
     {
         #region Fields
-        private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f); 
+        //private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f); 
+         private FrameCounter frameCounter = new FrameCounter();
+         private SmoothFramerate smoothFPS = new SmoothFramerate(1000);
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -131,7 +131,6 @@ namespace WareHouse3
             
             level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
             
-            //System.Diagnostics.Debug.Print("Camera Position"+ GameInfo.Camera.Position);
             
             base.Update(gameTime);
         }
@@ -150,7 +149,7 @@ namespace WareHouse3
             //this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
             
-			DrawHud();
+			DrawHud(gameTime);
             level.Draw(gameTime, spriteBatch);
 
             
@@ -160,23 +159,32 @@ namespace WareHouse3
         
         }
         
-        private void DrawHud()
+        private void DrawHud(GameTime gameTime)
         {
             Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
             Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - 100, GameInfo.Camera.Position.Y - (titleSafeArea.Height / 2.0f) + 10);
-           
+            Color hudColor = Color.Yellow;
             
             // Draw time remaining. Uses modulo division to cause blinking when the
             // player is running out of time.
             string timeString = "Play Xylophone song";
             Color timeColor = Color.Yellow;
             
-            DrawShadowedString(hudFont, timeString, hudLocation, timeColor, Color.Yellow);
+            DrawShadowedString(hudFont, timeString, hudLocation, timeColor, hudColor);
 
             // Draw score
             float timeHeight = hudFont.MeasureString(timeString).Y;
-            DrawShadowedString(hudFont, "SCORE: ", hudLocation + new Vector2(0.0f, timeHeight * 1.2f), Color.Yellow, Color.Yellow);
-           
+            DrawShadowedString(hudFont, "SCORE: ", hudLocation + new Vector2(0.0f, timeHeight * 1.2f), hudColor, hudColor);
+            
+            
+            frameCounter.Update(gameTime);
+            smoothFPS.Update(gameTime);
+    
+            var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
+            var fps2 = string.Format("Smooth FPS: {0}", smoothFPS.Framerate);
+    
+            DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y), hudColor, hudColor);
+            DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y + (timeHeight * 1.2f)), hudColor, hudColor);
         }
 
         private void DrawShadowedString(SpriteFont font, string value, Vector2 position, Color color, Color borderColor)
