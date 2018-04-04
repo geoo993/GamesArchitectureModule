@@ -17,7 +17,8 @@ namespace WareHouse3
         public static readonly int MapHeight = (int)(double)GameManager.manager["MapHeight"];
         public static readonly int LevelHorizontalLength = (int)(double)GameManager.manager["LevelHorizontalLength"];
         public static readonly int LevelVerticalLength = (int)(double)GameManager.manager["LevelVerticalLength"];
-    
+        public static readonly int SplashScreenCountDown = (int)(double)GameManager.manager["SplashScreenCountDown"];
+        
         public static readonly Camera Camera = new Camera();  
         public static readonly Random Random = new Random(DateTime.Now.Millisecond);
         

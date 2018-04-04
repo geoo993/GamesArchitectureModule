@@ -7,9 +7,9 @@ namespace WareHouse3
 {
    
     //-----------------------------------------------------------------------------
-    // GameNPCStates
+    // NoteStates
     //
-    // States of a NPC
+    // States of a Notes
     //-----------------------------------------------------------------------------
     public enum NoteStates
     {

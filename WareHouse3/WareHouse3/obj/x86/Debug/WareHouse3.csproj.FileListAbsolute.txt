@@ -26,3 +26,8 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/NoteF.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/NoteG.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/GameFont.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/SplashScreen.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/GameOverImage.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/GameWonImage.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/MainMenu.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/Splash.xnb

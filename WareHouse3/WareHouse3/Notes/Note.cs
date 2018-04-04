@@ -103,7 +103,7 @@ namespace WareHouse3
         }
         
         //-----------------------------------------------------------------------------
-        //
+        //Set a New state of Finite State Machine
         //-----------------------------------------------------------------------------
         public void SetState(NoteStates state)
         {

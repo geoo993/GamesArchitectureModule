@@ -215,14 +215,14 @@ namespace WareHouse3
 
 
        // Move the camera's position based on input
-       public void SetKeyoardBindings() 
+       public void SetKeyoardBindings(CommandManager commandManager) 
         {
-            Commands.manager.AddKeyboardBinding(Keys.A, ScrollLeft);
-            Commands.manager.AddKeyboardBinding(Keys.D, ScrollRight);
-            Commands.manager.AddKeyboardBinding(Keys.W, ScrollUp);
-            Commands.manager.AddKeyboardBinding(Keys.S, ScrollDown);
-            Commands.manager.AddKeyboardBinding(Keys.OemPeriod, ZoomOut);
-            Commands.manager.AddKeyboardBinding(Keys.OemComma, ZoomIn);
+            commandManager.AddKeyboardBinding(Keys.A, ScrollLeft);
+            commandManager.AddKeyboardBinding(Keys.D, ScrollRight);
+            commandManager.AddKeyboardBinding(Keys.W, ScrollUp);
+            commandManager.AddKeyboardBinding(Keys.S, ScrollDown);
+            commandManager.AddKeyboardBinding(Keys.OemPeriod, ZoomOut);
+            commandManager.AddKeyboardBinding(Keys.OemComma, ZoomIn);
         }
         
        public void UpdateInputs()

@@ -324,16 +324,16 @@ namespace WareHouse3
                     NoteToSelect = XylophoneSongs.Instance.GetNextElement(songName, SelectedNoteindex);
                 } 
                 
-				Debug.Print("");
-				Debug.Print(NoteToSelect+" at index "+ SelectedNoteindex.ToString());
-				Debug.Print(note.NoteName);
+				//Debug.Print("");
+				//Debug.Print(NoteToSelect+" at index "+ SelectedNoteindex.ToString());
+				//Debug.Print(note.NoteName);
                 
                 note.SetState(NoteStates.ENABLED);
             }
             
             if (OnCollisionExit)
             {
-                Debug.Print("");
+                //Debug.Print("");
                 PreviousNote.SetState(NoteStates.DISABLED);
             }
 

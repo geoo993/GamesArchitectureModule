@@ -110,8 +110,8 @@ namespace WareHouse3
         public void Update(TimeSpan currentGameTime)
         {
         
-            if (FrameCounter.MustSkipFrame(UpdateWaitMilliseconds, currentGameTime, PreviousGameTime))
-                return;
+            //if (FrameCounter.MustSkipFrame(UpdateWaitMilliseconds, currentGameTime, PreviousGameTime))
+            //    return;
 
             if (CurrentState != null)
                 CurrentState.Update(ref Parent, currentGameTime);

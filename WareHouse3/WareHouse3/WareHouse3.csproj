@@ -82,7 +82,6 @@
     <Compile Include="Shapes\Circle.cs" />
     <Compile Include="Shapes\PrimitiveLine.cs" />
     <Compile Include="Ball\Ball.cs" />
-    <Compile Include="Collectables\Dummies.cs" />
     <Compile Include="Levels\Loader.cs" />
     <Compile Include="Utilities\FrameCounter.cs" />
     <Compile Include="Utilities\Camera.cs" />
@@ -93,13 +92,19 @@
     <Compile Include="Utilities\ProgressBar.cs" />
     <Compile Include="DesignPattern\State.cs" />
     <Compile Include="DesignPattern\StateMachine.cs" />
-    <Compile Include="DesignPattern\GameObserver.cs" />
     <Compile Include="DesignPattern\Transition.cs" />
     <Compile Include="Screens\ScreensManager.cs" />
     <Compile Include="Notes\Note.cs" />
     <Compile Include="Notes\NoteStates.cs" />
     <Compile Include="Screens\ScreensState.cs" />
     <Compile Include="Songs\Songs.cs" />
+    <Compile Include="Screens\SplashScreen.cs" />
+    <Compile Include="Screens\MainScreen.cs" />
+    <Compile Include="Screens\LevelScreen.cs" />
+    <Compile Include="Screens\WinScreen.cs" />
+    <Compile Include="Screens\LoseScreen.cs" />
+    <Compile Include="Screens\Screen.cs" />
+    <Compile Include="Screens\GameObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -177,6 +182,21 @@
     <Content Include="Content\bin\MacOSX\GameFont.xnb">
       <Link>Content\Fonts\GameFont.xnb</Link>
     </Content>
+    <Content Include="Content\bin\MacOSX\SplashScreen.xnb">
+      <Link>Content\Screens\SplashScreen.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\GameOverImage.xnb">
+      <Link>Content\Screens\GameOverImage.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\GameWonImage.xnb">
+      <Link>Content\Screens\GameWonImage.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\MainMenu.xnb">
+      <Link>Content\Screens\MainMenu.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Splash.xnb">
+      <Link>Content\Screens\Splash.xnb</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -207,6 +227,7 @@
     <Folder Include="Screens\" />
     <Folder Include="Notes\" />
     <Folder Include="Songs\" />
+    <Folder Include="Content\Screens\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
