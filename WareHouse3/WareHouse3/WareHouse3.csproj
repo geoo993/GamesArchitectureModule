@@ -90,6 +90,16 @@
     <Compile Include="Tile\MotionState.cs" />
     <Compile Include="Tile\Tile.cs" />
     <Compile Include="Utilities\SmoothFramerate.cs" />
+    <Compile Include="Utilities\ProgressBar.cs" />
+    <Compile Include="DesignPattern\State.cs" />
+    <Compile Include="DesignPattern\StateMachine.cs" />
+    <Compile Include="DesignPattern\GameObserver.cs" />
+    <Compile Include="DesignPattern\Transition.cs" />
+    <Compile Include="Screens\ScreensManager.cs" />
+    <Compile Include="Notes\Note.cs" />
+    <Compile Include="Notes\NoteStates.cs" />
+    <Compile Include="Screens\ScreensState.cs" />
+    <Compile Include="Songs\Songs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -107,8 +117,8 @@
     <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Scripts\GameManager.lua">
       <Link>Content\Scripts\GameManager.lua</Link>
     </Content>
-    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level.txt">
-      <Link>Content\Levels\level.txt</Link>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level1.txt">
+      <Link>Content\Levels\level1.txt</Link>
     </Content>
     <Content Include="Content\bin\MacOSX\note1.xnb">
       <Link>Content\Sounds\note1.xnb</Link>
@@ -158,8 +168,14 @@
     <Content Include="Content\bin\MacOSX\NoteG.xnb">
       <Link>Content\Notes\NoteG.xnb</Link>
     </Content>
-    <Content Include="Content\bin\MacOSX\CandyScript.xnb">
-      <Link>Content\Fonts\CandyScript.xnb</Link>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level2.txt">
+      <Link>Content\Levels\level2.txt</Link>
+    </Content>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Levels\level3.txt">
+      <Link>Content\Levels\level3.txt</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\GameFont.xnb">
+      <Link>Content\Fonts\GameFont.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +203,10 @@
     <Folder Include="Content\Fonts\" />
     <Folder Include="Utilities\" />
     <Folder Include="Tile\" />
+    <Folder Include="DesignPattern\" />
+    <Folder Include="Screens\" />
+    <Folder Include="Notes\" />
+    <Folder Include="Songs\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

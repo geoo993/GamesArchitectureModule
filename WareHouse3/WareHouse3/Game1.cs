@@ -19,16 +19,60 @@ namespace WareHouse3
     /// </summary>
     public class Game1 : Game
     {
+        
+        
+        public class GameStates
+        {
+        
+            public enum GameState
+            {
+                Splash,
+                Menu,
+                Game, 
+                Credits,
+            }
+    
+            public GameStates()
+            {
+            }
+        }
+    
+        enum Mode {
+            initiual,  // splash screen, unload everything before comming to this screen
+            mainMenu,  // unload everything before comming to this screen
+            level1,    // unload everything before comming to this screen
+            level2,    // unload everything before comming to this screen
+            level3,    // unload everything before comming to this screen
+            win,       // unload everything before comming to this screen
+            lose       // unload everything before comming to this screen
+        
+        }
+        
+        class State {
+        
+        
+        }
+        
+        enum Event {
+            didStartGame,
+            didPauseGame,
+            didGoToMainMenu,
+            didEndGame,
+        }
+        
+        
         #region Fields
         //private readonly TimeSpan timePerFrame = TimeSpan.FromSeconds(1f/30f); 
          private FrameCounter frameCounter = new FrameCounter();
          private SmoothFramerate smoothFPS = new SmoothFramerate(1000);
+
         
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
         // Global content.
-        private SpriteFont hudFont;
+        private SpriteFont HudFont;
+		Progressbar HudProgressBar = null;
         
         private Level level;
         
@@ -69,7 +113,7 @@ namespace WareHouse3
             Device.graphicsDevice = graphics.GraphicsDevice;
 			Commands.manager.AddKeyboardBinding(Keys.Escape, StopGame);
             GameInfo.Camera.SetKeyoardBindings();
-            
+            HudProgressBar = new Progressbar();
             base.Initialize();
         }
 
@@ -92,7 +136,7 @@ namespace WareHouse3
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            hudFont = Content.Load<SpriteFont>("Fonts/CandyScript");
+            HudFont = Content.Load<SpriteFont>("Fonts/GameFont");
             
             LoadLevel();
         }
@@ -104,7 +148,7 @@ namespace WareHouse3
                 level.Dispose();
 
             // Load the level.
-            string levelPath = string.Format("Content/Levels/level.txt");
+            string levelPath = string.Format("Content/Levels/level3.txt");
             using (Stream fileStream = TitleContainer.OpenStream(levelPath))
                 level = new Level(Services, fileStream, Commands.manager);
         }
@@ -130,7 +174,7 @@ namespace WareHouse3
             Commands.manager.Update();
             
             level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
-            
+            HudProgressBar.Update(gameTime.TotalGameTime);
             
             base.Update(gameTime);
         }
@@ -162,29 +206,33 @@ namespace WareHouse3
         private void DrawHud(GameTime gameTime)
         {
             Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
-            Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - 100, GameInfo.Camera.Position.Y - (titleSafeArea.Height / 2.0f) + 10);
+            Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (titleSafeArea.Height / 2.0f) + 10);
             Color hudColor = Color.Yellow;
-            
+
             // Draw time remaining. Uses modulo division to cause blinking when the
             // player is running out of time.
-            string timeString = "Play Xylophone song";
-            Color timeColor = Color.Yellow;
+            string songName = XylophoneSongs.Instance.GetSong(level.CurrentSong);
+            Color hudBorderColor = Color.Yellow;
             
-            DrawShadowedString(hudFont, timeString, hudLocation, timeColor, hudColor);
+            float songNameWidth = HudFont.MeasureString(songName).X;
+			float songNameHeight = HudFont.MeasureString(songName).Y;
+            DrawShadowedString(HudFont, songName, hudLocation + new Vector2(-(songNameWidth * 0.5f), 0.0f), hudColor, hudBorderColor);
 
             // Draw score
-            float timeHeight = hudFont.MeasureString(timeString).Y;
-            DrawShadowedString(hudFont, "SCORE: ", hudLocation + new Vector2(0.0f, timeHeight * 1.2f), hudColor, hudColor);
+            DrawShadowedString(HudFont, "SCORE: ", hudLocation + new Vector2(0.0f, songNameHeight * 1.2f), hudColor, hudBorderColor);
             
             
-            frameCounter.Update(gameTime);
-            smoothFPS.Update(gameTime);
+            HudProgressBar.Construct((int)songNameWidth, (int)songNameHeight, hudLocation - new Vector2(-(songNameWidth * 0.5f), 0.0f), Color.Orange, Color.SlateBlue);
+            HudProgressBar.Draw(spriteBatch);
+            
+            //frameCounter.Update(gameTime);
+            //smoothFPS.Update(gameTime);
     
-            var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
-            var fps2 = string.Format("Smooth FPS: {0}", smoothFPS.Framerate);
+            //var fps = string.Format("FPS: {0}", frameCounter.AverageFramesPerSecond);
+            //var fps2 = string.Format("Smooth FPS: {0}", smoothFPS.Framerate);
     
-            DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y), hudColor, hudColor);
-            DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y + (timeHeight * 1.2f)), hudColor, hudColor);
+            //DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y), hudColor, hudColor);
+            //DrawShadowedString(hudFont, fps, new Vector2(hudLocation.X + 100 - (titleSafeArea.Width / 2.0f), hudLocation.Y + (timeHeight * 1.2f)), hudColor, hudColor);
         }
 
         private void DrawShadowedString(SpriteFont font, string value, Vector2 position, Color color, Color borderColor)

@@ -15,7 +15,7 @@ namespace WareHouse3
         public Dummies(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, width, speed, jump, mass, color, note, texture, collision)
         {
-            
+            this.HasFSM = false;
         }
 
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -56,5 +56,9 @@ namespace WareHouse3
 			base.Render(spriteBatch);
         }
         
+        public override void Destroy()
+        {
+            base.Destroy();
+        }
     }
 }

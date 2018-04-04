@@ -55,6 +55,7 @@ namespace WareHouse3
 			this.Radius = radius;
             this.IsBorderEnabled = false;
             this.CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
+            this.HasFSM = false;
         }
      
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -299,6 +300,11 @@ namespace WareHouse3
             var distance = MathExtensions.GetDistance(mc1.Position, mc2.Position);
             
             return (distance <= radiusOfBoth);
+        }
+        
+        public override void Destroy()
+        {
+            base.Destroy();
         }
         
     }

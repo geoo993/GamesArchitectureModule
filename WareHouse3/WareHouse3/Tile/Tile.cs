@@ -34,18 +34,23 @@ namespace WareHouse3
 
     public abstract class Tile
     {
-       
+        /// <summary>
+        /// use state machine for tile
+        /// </summary>
+        public bool HasFSM;
+        protected StateMachine FSM { get; set; }
+        
         public TileCollision Collision { get; private set; }
 
         /// <summary>
         /// xylophone sound note of the tile if any
         /// </summary>
-        public SoundEffect Note { get; private set; } 
+        public SoundEffect Note { get; set; } 
         
         /// <summary>
         /// tile name
         /// </summary>
-        public String Name { get; private set; } 
+        public String Name { get; set; } 
        
         /// <summary>
         /// movement speed of the shape.
@@ -86,8 +91,9 @@ namespace WareHouse3
         /// <summary>
         /// texture of the shape
         /// </summary>
+        private Texture2D OriginalTexture { get; set; }
         public Texture2D Texture { get; set; }
-        protected bool HasTexture;
+        public bool HasTexture;
         
         /// <summary>
         /// Center position of the shape.
@@ -204,11 +210,12 @@ namespace WareHouse3
             this.InitialColor = color;
             this.BorderColor = Color.White;
 			this.Opacity = 1.0f;
-            this.Texture = texture;
+            this.OriginalTexture = texture;
             this.HasTexture = (texture != null);
             this.Collision = collision;
             this.Note = note;
             this.MotionState = new MotionState();
+            this.HasFSM = false;
             this.LocalBounds = new Rectangle((int)this.Origin.X, (int)this.Origin.Y, width, height);
         }
         
@@ -216,13 +223,20 @@ namespace WareHouse3
         
             CurrentPosition = Position;
             if (CurrentPosition.Y > OldPosition.Y) {
-                MotionState.mode = MotionState.Mode.falling;
+                MotionState.Process(MotionState.Event.didStartFalling);
             } else if (CurrentPosition.Y < OldPosition.Y) {
-                MotionState.mode = MotionState.Mode.jumping;
+                MotionState.Process(MotionState.Event.didStartJumping);
             }
             else
             {
-                MotionState.mode = (CurrentPosition.X < OldPosition.X || CurrentPosition.X > OldPosition.X) ? MotionState.Mode.moving : MotionState.Mode.grounded;
+                if (CurrentPosition.X < OldPosition.X || CurrentPosition.X > OldPosition.X)
+                {
+                    MotionState.Process(MotionState.Event.didStartMoving);
+                }
+                else
+                {
+                    MotionState.Process(MotionState.Event.didStayGrounded);
+                }
             }
             OldPosition = CurrentPosition;
             
@@ -230,13 +244,18 @@ namespace WareHouse3
        
         public virtual void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
-            CurrentMode();
+			CurrentMode();
             
             // Make sure that the shape does not go out of bounds
             Position.X = MathHelper.Clamp(Position.X, LeftBoundary + Origin.X, (Origin.X + RightBoundary) - Width);
             Position.Y = MathHelper.Clamp(Position.Y, Ceiling + Origin.Y, (Origin.Y + Ground) - Height);
+            
+            BorderColor = this.Color;
 
-            this.BorderColor = this.Color;   
+            if (FSM != null)
+            {
+                FSM.Update(gameTime.TotalGameTime);
+            }
         }
 
         public virtual bool Intersects(Rectangle rectangle)
@@ -253,12 +272,32 @@ namespace WareHouse3
         
         public virtual void Render(SpriteBatch spriteBatch)
         {
+            if (Texture == null)
+            {
+                this.Texture = OriginalTexture;
+            }
+            
             if (HasTexture == false)
             {
                 Texture = CreateTexture();
             } 
 			spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Vector2.Zero, SpriteEffects.None, Depth);
+        }
+        
+        
+        public virtual void Destroy()
+        {
+            Texture = null;
+            Note = null;
+            MotionState = null;
+            
+            if (FSM != null)
+            {
+                FSM.Destroy();
+                FSM = null;
+            }
 
         }
+        
     }
 }

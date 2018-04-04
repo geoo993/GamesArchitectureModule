@@ -19,6 +19,7 @@ namespace WareHouse3
         {
             this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
             this.IsBorderEnabled = false;
+            this.HasFSM = false;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -81,6 +82,11 @@ namespace WareHouse3
                 BoxBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
 
+        }
+        
+        public override void Destroy()
+        {
+            base.Destroy();
         }
         
     }

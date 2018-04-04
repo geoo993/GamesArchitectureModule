@@ -25,4 +25,4 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/NoteE.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/NoteF.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/NoteG.xnb
-/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/CandyScript.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/bin/Debug/Content/GameFont.xnb

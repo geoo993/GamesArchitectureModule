@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using System.IO;
+using System.Diagnostics;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -28,22 +29,21 @@ namespace WareHouse3
     public class Level 
     {
         public List<Tile> Tiles;
-        private Ball Ball;  
+        private Ball Ball;
+
+        public SongType CurrentSong;
         
         
         // Level game state.
         private Random random = new Random(354668); // Arbitrary, but constant seed
+
+        // Level content.        
+        private ContentManager Content;
         
-         // Level content.        
-        public ContentManager Content
-        {
-            get { return content; }
-        }
-        ContentManager content;
+        private CommandManager CommandManager;
         
-        private Loader loader;
-        
-        
+        private Loader Loader;
+
         #region Bounds and collision
 
         /// <summary>
@@ -110,89 +110,16 @@ namespace WareHouse3
         public Level(IServiceProvider serviceProvider, Stream fileStream, CommandManager manager)
         {
             // Create a new content manager to load content used just by this level.
-            content = new ContentManager(serviceProvider, "Content");
-            
-            loader = new Loader(fileStream);
+            Content = new ContentManager(serviceProvider, "Content");
+            CommandManager = manager;
+            Loader = new Loader(fileStream);
+            CurrentSong = SongType.IncyIncySpider;
             HorizontalLength = GameInfo.LevelHorizontalLength;
             VerticalLength = GameInfo.LevelVerticalLength;
             
-            SetKeyoardBindings(manager);
             LoadTiles(fileStream);
         }
         
-         private void SetKeyoardBindings(CommandManager manager) 
-        {
-            manager.AddKeyboardBinding(Keys.Left, LeftMovement);
-            manager.AddKeyboardBinding(Keys.Right, RightMovement);
-            manager.AddKeyboardBinding(Keys.Up, UpMovement);
-            manager.AddKeyboardBinding(Keys.Down, DownMovement);
-            manager.AddKeyboardBinding(Keys.Space, JumpMovement);
-            //manager.AddKeyboardBinding(Keys.Escape, StopGame);
-        }
-        
-        //public void StopGame(ButtonAction buttonState, Vector2 amount)
-        //{
-        //    if (buttonState == ButtonAction.DOWN)
-        //    {
-                
-        //    }
-        //}
-
-
-        void LeftMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            Ball.IsLeft(buttonState);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                
-            }
-            
-            if (buttonState == ButtonAction.UP)
-            {
-               
-            } 
-        }
-        
-        void RightMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            Ball.IsRight(buttonState);
-            
-            if (buttonState == ButtonAction.DOWN)
-            {
-                
-            } 
-            
-            if (buttonState == ButtonAction.UP)
-            {
-                
-            } 
-        }
-        
-        void UpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Ball.IsScaledUp();
-            }
-        }
-        
-        
-        void DownMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                Ball.IsScaledDown();
-            }
-        }
-   
-        void JumpMovement(ButtonAction buttonState, Vector2 amount)
-        {
-            if (buttonState == ButtonAction.PRESSED)
-            {
-                Ball.IsJump();
-            }
-        }
      
         /// <summary>
         /// Iterates over every tile in the structure file and loads its
@@ -208,7 +135,7 @@ namespace WareHouse3
             List<string> lines = new List<string>();
             Tiles = new List<Tile>();
          
-            lines = loader.ReadLinesFromTextFile();
+            lines = Loader.ReadLinesFromTextFile();
             // Loop over every tile position,
             for (int y = 0; y < VerticalLength; ++y)
             {
@@ -248,36 +175,19 @@ namespace WareHouse3
                 // Blank space
                 case '.':
                     return LoadEmptyTile(TileCollision.Passable);
-                case 'A':
-                    return LoadVarietyTile("NoteA", 6, x, y, Color.White, TileCollision.Platform);
-                case 'B':
-                    return LoadVarietyTile("NoteB", 7, x, y, Color.White, TileCollision.Platform);
-                case 'C':
-                    return LoadVarietyTile("NoteC", 1, x, y, Color.White, TileCollision.Platform);
-                case 'K':
-                    return LoadVarietyTile("NoteC2", 8, x, y, Color.White, TileCollision.Platform);
-                case 'D':
-                    return LoadVarietyTile("NoteD", 2, x, y, Color.White, TileCollision.Platform);
-                case 'E':
-                    return LoadVarietyTile("NoteE", 3, x, y, Color.White, TileCollision.Platform);
-                case 'F':
-                    return LoadVarietyTile("NoteF", 4, x, y, Color.White, TileCollision.Platform);
-                case 'G':
-                    return LoadVarietyTile("NoteG", 5, x, y, Color.White,  TileCollision.Platform);
-                    // Passable block
-                case '$':
-                    return LoadVarietyTile("Collectable", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Passable);
-                // Impassable block
-                case '~':
-                    return LoadVarietyTile("Trolley", 0,  x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
+                //case '$':
+                //    return LoadVarietyTile("Collectable", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Passable);
+                //// Impassable block
+                //case '~':
+                //    return LoadVarietyTile("Trolley", 0,  x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
 
-                // Impassable block
-                case ':':
-                    return LoadVarietyTile("PackageBox", 0, x, y,  GameInfo.Instance.RandomColor(),  TileCollision.Impassable);
+                //// Impassable block
+                //case ':':
+                //    return LoadVarietyTile("PackageBox", x, y,  GameInfo.Instance.RandomColor(),  TileCollision.Impassable);
 
-                // Platform block
+                //// Platform block
                 case '#':
-                    return LoadVarietyTile("Platform", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Platform);
+                    return LoadNoteTile("Platform", x, y,  Color.White, TileCollision.Platform);
 
                 // Unknown tile type character
                 default:
@@ -302,23 +212,27 @@ namespace WareHouse3
         /// The tile collision type for the new tile.
         /// </param>
         /// <returns>The new tile.</returns>
-        private Tile LoadTile(string name, int index, Vector2 position, Color color, TileCollision collision)
+        private Tile LoadTile(string name, Vector2 position, Color color, TileCollision collision)
         {
             Texture2D texture; 
-            SoundEffect note; 
+            SoundEffect note;
             
+            var randNote = NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes);
+            var noteName = NoteInfo.KeyByValue(randNote);
+                    
             //<- file creating stuff here -> 
             try { 
             //<-- try to load the file --> 
-                texture = Content.Load<Texture2D>("Notes/" + name);
-                note = content.Load<SoundEffect>("Sounds/note"+index);
+                texture = Content.Load<Texture2D>("Notes/"+ noteName);
+                note = Content.Load<SoundEffect>("Sounds/"+ randNote);
             } catch {
                 //<--print exception--> 
                 texture = null;
                 note = null;
             } 
-            
-            return new Box(name+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
+            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision, NoteStates.EMPTY);
+            Note.NoteName = noteName;
+            return Note;
         }
         
         /// <summary>
@@ -331,10 +245,10 @@ namespace WareHouse3
         /// <param name="variationCount">
         /// The number of variations in this group.
         /// </param>
-        private Tile LoadVarietyTile(string name, int index, int x, int y, Color color, TileCollision collision)
+        private Tile LoadNoteTile(string name, int x, int y, Color color, TileCollision collision)
         {
             Point position = GetBounds(x, y).Center;
-            return LoadTile(name, index, new Vector2(position.X, position.Y), color, collision);
+            return LoadTile(name, new Vector2(position.X, position.Y), color, collision);
         }
         
         /// <summary>
@@ -343,13 +257,14 @@ namespace WareHouse3
         private Tile LoadPlayerTile(int x, int y, TileCollision collision)
         {
             if (Ball != null)
-                throw new NotSupportedException("A level may only have one starting point.");
+                throw new NotSupportedException("A level may only have one ball.");
 
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
             Ball = new Ball("Ball", this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
-
+            Ball.SetKeyoardBindings(CommandManager);
+            
             return null;
         }
         
@@ -375,11 +290,26 @@ namespace WareHouse3
             GameInfo.Camera.CenterOn(Ball, false);
            
             Ball.UpdatePosition(gameTime, mapSize);
-            
-            foreach (Tile tile in Tiles)
+
+            for (int i = 0; i < Tiles.Count; ++i)
             {
-            
-                tile.UpdatePosition(gameTime, mapSize);
+                var note = (Note)Tiles[i];
+                
+                if (Ball.SelectedNote != null)
+                {
+                 
+					var noteName = (GameInfo.Random.Next(10) > 8) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : Ball.NoteToSelect;
+                    var noteAsset = NoteInfo.AvailableNotes[noteName];
+
+                    note.Name = noteName+(i+1).ToString();
+                    note.NoteName = noteName;
+                    note.HasTexture = true;
+                    note.Color = Color.White;
+                    note.Texture = Content.Load<Texture2D>("Notes/" + noteName);
+                    note.Note = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                }
+                
+                note.UpdatePosition(gameTime, mapSize);
             }
 
         }

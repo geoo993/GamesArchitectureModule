@@ -10,33 +10,66 @@ namespace WareHouse3
             moving,
         } 
         
-        public Mode mode;
+        public enum Event {
+            didStayGrounded,
+            didStartMoving,
+            didStartFalling,
+            didStartJumping
+        }
+        
+        public class State {
+            public Mode mode = Mode.grounded;
+            
+            public bool IsFalling {
+                get {
+                    return mode == Mode.falling;
+                }
+            }
+        
+            public bool IsGrounded {
+                get {
+                    return mode == Mode.grounded;
+                }
+            }
+            
+            public bool IsJumping {
+                get {
+                    return mode == Mode.jumping;
+                }
+            }
+            
+            public bool IsMoving {
+                get {
+                    return mode == Mode.moving;
+                }
+            }
+        }
+
+        public State state { get; private set; }
+         
         public MotionState() {
-            mode = Mode.grounded;
+            state = new State();
         }
         
-        public bool IsFalling {
-            get {
-                return mode == Mode.falling;
+        public void Process(Event even) {
+            switch (even) {
+            case Event.didStayGrounded:
+                 state.mode = Mode.grounded;
+                 break;
+            case Event.didStartMoving:
+                 state.mode = Mode.moving;
+                 break;
+            case Event.didStartFalling:
+                 state.mode = Mode.falling;
+                 break;
+            case Event.didStartJumping:
+                 state.mode = Mode.jumping;
+                 break;
+            default:
+                 break;
+            
             }
         }
         
-        public bool IsGrounded {
-            get {
-                return mode == Mode.grounded;
-            }
-        }
-        
-        public bool IsJumping {
-            get {
-                return mode == Mode.jumping;
-            }
-        }
-        
-        public bool IsMoving {
-            get {
-                return mode == Mode.moving;
-            }
-        }
     }
 }

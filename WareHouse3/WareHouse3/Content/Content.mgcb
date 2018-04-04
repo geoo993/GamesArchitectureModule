@@ -13,12 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin CandyScript.spritefont
+#begin GameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:CandyScript.spritefont
+/build:GameFont.spritefont
 
 #begin note1.wav
 /importer:WavImporter

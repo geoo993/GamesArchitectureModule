@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Diagnostics;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Input;
 
 // https://www.gamedev.net/forums/topic/610640-xnac-method-for-jumping/
 // https://stackoverflow.com/questions/20705928/how-can-i-double-jump-in-my-platform-game-code
@@ -43,7 +45,13 @@ namespace WareHouse3
         
         private bool IsIntersecting = false;
         private bool OnCollisionEnter;
-        private Tile PreviousTileCollided = null;
+        private bool OnCollisionExit;
+        private Note PreviousNoteCollided = null;
+        public Note PreviousNote { get; private set; }
+        
+        public String NoteToSelect = null;
+        public String SelectedNote = null;
+        public int SelectedNoteindex = 0;
         
         /// <summary>
         /// colliding obstacles
@@ -59,11 +67,25 @@ namespace WareHouse3
             this.Obstacles = new List<Rectangle>();
             this.AvailableJumps = MaxJumps;
             this.Level = level;
-            this.PreviousTileCollided = this;
+            this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
+            this.HasFSM = false;
         }
 
-        public void IsLeft(ButtonAction buttonState) {
+        
+        public void SetKeyoardBindings(CommandManager manager) 
+        {
+            manager.AddKeyboardBinding(Keys.Left, LeftMovement);
+            manager.AddKeyboardBinding(Keys.Right, RightMovement);
+            manager.AddKeyboardBinding(Keys.Up, UpMovement);
+            manager.AddKeyboardBinding(Keys.Down, DownMovement);
+            manager.AddKeyboardBinding(Keys.Space, JumpMovement);
+            //manager.AddKeyboardBinding(Keys.Escape, StopGame);
+        }
+       
+        void LeftMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            
             if (buttonState == ButtonAction.DOWN)
             {
                 Velocity.X = -MoveSpeed.X;
@@ -74,10 +96,13 @@ namespace WareHouse3
             {
                 LeftPressed = false;
             } 
+        
         }
         
-        public void IsRight(ButtonAction buttonState) {
-             if (buttonState == ButtonAction.DOWN)
+        void RightMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            
+            if (buttonState == ButtonAction.DOWN)
             {
                 Velocity.X = MoveSpeed.X;
                 RightPressed = true;
@@ -87,60 +112,80 @@ namespace WareHouse3
             {
                 RightPressed = false;
             } 
+        
         }
         
-        public void IsJump() {
-            DoJump = true;
-        }
-        
-        public void IsScaledUp() {
-            Scale += 0.01f;
-        }
-        
-        public void IsScaledDown() {
-            Scale -= 0.01f;
-        }
-       
-            
-        /// <summary>
-        /// Detects and resolves all collisions between the player and his neighboring
-        /// tiles. When a collision is detected, the player is pushed away along one
-        /// axis to prevent overlapping. There is some special logic for the Y axis to
-        /// handle platforms which behave differently depending on direction of movement.
-        /// </summary>
-        public void UpdateCollisions(List<Tile> tiles, Vector2 mapSize)
+        void UpMovement(ButtonAction buttonState, Vector2 amount)
         {
+            if (buttonState == ButtonAction.DOWN)
+            {
+				Scale += 0.01f;
+            }
+        }
+        
+        
+        void DownMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+				Scale -= 0.01f;
+            }
+        }
+   
+        void JumpMovement(ButtonAction buttonState, Vector2 amount)
+        {
+            if (buttonState == ButtonAction.PRESSED)
+            {
+                DoJump = true;
+            }
+        }
 
-            var tile = Level.ClosestTile(tiles, Position);
-           
-			TileCollision collision = tile.Collision;
-			Rectangle tileBounds = tile.BoundingRectangle;
-            
-            if (Intersects(tileBounds)) {
+
+        private void UpdateCollisions(Note note, Vector2 mapSize)
+        {
+            PreviousNote = PreviousNoteCollided;
+			var tileBounds = note.BoundingRectangle;
+            var previousTileName = (PreviousNoteCollided != null) ? PreviousNoteCollided.Name : "";
+
+            if (Intersects(tileBounds))
+            {
                 IsIntersecting = true;
-                
-                
-                if (OnCollisionEnter == false && PreviousTileCollided.Name != tile.Name) {
+                OnCollisionExit = false;
+
+                if (OnCollisionEnter == false && (previousTileName != note.Name || PreviousNoteCollided == null))
+                {
                     OnCollisionEnter = true;
                 }
-                
-                if (OnCollisionEnter && PreviousTileCollided.Name == tile.Name) {
+
+                if (OnCollisionExit == false && previousTileName != note.Name && PreviousNoteCollided != null)
+                {
+                    OnCollisionExit = true;
+                }
+
+                if (OnCollisionEnter && previousTileName == note.Name)
+                {
                     OnCollisionEnter = false;
                 }
-                
-				PreviousTileCollided = tile;
-                
-                if (OnCollisionEnter && tile.Note != null) {
-                    tile.Note.Play();
-                }
-            
-            } else {
-                this.Ground = mapSize.Y;
-                this.Ceiling = 0.0f;
+
+                PreviousNoteCollided = note;
+            }
+            else
+            {
+                Ground = mapSize.Y;
+                Ceiling = 0.0f;
                 IsIntersecting = false;
                 OnCollisionEnter = false;
+                OnCollisionExit = (PreviousNoteCollided != null);
+				PreviousNoteCollided = null;
             }
-                        
+          
+        }
+        
+	    public void UpdateBounds(Note note, Vector2 mapSize)
+        {
+            var tileBounds = note.BoundingRectangle;
+            var collision = note.Collision;
+            
             if (collision != TileCollision.Passable)
             {
                
@@ -162,7 +207,7 @@ namespace WareHouse3
         }
 
         
-        private void BallMovement(float ground) {
+        private void UpdateMovement(float ground) {
         
             if (LeftPressed == false && RightPressed == false) {
                 Velocity.X = 0.0f;
@@ -181,7 +226,7 @@ namespace WareHouse3
                     CanJump = false;
                 }
                 
-				Acceleration.Y = (MotionState.mode == MotionState.Mode.falling) ? JumpSpeed : (JumpSpeed * JumpScale); // single and double jump speed
+				Acceleration.Y = (this.MotionState.state.IsFalling) ? JumpSpeed : (JumpSpeed * JumpScale); // single and double jump speed
                 HasJumped = true;
                 DoJump = false;
             }
@@ -195,7 +240,7 @@ namespace WareHouse3
                 
                 Acceleration.Y -= Gravity.Y;
                 
-                Velocity.Y -= (this.MotionState.IsFalling) ? Acceleration.Y * (1.0f / Mass) : Acceleration.Y;
+                Velocity.Y -= (this.MotionState.state.IsFalling) ? Acceleration.Y * (1.0f / Mass) : Acceleration.Y;
                 
             }
 
@@ -254,13 +299,44 @@ namespace WareHouse3
             
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            System.Diagnostics.Debug.Print("Elapsed Time "+ gameTime.ElapsedGameTime);
+            //System.Diagnostics.Debug.Print("Elapsed Time "+ gameTime.ElapsedGameTime);
+            
             
             this.Position += this.Velocity * elapsed;
-
-            UpdateCollisions(Level.Tiles, mapSize);
             
-            BallMovement(Ground);
+            Note note = (Note)Level.ClosestTile(Level.Tiles, Position);
+            this.UpdateCollisions(note, mapSize);
+            this.UpdateBounds(note, mapSize);
+            this.UpdateMovement(Ground);
+            
+            var songName = XylophoneSongs.Instance.GetSongNotes(Level.CurrentSong);
+            this.NoteToSelect = XylophoneSongs.Instance.GetNextElement(songName, SelectedNoteindex);
+            //var noteSoundEffect = NoteInfo.AvailableNotes[newNote];
+			this.SelectedNote = null;
+			
+              
+            if (OnCollisionEnter)
+            {
+                
+                if (NoteToSelect == note.NoteName) {
+                    SelectedNote = note.NoteName;
+                    SelectedNoteindex ++;
+                    NoteToSelect = XylophoneSongs.Instance.GetNextElement(songName, SelectedNoteindex);
+                } 
+                
+				Debug.Print("");
+				Debug.Print(NoteToSelect+" at index "+ SelectedNoteindex.ToString());
+				Debug.Print(note.NoteName);
+                
+                note.SetState(NoteStates.ENABLED);
+            }
+            
+            if (OnCollisionExit)
+            {
+                Debug.Print("");
+                PreviousNote.SetState(NoteStates.DISABLED);
+            }
+
             
             base.UpdatePosition(gameTime, mapSize);
         }

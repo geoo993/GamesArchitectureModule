@@ -9,6 +9,13 @@ namespace WareHouse3
 {
     public class FrameCounter
     {
+        
+        public static bool MustSkipFrame(float waitMilliseconds, TimeSpan currentTime, TimeSpan previousTime)
+        {
+            return ((waitMilliseconds > 0.0f) && (currentTime.TotalMilliseconds - previousTime.TotalMilliseconds < waitMilliseconds));
+        }
+        
+        
         public FrameCounter()
         {
         }
