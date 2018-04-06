@@ -26,6 +26,7 @@ namespace WareHouse3
     
         public virtual bool Update(GameTime gameTime)
         {
+        
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             CurrentFramesPerSecond = 1.0f / deltaTime;
             

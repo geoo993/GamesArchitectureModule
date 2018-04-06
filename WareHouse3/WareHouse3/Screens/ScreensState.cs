@@ -47,12 +47,15 @@ namespace WareHouse3
             return mInstance;
         }
 
+        SplashScreen screen;
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public SplashScreenState()
             : base()
         {
+        
         }
 
         //-----------------------------------------------------------------------------
@@ -60,27 +63,41 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
-           
+            
+            ScreenManager manager = (ScreenManager)owner;
+            screen = new SplashScreen(ScreensType.SPLASH, manager, manager.ContentManager, GameInfo.SplashScreenCountDown);
+            screen.Construct(Color.Brown, manager.ContentManager.Load<Texture2D>("SplashScreen"));
+			screen.OnEnter();
+            manager.CurrentScreen = screen;
+            
             Debug.Print("Enter: Splash Screen");
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
-            ScreenManager screen = (ScreenManager)owner;
-            SplashScreen splash = (SplashScreen)screen.CurrentScreen;
-            
-            splash.CountDown -= currentGameTime.Seconds;
+            //Debug.Print("Update: Splash Screen");
+            screen.Update(gameTime);
         }
-
+           
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            screen.Draw(spriteBatch, screenCenter);
+        }
+         
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public override void Exit(ref Object owner)
         {
             Debug.Print("Exit: Splash Screen");
+            
+            screen.OnExit();
         }
     }
     
@@ -101,6 +118,8 @@ namespace WareHouse3
             return mInstance;
         }
 
+        MainScreen screen;
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -114,24 +133,38 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
-           
+        
+            ScreenManager manager = (ScreenManager)owner;
+            screen = new MainScreen(ScreensType.MAIN, manager, manager.ContentManager);
+            screen.Construct(Color.Black, manager.ContentManager.Load<Texture2D>("MainMenu"));
+            screen.OnEnter();
+            manager.CurrentScreen = screen;
             Debug.Print("Enter: Main Screen");
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
-            
+            screen.Update(gameTime);
         }
-
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            screen.Draw(spriteBatch, screenCenter);
+        }
+       
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public override void Exit(ref Object owner)
         {
             Debug.Print("Exit: Main Screen");
+            screen.OnExit();
         }
     }
     
@@ -152,6 +185,8 @@ namespace WareHouse3
             return mInstance;
         }
 
+        LevelScreen screen; 
+
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -166,23 +201,39 @@ namespace WareHouse3
         public override void Enter(ref Object owner)
         {
            
+            ScreenManager manager = (ScreenManager)owner;
+            screen = new LevelScreen(ScreensType.LEVEL, manager, manager.ContentManager);
+            screen.Construct(GameInfo.Instance.RandomColor(), screen.CreateTexture((int)manager.ScreenSafeArea.Width, (int)manager.ScreenSafeArea.Height, Color.Ivory));
+            manager.CurrentScreen = screen;
+			screen.OnEnter();
+            
             Debug.Print("Enter: Level Screen");
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
-            
+            //Debug.Print("Update: Level Screen");
+            screen.Update(gameTime);
+        }  
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            screen.Draw(spriteBatch, screenCenter);
         }
-
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public override void Exit(ref Object owner)
         {
             Debug.Print("Exit: Level Screen");
+            screen.OnExit();
         }
     }
     
@@ -203,6 +254,8 @@ namespace WareHouse3
             return mInstance;
         }
 
+        WinScreen screen;
+
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -216,24 +269,38 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
-           
+            ScreenManager manager = (ScreenManager)owner;
+            screen = new WinScreen(ScreensType.WIN, manager, manager.ContentManager);
+            screen.Construct(Color.Black, manager.ContentManager.Load<Texture2D>("GameWonImage"));
+            screen.OnEnter();
+            manager.CurrentScreen = screen;
+                 
             Debug.Print("Enter: Win Screen");
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
-            
+            screen.Update(gameTime);
         }
-
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            screen.Draw(spriteBatch, screenCenter);
+        }
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public override void Exit(ref Object owner)
         {
             Debug.Print("Exit: Win Screen");
+            screen.OnExit();
         }
     }
     
@@ -255,6 +322,8 @@ namespace WareHouse3
             return mInstance;
         }
 
+        LoseScreen screen; 
+
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -268,24 +337,38 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
-           
+            ScreenManager manager = (ScreenManager)owner;
+            screen = new LoseScreen(ScreensType.LOSE, manager, manager.ContentManager);
+            screen.Construct(Color.Black, manager.ContentManager.Load<Texture2D>("GameOverImage"));
+            screen.OnEnter();
+            manager.CurrentScreen = screen;
+                    
             Debug.Print("Enter: Lose Screen");
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
-            
+            screen.Update(gameTime);
         }
-
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            screen.Draw(spriteBatch, screenCenter);
+        }
+       
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
         public override void Exit(ref Object owner)
         {
             Debug.Print("Exit: Lose Screen");
+            screen.OnExit();
         }
     }
     

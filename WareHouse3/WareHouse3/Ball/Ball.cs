@@ -72,18 +72,7 @@ namespace WareHouse3
             this.HasFSM = false;
         }
 
-        
-        public void SetKeyoardBindings(CommandManager manager) 
-        {
-            manager.AddKeyboardBinding(Keys.Left, LeftMovement);
-            manager.AddKeyboardBinding(Keys.Right, RightMovement);
-            manager.AddKeyboardBinding(Keys.Up, UpMovement);
-            manager.AddKeyboardBinding(Keys.Down, DownMovement);
-            manager.AddKeyboardBinding(Keys.Space, JumpMovement);
-            //manager.AddKeyboardBinding(Keys.Escape, StopGame);
-        }
-       
-        void LeftMovement(ButtonAction buttonState, Vector2 amount)
+        public void SetLeftMovement(ButtonAction buttonState)
         {
             
             if (buttonState == ButtonAction.DOWN)
@@ -99,7 +88,7 @@ namespace WareHouse3
         
         }
         
-        void RightMovement(ButtonAction buttonState, Vector2 amount)
+        public void SetRightMovement(ButtonAction buttonState)
         {
             
             if (buttonState == ButtonAction.DOWN)
@@ -115,7 +104,7 @@ namespace WareHouse3
         
         }
         
-        void UpMovement(ButtonAction buttonState, Vector2 amount)
+        public void SetUpMovement(ButtonAction buttonState)
         {
             if (buttonState == ButtonAction.DOWN)
             {
@@ -124,7 +113,7 @@ namespace WareHouse3
         }
         
         
-        void DownMovement(ButtonAction buttonState, Vector2 amount)
+        public void SetDownMovement(ButtonAction buttonState)
         {
             if (buttonState == ButtonAction.DOWN)
             {
@@ -132,7 +121,7 @@ namespace WareHouse3
             }
         }
    
-        void JumpMovement(ButtonAction buttonState, Vector2 amount)
+        public void SetJumpMovement(ButtonAction buttonState)
         {
             if (buttonState == ButtonAction.PRESSED)
             {

@@ -56,13 +56,21 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
             Tile tile = (Tile)owner;
            
             Note note = (Note)tile;
             
            
+        }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            
         }
 
         //-----------------------------------------------------------------------------
@@ -121,14 +129,22 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
             Tile tile = (Tile)owner;
             
             Note note = (Note)tile;
 
         }
-
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            
+        }
+      
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -180,11 +196,19 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(ref Object owner, TimeSpan currentGameTime)
+        public override void Update(ref Object owner, GameTime gameTime)
         {
             Tile tile = (Tile)owner;
             Note note = (Note)tile;
             //Debug.Log(Debug.Flags.DEBUG_NPC, "[ {0} ] GameNPCStateIdle.Update()", npc.GetGameObjectType());
+        }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------   
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            
         }
 
         //-----------------------------------------------------------------------------

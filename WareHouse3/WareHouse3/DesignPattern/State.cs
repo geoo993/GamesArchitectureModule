@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace WareHouse3
 {
     
@@ -29,7 +32,10 @@ namespace WareHouse3
         // Update() – This is the function where all the magic happens.
         // Every time the FSM is updated, it calls this function on the current state.
         //-----------------------------------------------------------------------------
-        public abstract void Update(ref Object parent, TimeSpan currentGameTime);
+        public abstract void Update(ref Object parent, GameTime gameTime);
+        
+        
+        public abstract void Draw(ref Object parent, SpriteBatch spriteBatch, Vector2 screenCenter);
 
         //-----------------------------------------------------------------------------
         // Exit() – This is called when the FSM is about to move to a different state. 

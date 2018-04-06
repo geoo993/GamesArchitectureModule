@@ -31,7 +31,7 @@ namespace WareHouse3
         private TimeSpan PreviousGameTime;
         
         
-         #endregion
+        #endregion
         
         public Game1()
         {
@@ -85,7 +85,7 @@ namespace WareHouse3
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             ScreenManager = new ScreenManager(Content, Commands.manager, Services);
-            ScreenManager.Construct(new Vector2(GameInfo.ScreenWidth, GameInfo.ScreenHeight));
+            ScreenManager.Construct();
             
             //GameInfo.Camera.SetKeyoardBindings(Commands.manager);
             
@@ -123,7 +123,7 @@ namespace WareHouse3
             Commands.manager.Update();
             //GameInfo.Camera.UpdateInputs();
             
-            ScreenManager.Update(gameTime);
+            ScreenManager.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea);
             
             base.Update(gameTime);
             
@@ -145,10 +145,9 @@ namespace WareHouse3
 			//this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 			this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
             {
-                Rectangle titleSafeArea = GraphicsDevice.Viewport.TitleSafeArea;
-                ScreenManager.Draw(gameTime, titleSafeArea, spriteBatch);
+                ScreenManager.Draw(gameTime, spriteBatch);
             }
-            spriteBatch.End();
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
         }

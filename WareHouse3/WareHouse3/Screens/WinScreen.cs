@@ -24,7 +24,7 @@ namespace WareHouse3
             TitlePosition = Vector2.Zero;
             //Title = ContentManager.Load<Texture2D>("");
         }
-
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -32,23 +32,38 @@ namespace WareHouse3
         {
             base.Destroy();
         }
-
+        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(TimeSpan currentGameTime)
+        public override void OnEnter()
         {
-            base.Update(currentGameTime);
+            base.OnEnter();
+        }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void OnExit()
+        {
+            Destroy();
+            base.OnExit();
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Draw(TimeSpan currentGameTime, SpriteBatch spriteBatch, Vector2 cameraLocation)
+        public override void Update(GameTime gameTime)
         {
-            base.Draw(currentGameTime, spriteBatch, cameraLocation);
+            base.Update(gameTime);
+        }
 
-            //spriteBatch.Draw(Title, TitlePosition, Color.White);
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+            base.Draw(spriteBatch, screenCenter);
         }
     }
 }

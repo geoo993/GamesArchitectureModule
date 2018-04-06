@@ -140,9 +140,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Update(TimeSpan currentGameTime)
+        public void Update(GameTime gameTime)
         {
-            var elapsed = (float)(currentGameTime.TotalSeconds * ProgressSpeed) % Width;
+            var elapsed = (float)(gameTime.TotalGameTime.TotalSeconds * ProgressSpeed) % Width;
             
             Progress = elapsed / (float)Width;
             SetScaleFactorX(1.0f - Progress);

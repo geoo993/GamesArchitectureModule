@@ -26,7 +26,24 @@ namespace WareHouse3
         {
             base.Construct(backgroundColor, backgroundTexture);
         }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void OnEnter()
+        {
+            base.OnEnter();
+        }
 
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void OnExit()
+        {
+            Destroy();
+            base.OnExit();
+        }
+        
 
         //-----------------------------------------------------------------------------
         //
@@ -39,10 +56,11 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(TimeSpan currentGameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(currentGameTime);
+            base.Update(gameTime);
             
+            CountDown -= gameTime.TotalGameTime.Seconds;
             if (CountDown <= 0) {
                 Parent.SetState(ScreensState.MAIN);
             }
@@ -51,10 +69,10 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Draw(TimeSpan currentGameTime, SpriteBatch spriteBatch, Vector2 cameraLocation)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
         {
-            base.Draw(currentGameTime, spriteBatch, cameraLocation);
-
+            base.Draw(spriteBatch, screenCenter);
         }
+        
     }
 }

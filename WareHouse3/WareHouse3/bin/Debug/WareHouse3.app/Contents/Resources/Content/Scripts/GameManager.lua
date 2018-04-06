@@ -11,4 +11,4 @@ BallJumpSpeed = 150
 BallMass = 5
 LevelHorizontalLength = 36
 LevelVerticalLength = 44
-SplashScreenCountDown = 500
+SplashScreenCountDown = 100

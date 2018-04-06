@@ -16,13 +16,14 @@ namespace WareHouse3
         protected ContentManager ContentManager { get; private set; }
 
         public Color BackgroundColor { get; private set; }
-        protected Texture2D BackgroundTexture;
+        public Texture2D BackgroundTexture;
 
 
         protected bool IsBlocked { get; private set; }
         
         
-        public Screen(ScreensType type, ScreenManager parent, ContentManager contentManager) {
+        public Screen(ScreensType type, ScreenManager parent, ContentManager contentManager) 
+        {
             Type = type;
             Parent = parent;
 
@@ -30,7 +31,6 @@ namespace WareHouse3
 
             BackgroundColor = Color.Black;
             BackgroundTexture = null;
-
         }
         
         //-----------------------------------------------------------------------------
@@ -49,7 +49,6 @@ namespace WareHouse3
         {
             
         }
-        
         
         //-----------------------------------------------------------------------------
         //
@@ -100,7 +99,7 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public virtual void Update(TimeSpan currentGameTime)
+        public virtual void Update(GameTime gameTime)
         {
             if (IsBlocked) {
             
@@ -113,12 +112,12 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public virtual void Draw(TimeSpan currentGameTime, SpriteBatch spriteBatch, Vector2 cameraLocation)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
         {
         
             if (BackgroundTexture != null)
             {
-                spriteBatch.Draw( BackgroundTexture, cameraLocation, Color.White);
+                spriteBatch.Draw(BackgroundTexture, screenCenter, Color.White);
             }
         }
         

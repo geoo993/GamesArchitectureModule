@@ -29,7 +29,7 @@ namespace WareHouse3
     public class Level 
     {
         public List<Tile> Tiles;
-        private Ball Ball;
+        public Ball Ball { get; private set; }
 
         public SongType CurrentSong;
         
@@ -39,8 +39,6 @@ namespace WareHouse3
 
         // Level content.        
         private ContentManager Content;
-        
-        private CommandManager CommandManager;
         
         private Loader Loader;
 
@@ -107,11 +105,10 @@ namespace WareHouse3
         /// <param name="fileStream">
         /// A stream containing the tile data.
         /// </param>
-        public Level(IServiceProvider serviceProvider, Stream fileStream, CommandManager manager)
+        public Level(IServiceProvider serviceProvider, Stream fileStream)
         {
             // Create a new content manager to load content used just by this level.
             Content = new ContentManager(serviceProvider, "Content");
-            CommandManager = manager;
             Loader = new Loader(fileStream);
             CurrentSong = SongType.IncyIncySpider;
             HorizontalLength = GameInfo.LevelHorizontalLength;
@@ -263,7 +260,6 @@ namespace WareHouse3
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             
             Ball = new Ball("Ball", this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
-            Ball.SetKeyoardBindings(CommandManager);
             
             return null;
         }
@@ -320,7 +316,7 @@ namespace WareHouse3
         /// <summary>
         /// Draw everything in the level from background to foreground.
         /// </summary>
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
            
             DrawTiles(spriteBatch);

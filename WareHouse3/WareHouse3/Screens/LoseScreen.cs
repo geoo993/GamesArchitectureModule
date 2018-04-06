@@ -27,7 +27,22 @@ namespace WareHouse3
             //Title = ContentManager.Load<Texture2D>("");
         }
 
-
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void OnEnter()
+        {
+            base.OnEnter();
+        }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public override void OnExit()
+        {
+            Destroy();
+            base.OnExit();
+        }
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -39,19 +54,17 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(TimeSpan currentGameTime)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(currentGameTime);
+            base.Update(gameTime);
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Draw(TimeSpan currentGameTime, SpriteBatch spriteBatch, Vector2 cameraLocation)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
         {
-            base.Draw(currentGameTime, spriteBatch, cameraLocation);
-
-            //spriteBatch.Draw(Title, TitlePosition, Color.White);
+            base.Draw(spriteBatch, screenCenter);
         }
     }
 }

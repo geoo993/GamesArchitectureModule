@@ -254,7 +254,7 @@ namespace WareHouse3
 
             if (FSM != null)
             {
-                FSM.Update(gameTime.TotalGameTime);
+                FSM.Update(gameTime);
             }
         }
 

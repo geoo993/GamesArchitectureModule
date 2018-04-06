@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace WareHouse3
 {
     public class StateMachine
@@ -107,17 +110,29 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Update(TimeSpan currentGameTime)
+        public void Update(GameTime gameTime)
         {
-        
-            //if (FrameCounter.MustSkipFrame(UpdateWaitMilliseconds, currentGameTime, PreviousGameTime))
-            //    return;
 
             if (CurrentState != null)
-                CurrentState.Update(ref Parent, currentGameTime);
+            {
+                CurrentState.Update(ref Parent, gameTime);
+            }
 
-            PreviousGameTime = currentGameTime;
+            PreviousGameTime = gameTime.TotalGameTime;
         }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        {
+
+            if (CurrentState != null)
+            {
+                CurrentState.Draw(ref Parent, spriteBatch, screenCenter);
+            }
+        }
+
     
     }
 }
