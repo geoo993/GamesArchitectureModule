@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WareHouse3
 {
@@ -20,8 +21,14 @@ namespace WareHouse3
         /// Level.
         /// </summary>
         public Level Level;
-        
-        
+        public SongType SongType = SongType.IncyIncySpider;
+        public string Song {
+            get {
+                return XylophoneSongs.Instance.GetSong(SongType);
+            }
+        }
+        public float SongProgressSpeed = 0.0f;
+        public bool AutoPlay = false;
         
         public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
@@ -43,9 +50,12 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public override void Destroy()
         {
-          
+            Level.Destroy();
             Level = null;
 
+            Hud.Destroy();
+            Hud = null;
+            
             base.Destroy();
         }
         
@@ -56,10 +66,8 @@ namespace WareHouse3
         {
             base.OnEnter();
 
-
+			Hud.Construct(Song, ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
             LoadLevel("level3");
-			Hud.Construct(Level.CurrentSong, Color.Yellow, ContentManager);
-
         }
 
         //-----------------------------------------------------------------------------
@@ -80,7 +88,7 @@ namespace WareHouse3
             // Load the level.
             string levelPath = string.Format("Content/Levels/"+level+".txt");
             using (Stream fileStream = TitleContainer.OpenStream(levelPath))
-                Level = new Level(Parent.Services, fileStream);
+                Level = new Level(Parent.Services, fileStream, SongType, Song);
                 
         }
         
@@ -111,9 +119,10 @@ namespace WareHouse3
         {
             base.Update(gameTime);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
-            Hud.Update(gameTime);
-    
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), SongProgressSpeed, AutoPlay, Hud.Width);
+            
+            Hud.Update(gameTime, Level.Progress, Level.TimeProgress / 100.0f);
+
         }
 
         //-----------------------------------------------------------------------------

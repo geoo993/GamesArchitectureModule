@@ -27,9 +27,6 @@ namespace WareHouse3
         private SpriteBatch spriteBatch;
 
         private ScreenManager ScreenManager;
-
-        private TimeSpan PreviousGameTime;
-        
         
         #endregion
         
@@ -89,7 +86,6 @@ namespace WareHouse3
             
             //GameInfo.Camera.SetKeyoardBindings(Commands.manager);
             
-            PreviousGameTime = TimeSpan.Zero;
             
         }
         
@@ -101,12 +97,14 @@ namespace WareHouse3
         protected override void UnloadContent()
         {
             if (ScreenManager != null)
+            {
                 ScreenManager.Destroy();
-
+            }
+            ScreenManager = null;
             Content.Unload();
         }
-        
-        
+
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -118,16 +116,14 @@ namespace WareHouse3
             {
                 this.Exit();
             }
-                
+
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
             //GameInfo.Camera.UpdateInputs();
-            
+
             ScreenManager.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea);
-            
+
             base.Update(gameTime);
-            
-            PreviousGameTime = gameTime.TotalGameTime;
         }
         
         

@@ -18,7 +18,6 @@ namespace WareHouse3
         public Color BackgroundColor { get; private set; }
         public Texture2D BackgroundTexture;
 
-
         protected bool IsBlocked { get; private set; }
         
         

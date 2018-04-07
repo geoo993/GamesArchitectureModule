@@ -64,6 +64,8 @@ namespace WareHouse3
             manager.AddKeyboardBinding(Keys.Space, Space);
             manager.AddKeyboardBinding(Keys.U, ProgressUp);
             manager.AddKeyboardBinding(Keys.I, ProgressDown);
+            manager.AddKeyboardBinding(Keys.O, AutoPlaySwitch);
+            
         }
         
         public void Exit(ButtonAction buttonState, Vector2 amount)
@@ -143,7 +145,8 @@ namespace WareHouse3
            
             if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
             {
-                ((LevelScreen)CurrentScreen).Hud.ProgressAmount += 1.0f;
+                //((LevelScreen)CurrentScreen).Hud.ProgressAmount += 1.0f;
+                ((LevelScreen)CurrentScreen).SongProgressSpeed += 1.0f;
             }
         }
         
@@ -151,7 +154,16 @@ namespace WareHouse3
         {
             if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
             {
-                ((LevelScreen)CurrentScreen).Hud.ProgressAmount -= 1.0f;
+                //((LevelScreen)CurrentScreen).Hud.ProgressAmount -= 1.0f;
+                ((LevelScreen)CurrentScreen).SongProgressSpeed -= 1.0f;
+            }
+        }
+        
+        public void AutoPlaySwitch(ButtonAction buttonState, Vector2 amount)
+        {
+            if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
+            {
+                ((LevelScreen)CurrentScreen).AutoPlay = !((LevelScreen)CurrentScreen).AutoPlay;
             }
         }
         #endregion
@@ -230,6 +242,14 @@ namespace WareHouse3
             CurrentScreen.Destroy();
             CurrentScreen = null;
 
+            ContentManager.Dispose();
+            ContentManager = null;
+
+            CommandManager.Destroy();
+            CommandManager = null;
+            
+            Services = null;
+        
             if (FSM != null)
             {
                 FSM.Destroy();

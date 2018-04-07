@@ -50,7 +50,7 @@ namespace WareHouse3
             Tile tile = (Tile)owner;
             Note note = (Note)tile;
             note.HasTexture = false;
-            Debug.Print("Enter: "+note.Name +" States Empty");
+            //Debug.Print("Enter: "+note.Name +" States Empty");
         }
 
         //-----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ namespace WareHouse3
         {
             Tile tile = (Tile)owner;
             Note note = (Note)tile;
-            Debug.Print("Exit: "+note.Name +" States Empty");
+            //Debug.Print("Exit: "+note.Name +" States Empty");
         }
     }
 
@@ -119,11 +119,11 @@ namespace WareHouse3
              //note.HasTexture = true;
              //note.Color = Color.White;
             
-             if (note.Note != null) {
-                note.Note.Play();
+             if (note.NoteSound != null) {
+                note.NoteSound.Play();
              }
             
-             Debug.Print("Enter: "+note.Name +" States Enabled");
+             //Debug.Print("Enter: "+note.Name +" States Enabled");
         }
 
         //-----------------------------------------------------------------------------
@@ -154,7 +154,7 @@ namespace WareHouse3
             Note note = (Note)tile;
             //note.HasTexture = false;
             //note.Color = note.InitialColor;
-            Debug.Print("Exit: "+note.Name +" States Enabled");
+            //Debug.Print("Exit: "+note.Name +" States Enabled");
         }
     }
 
@@ -190,7 +190,7 @@ namespace WareHouse3
         {
             Tile tile = (Tile)owner;
             Note note = (Note)tile;
-            Debug.Print("Enter: "+note.Name +" States Disabled");
+            //Debug.Print("Enter: "+note.Name +" States Disabled");
         }
 
         //-----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ namespace WareHouse3
         {
             Tile tile = (Tile)owner;
             Note note = (Note)tile;
-            Debug.Print("Exit: "+note.Name +" States Disabled");
+            //Debug.Print("Exit: "+note.Name +" States Disabled");
         }
     }
 

@@ -44,7 +44,6 @@ namespace WareHouse3
 
             return new Color(red, green, blue);
         }
-        
     }
     
     public class BallInfo {

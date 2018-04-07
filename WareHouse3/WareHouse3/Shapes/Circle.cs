@@ -304,6 +304,8 @@ namespace WareHouse3
         
         public override void Destroy()
         {
+            CircleBorder.Destroy();
+            CircleBorder = null;
             base.Destroy();
         }
         

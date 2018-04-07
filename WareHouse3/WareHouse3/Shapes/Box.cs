@@ -86,6 +86,8 @@ namespace WareHouse3
         
         public override void Destroy()
         {
+            BoxBorder.Destroy();
+            BoxBorder = null;
             base.Destroy();
         }
         

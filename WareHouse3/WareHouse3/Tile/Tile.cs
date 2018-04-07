@@ -45,7 +45,7 @@ namespace WareHouse3
         /// <summary>
         /// xylophone sound note of the tile if any
         /// </summary>
-        public SoundEffect Note { get; set; } 
+        public SoundEffect NoteSound { get; set; } 
         
         /// <summary>
         /// tile name
@@ -213,7 +213,7 @@ namespace WareHouse3
             this.OriginalTexture = texture;
             this.HasTexture = (texture != null);
             this.Collision = collision;
-            this.Note = note;
+            this.NoteSound = note;
             this.MotionState = new MotionState();
             this.HasFSM = false;
             this.LocalBounds = new Rectangle((int)this.Origin.X, (int)this.Origin.Y, width, height);
@@ -288,9 +288,11 @@ namespace WareHouse3
         public virtual void Destroy()
         {
             Texture = null;
-            Note = null;
+            NoteSound = null;
             MotionState = null;
-            
+            OriginalTexture = null;
+            Texture = null;
+        
             if (FSM != null)
             {
                 FSM.Destroy();

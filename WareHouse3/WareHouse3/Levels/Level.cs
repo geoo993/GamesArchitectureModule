@@ -26,17 +26,26 @@ namespace WareHouse3
     /// The level owns the player and controls the game's win and lose
     /// conditions as well as scoring.
     /// </summary>
-    public class Level 
+    public class Level
     {
-        public List<Tile> Tiles;
+        private List<Tile> Tiles;
         public Ball Ball { get; private set; }
 
-        public SongType CurrentSong;
+        public SongType CurrentSongType { get; private set; }
+        private string CurrentSong;
+      
+		//public int CurrentNoteIndex {
+  //          get {
+		//		var songNotesIndex = (int)MathExtensions.Value(Progress, CurrentSongNotes.Count, 0.0f);
+		//		return (songNotesIndex + 1) % CurrentSongNotes.Count;
+  //          }
+		//}
+        
+        public int Progress { get; set; }
+        public float TimeProgress { get; set; }
         
         
-        // Level game state.
-        private Random random = new Random(354668); // Arbitrary, but constant seed
-
+        
         // Level content.        
         private ContentManager Content;
         
@@ -105,15 +114,15 @@ namespace WareHouse3
         /// <param name="fileStream">
         /// A stream containing the tile data.
         /// </param>
-        public Level(IServiceProvider serviceProvider, Stream fileStream)
+        public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song)
         {
             // Create a new content manager to load content used just by this level.
             Content = new ContentManager(serviceProvider, "Content");
             Loader = new Loader(fileStream);
-            CurrentSong = SongType.IncyIncySpider;
+            CurrentSong = song;
+            CurrentSongType = songType;
             HorizontalLength = GameInfo.LevelHorizontalLength;
             VerticalLength = GameInfo.LevelVerticalLength;
-            
             LoadTiles(fileStream);
         }
         
@@ -271,30 +280,89 @@ namespace WareHouse3
         {
             Content.Unload();
         }
+        
+        public void Destroy()
+        {
+            foreach(Tile tile in Tiles) {
+                tile.Destroy();
+            }
+            Tiles.Clear();
+        
+            Ball.Destroy();
+            Ball = null;
+            
+            Dispose();
+        }
+
 
         #endregion
-        
+
         #region Update
 
         /// <summary>
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update(GameTime gameTime, Vector2 mapSize)
+        public void Update(GameTime gameTime, Vector2 mapSize, float progressSpeed, bool autoPlay, float hudWidth)
         {
-            
-            GameInfo.Camera.CenterOn(Ball, false);
-           
-            Ball.UpdatePosition(gameTime, mapSize);
 
+            GameInfo.Camera.CenterOn(Ball, false);
+
+            //Update Ball And Note Tiles
+			Ball.UpdatePosition(gameTime, mapSize);
+			
+			var elapsed = (float)(gameTime.TotalGameTime.TotalSeconds * progressSpeed) % hudWidth;
+            var closestNote = (Note)ClosestTile(Tiles, Ball.Position);
+            var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
+            
+            TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
+            Ball.Update(gameTime, mapSize, noteToSelect, closestNote);
+            
+            
+            if (autoPlay)
+            {
+                // if update the note regardless of the player, we play automatically
+                var timeProgressValue = (int)MathExtensions.Value(TimeProgress, CurrentSong.Length, 0.0f);
+				var characterAtIndex = CurrentSong[timeProgressValue];
+                
+                if (Progress != timeProgressValue && characterAtIndex != ' ' ) 
+                {
+					Progress = timeProgressValue;
+                
+                    var getNextCharacterIndex = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
+                    var nextCharacterAtIndex = CurrentSong[getNextCharacterIndex];
+                    noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
+                    
+                    var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
+                    var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                    noteSound.Play();
+                }
+            
+            }
+            else
+            {
+                
+                // if ball has collided with the note to selct, we then go to the next note
+                if (Ball.IsNoteSelected && Ball.NoteSelected != null)
+                {
+                    Progress = (Progress + 1) % CurrentSong.Length;
+                    Progress = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
+                    
+					var nextCharacterAtIndex = CurrentSong[Progress];
+                    noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
+                }
+                
+            }
+            
+            
             for (int i = 0; i < Tiles.Count; ++i)
             {
                 var note = (Note)Tiles[i];
                 
-                if (Ball.SelectedNote != null)
+                if (Ball.NoteSelected != null && noteToSelect != null)
                 {
-                 
-					var noteName = (GameInfo.Random.Next(10) > 8) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : Ball.NoteToSelect;
+                    // give a random note to each notetile
+					var noteName = (GameInfo.Random.Next(10) > 6) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
                     var noteAsset = NoteInfo.AvailableNotes[noteName];
 
                     note.Name = noteName+(i+1).ToString();
@@ -302,7 +370,7 @@ namespace WareHouse3
                     note.HasTexture = true;
                     note.Color = Color.White;
                     note.Texture = Content.Load<Texture2D>("Notes/" + noteName);
-                    note.Note = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                    note.NoteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
                 }
                 
                 note.UpdatePosition(gameTime, mapSize);
@@ -318,10 +386,8 @@ namespace WareHouse3
         /// </summary>
         public void Draw(SpriteBatch spriteBatch)
         {
-           
             DrawTiles(spriteBatch);
 			Ball.Render(spriteBatch);
-
         }
 
         /// <summary>

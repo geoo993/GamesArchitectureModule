@@ -28,10 +28,6 @@ namespace WareHouse3
         protected Color TimeProgressColor { get; set; }
         protected Color BackgroundColor { get; set; }
         
-        protected float Progress { get; set; }
-        protected float TimeProgress { get; set; }
-        public double ProgressSpeed { get; set; }
-        
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -49,7 +45,6 @@ namespace WareHouse3
         {
             Width = 1;
             Height = 1;
-            ProgressSpeed = 20.0f;
             ProgressSprite = null;
             TimeProgressSprite = null;
             BackgroundSprite = null;
@@ -59,7 +54,6 @@ namespace WareHouse3
             ProgressColor = Color.White;
             TimeProgressColor = Color.Gray;
             BackgroundColor = Color.Black;
-            Progress = 0.0f;
         }
 
         //-----------------------------------------------------------------------------
@@ -69,10 +63,9 @@ namespace WareHouse3
         {
             Width = width;
             Height = height;
-            ProgressSpeed = 10.0f;
-            ProgressSprite = Texture(width, height, color);
-            TimeProgressSprite = Texture(width, 10, timeColor);
-            BackgroundSprite = Texture(width, height, background);
+			ProgressSprite = Texture(width, height, color);
+			TimeProgressSprite = Texture(width, 10, timeColor);
+			BackgroundSprite = Texture(width, height, background);
 			ProgressColor = color;
             ProgressColor = timeColor;
             BackgroundColor = background;
@@ -184,13 +177,19 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public void SetProgress(float percent)
         {
-            Debug.Print(" ");
-            Debug.Print("Width "+Width.ToString());
-            Debug.Print("Percent Given "+percent.ToString());
-            Progress = MathExtensions.Value(percent, Width, 0) / Width;
+            //Debug.Print(" ");
+            //Debug.Print("Width "+Width.ToString());
+            //Debug.Print("Percent Given "+percent.ToString());
+            var Progress = MathExtensions.Value(percent, Width, 0) / Width;
             
-            Debug.Print("Percent Calculated "+Progress.ToString());
-            SetScaleFactorX(1.0f - Progress);
+            //Debug.Print("Percent Calculated "+Progress.ToString());
+            SetScaleFactorX(Progress);
+        }
+        
+        public void SetTimeProgress(float progress)
+        {
+            var TimeProgress = progress;
+            SetTimeScaleFactorX(TimeProgress);
         }
         
         //-----------------------------------------------------------------------------
@@ -198,10 +197,7 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public void Update(GameTime gameTime)
         {
-            var elapsed = (float)(gameTime.TotalGameTime.TotalSeconds * ProgressSpeed) % Width;
-            
-            TimeProgress = elapsed / (float)Width;
-            //SetTimeScaleFactorX(1.0f - TimeProgress);
+        
         }
         
          /// <summary>
@@ -226,22 +222,24 @@ namespace WareHouse3
             if (ProgressSprite != null)
             {
                 
-				spriteBatch.Draw(BackgroundSprite, Position, null, BackgroundColor, 0.0f, new Vector2(Width, 0), 1.0f, SpriteEffects.None, 0.0f);
+				spriteBatch.Draw(BackgroundSprite, Position, null, BackgroundColor, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+                
                 spriteBatch.Draw(ProgressSprite,
                     Position,
                     null,
                     ProgressColor,
                     0.0f, // Rotation
-                    new Vector2(Width,0), // Origin
+                    Vector2.Zero, // Origin
                     ScaleFactor,
                     SpriteEffects.None,
                     0.0f);
+                   
                 spriteBatch.Draw(TimeProgressSprite, 
                     Position + new Vector2(0, Height), 
                     null, 
                     TimeProgressColor, 
                     0.0f, 
-                    new Vector2(Width, 0), 
+                    Vector2.Zero, 
                     TimeScaleFactor, 
                     SpriteEffects.None, 
                     0.0f);

@@ -32,14 +32,6 @@ namespace WareHouse3
             return (((max - min) * percent) / 100.0f) + min;
         }
         
-        
-        public static int Value(int percent, int maxValue, int minValue) {
-            int max = (maxValue > minValue) ? maxValue : minValue;
-            int min = (maxValue > minValue) ? minValue : maxValue;
-            return (((max - min) * percent) / 100) + min;
-        }
-        
-        
         public static float Percentage(float value, float maxValue, float minValue) {
             float difference = (minValue < 0) ? maxValue : maxValue - minValue;
             return ((value - minValue) / difference) * 100.0f;

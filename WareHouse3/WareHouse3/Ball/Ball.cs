@@ -16,8 +16,6 @@ namespace WareHouse3
     public class Ball: Circle
     {
     
-        private Level Level { get; set; }
-   
         /// <summary>
         /// trail particle of the ball
         /// </summary>
@@ -42,21 +40,16 @@ namespace WareHouse3
         /// </summary>
         private bool LeftPressed, RightPressed;
         private Rectangle PreviousBounds;
-        
-        private bool IsIntersecting = false;
+
+        private bool IsIntersecting;
         private bool OnCollisionEnter;
         private bool OnCollisionExit;
-        private Note PreviousNoteCollided = null;
+        private Note PreviousNoteCollided;
         public Note PreviousNote { get; private set; }
         
-        public String NoteToSelect = null;
-        public String SelectedNote = null;
-        public int SelectedNoteindex = 0;
+        public String NoteSelected { get; private set; }
+        public bool IsNoteSelected { get; private set; }
         
-        /// <summary>
-        /// colliding obstacles
-        /// </summary>
-        public List<Rectangle> Obstacles;
         
         public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
@@ -64,12 +57,13 @@ namespace WareHouse3
             this.EnableParticles = true;
             this.HasJumped = true;
             this.particles = new List<Circle>();
-            this.Obstacles = new List<Rectangle>();
             this.AvailableJumps = MaxJumps;
-            this.Level = level;
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
             this.HasFSM = false;
+            this.NoteSelected = null;
+            this.IsIntersecting = false;
+            this.IsNoteSelected = false;
         }
 
         public void SetLeftMovement(ButtonAction buttonState)
@@ -230,7 +224,6 @@ namespace WareHouse3
                 Acceleration.Y -= Gravity.Y;
                 
                 Velocity.Y -= (this.MotionState.state.IsFalling) ? Acceleration.Y * (1.0f / Mass) : Acceleration.Y;
-                
             }
 
 
@@ -285,49 +278,36 @@ namespace WareHouse3
         
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
-            
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            //System.Diagnostics.Debug.Print("Elapsed Time "+ gameTime.ElapsedGameTime);
-            
-            
             this.Position += this.Velocity * elapsed;
-            
-            Note note = (Note)Level.ClosestTile(Level.Tiles, Position);
-            this.UpdateCollisions(note, mapSize);
-            this.UpdateBounds(note, mapSize);
-            this.UpdateMovement(Ground);
-            
-            var songName = XylophoneSongs.Instance.GetSongNotes(Level.CurrentSong);
-            this.NoteToSelect = XylophoneSongs.Instance.GetNextElement(songName, SelectedNoteindex);
-            //var noteSoundEffect = NoteInfo.AvailableNotes[newNote];
-			this.SelectedNote = null;
+        }
+        
+        public void Update(GameTime gameTime, Vector2 mapSize, string noteToSlect, Note closestNote) {
 			
-              
-            if (OnCollisionEnter)
-            {
-                
-                if (NoteToSelect == note.NoteName) {
-                    SelectedNote = note.NoteName;
-                    SelectedNoteindex ++;
-                    NoteToSelect = XylophoneSongs.Instance.GetNextElement(songName, SelectedNoteindex);
-                } 
-                
-				//Debug.Print("");
-				//Debug.Print(NoteToSelect+" at index "+ SelectedNoteindex.ToString());
-				//Debug.Print(note.NoteName);
-                
-                note.SetState(NoteStates.ENABLED);
-            }
+			this.UpdateCollisions(closestNote, mapSize);
+			this.UpdateBounds(closestNote, mapSize);
+			this.UpdateMovement(Ground);
             
-            if (OnCollisionExit)
-            {
-                //Debug.Print("");
-                PreviousNote.SetState(NoteStates.DISABLED);
-            }
+			this.NoteSelected = null;
+            this.IsNoteSelected = false;
 
+			if (OnCollisionEnter)
+			{
+				
+				if (noteToSlect == closestNote.NoteName) {
+					NoteSelected = closestNote.NoteName;
+                    IsNoteSelected = true;
+				} 
+                closestNote.SetState(NoteStates.ENABLED);
+            }
+			
+			if (OnCollisionExit)
+			{
+				PreviousNote.SetState(NoteStates.DISABLED);
+			}
             
-            base.UpdatePosition(gameTime, mapSize);
+			base.UpdatePosition(gameTime, mapSize);
         }
 
         public override bool Intersects(Rectangle rectangle)
@@ -344,6 +324,22 @@ namespace WareHouse3
                 particle.Render(spriteBatch);
             }
             base.Render(spriteBatch);
+        }
+
+        public override void Destroy()
+        {
+            foreach (Circle cir in particles){
+                cir.Destroy();
+            }
+            particles.Clear();
+
+            PreviousNoteCollided.Destroy();
+            PreviousNoteCollided = null;
+
+            PreviousNote.Destroy();
+            PreviousNote = null;
+            
+            base.Destroy();
         }
         
     }

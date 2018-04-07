@@ -200,5 +200,10 @@ namespace WareHouse3
             }
         }
         
+        public void Destroy() {
+             pixel = null;
+             vectors.Clear();
+        }
+        
     }
 }
