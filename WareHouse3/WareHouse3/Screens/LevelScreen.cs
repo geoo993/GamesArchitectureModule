@@ -13,9 +13,7 @@ namespace WareHouse3
         /// <summary>
         /// HUD
         /// </summary>
-        private SpriteFont HudFont;
-        public Progressbar HudProgressBar = null;
-        private FrameCounter FrameCounter;
+        public HUD Hud;
         
         
         /// <summary>
@@ -24,12 +22,11 @@ namespace WareHouse3
         public Level Level;
         
         
+        
         public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
-            HudFont = null;
-            HudProgressBar = new Progressbar();
-            FrameCounter = new FrameCounter();
+            Hud = new HUD();
         }
         
         //-----------------------------------------------------------------------------
@@ -58,11 +55,10 @@ namespace WareHouse3
         public override void OnEnter()
         {
             base.OnEnter();
-            
-            
-            HudFont = ContentManager.Load<SpriteFont>("Fonts/GameFont");
+
 
             LoadLevel("level3");
+			Hud.Construct(Level.CurrentSong, Color.Yellow, ContentManager);
 
         }
 
@@ -116,8 +112,7 @@ namespace WareHouse3
             base.Update(gameTime);
             
             Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight));
-            HudProgressBar.Update(gameTime);
-            FrameCounter.Update(gameTime);
+            Hud.Update(gameTime);
     
         }
 
@@ -128,12 +123,11 @@ namespace WareHouse3
         {
             base.Draw(spriteBatch, screenCenter);
 			
-			DrawHud(Parent.ScreenSafeArea, spriteBatch);
+			Hud.Draw(spriteBatch, Parent.ScreenSafeArea);
             if (Level != null)
             {
                 Level.Draw(spriteBatch);
             }
-			
         }
         
         
@@ -150,41 +144,6 @@ namespace WareHouse3
             return rectangle;
         }
         
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-         private void DrawHud(Rectangle safeArea, SpriteBatch spriteBatch)
-        {
-            
-            Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (safeArea.Height / 2.0f) + 10);
-            Color hudColor = Color.Yellow;
-
-            // Draw time remaining. Uses modulo division to cause blinking when the
-            // player is running out of time.
-            string songName = XylophoneSongs.Instance.GetSong(Level.CurrentSong);
-            Color hudBorderColor = Color.Yellow;
-            
-            float songNameWidth = HudFont.MeasureString(songName).X;
-            float songNameHeight = HudFont.MeasureString(songName).Y;
-            DrawShadowedString(spriteBatch, HudFont, songName, hudLocation + new Vector2(-(songNameWidth * 0.5f), 0.0f), hudColor, hudBorderColor);
-
-            // Draw score
-            DrawShadowedString(spriteBatch, HudFont, "SCORE: ", hudLocation + new Vector2(0.0f, songNameHeight * 1.2f), hudColor, hudBorderColor);
-            
-            
-            HudProgressBar.Construct((int)songNameWidth, (int)songNameHeight, hudLocation - new Vector2(-(songNameWidth * 0.5f), 0.0f), Color.Orange, Color.SlateBlue);
-            HudProgressBar.Draw(spriteBatch);
-            
-            //var fps = string.Format("FPS: {0}", FrameCounter.AverageFramesPerSecond);
-    
-            //DrawShadowedString(spriteBatch, HudFont, fps, new Vector2(hudLocation.X - (safeArea.Width / 2.0f), hudLocation.Y), hudColor, hudColor);
-        }
-
-        private void DrawShadowedString(SpriteBatch spriteBatch, SpriteFont font, string value, Vector2 position, Color color, Color borderColor)
-        {
-            spriteBatch.DrawString(font, value, position + new Vector2(1.0f, 1.0f), borderColor);
-            spriteBatch.DrawString(font, value, position, color);
-        }
         
         #endregion
         

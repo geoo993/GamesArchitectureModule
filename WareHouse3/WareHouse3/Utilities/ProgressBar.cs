@@ -18,14 +18,18 @@ namespace WareHouse3
     public class Progressbar
     {
         
-        protected Texture2D BackgroundSprite { get; set; }
-        protected Texture2D Sprite { get; set; }
+		protected Texture2D ProgressSprite { get; set; }
+        protected Texture2D TimeProgressSprite { get; set; }
+		protected Texture2D BackgroundSprite { get; set; }
         protected Vector2 Position;
         protected Vector2 ScaleFactor;
-        protected Color Color { get; set; }
+        protected Vector2 TimeScaleFactor;
+        protected Color ProgressColor { get; set; }
+        protected Color TimeProgressColor { get; set; }
         protected Color BackgroundColor { get; set; }
         
         protected float Progress { get; set; }
+        protected float TimeProgress { get; set; }
         public double ProgressSpeed { get; set; }
         
         //-----------------------------------------------------------------------------
@@ -46,11 +50,14 @@ namespace WareHouse3
             Width = 1;
             Height = 1;
             ProgressSpeed = 20.0f;
-            Sprite = null;
+            ProgressSprite = null;
+            TimeProgressSprite = null;
             BackgroundSprite = null;
             Position = Vector2.Zero;
             ScaleFactor = Vector2.One;
-            Color = Color.White;
+            TimeScaleFactor = Vector2.One;
+            ProgressColor = Color.White;
+            TimeProgressColor = Color.Gray;
             BackgroundColor = Color.Black;
             Progress = 0.0f;
         }
@@ -58,14 +65,16 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Construct(int width, int height, Vector2 position, Color color, Color background)
+        public void Construct(int width, int height, Vector2 position, Color color, Color timeColor, Color background)
         {
             Width = width;
             Height = height;
-            ProgressSpeed = 20.0f;
-            Sprite = Texture(width, height, color);//sprite;
-			Color = color;
+            ProgressSpeed = 10.0f;
+            ProgressSprite = Texture(width, height, color);
+            TimeProgressSprite = Texture(width, 10, timeColor);
             BackgroundSprite = Texture(width, height, background);
+			ProgressColor = color;
+            ProgressColor = timeColor;
             BackgroundColor = background;
 			Position = position;
         }
@@ -75,7 +84,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public void Destroy()
         {
-            Sprite = null;
+            ProgressSprite = null;
+            TimeProgressSprite = null;
+            BackgroundSprite = null;
         }
 
         //-----------------------------------------------------------------------------
@@ -135,7 +146,52 @@ namespace WareHouse3
         {
             ScaleFactor.X += amount;
         }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void SetTimeScaleFactor(Vector2 scaleFactor)
+        {
+            TimeScaleFactor = scaleFactor;
+        }
 
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void SetTimeScaleFactorX(float x)
+        {
+            TimeScaleFactor.X = x;
+        }
+
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void SetTimeScaleFactorY(float y)
+        {
+            TimeScaleFactor.Y = y;
+        }
+
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void IncreaseTimeScaleFactorXBy(float amount)
+        {
+            TimeScaleFactor.X += amount;
+        }
+
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void SetProgress(float percent)
+        {
+            Debug.Print(" ");
+            Debug.Print("Width "+Width.ToString());
+            Debug.Print("Percent Given "+percent.ToString());
+            Progress = MathExtensions.Value(percent, Width, 0) / Width;
+            
+            Debug.Print("Percent Calculated "+Progress.ToString());
+            SetScaleFactorX(1.0f - Progress);
+        }
         
         //-----------------------------------------------------------------------------
         //
@@ -144,8 +200,8 @@ namespace WareHouse3
         {
             var elapsed = (float)(gameTime.TotalGameTime.TotalSeconds * ProgressSpeed) % Width;
             
-            Progress = elapsed / (float)Width;
-            SetScaleFactorX(1.0f - Progress);
+            TimeProgress = elapsed / (float)Width;
+            //SetTimeScaleFactorX(1.0f - TimeProgress);
         }
         
          /// <summary>
@@ -167,18 +223,27 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (Sprite != null)
+            if (ProgressSprite != null)
             {
                 
 				spriteBatch.Draw(BackgroundSprite, Position, null, BackgroundColor, 0.0f, new Vector2(Width, 0), 1.0f, SpriteEffects.None, 0.0f);
-                spriteBatch.Draw(Sprite,
+                spriteBatch.Draw(ProgressSprite,
                     Position,
                     null,
-                    Color,
+                    ProgressColor,
                     0.0f, // Rotation
                     new Vector2(Width,0), // Origin
                     ScaleFactor,
                     SpriteEffects.None,
+                    0.0f);
+                spriteBatch.Draw(TimeProgressSprite, 
+                    Position + new Vector2(0, Height), 
+                    null, 
+                    TimeProgressColor, 
+                    0.0f, 
+                    new Vector2(Width, 0), 
+                    TimeScaleFactor, 
+                    SpriteEffects.None, 
                     0.0f);
                     
             }

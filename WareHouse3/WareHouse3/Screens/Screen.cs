@@ -10,7 +10,7 @@ namespace WareHouse3
 {
     public class Screen
     {
-        protected ScreensType Type { get; private set; }
+        public ScreensType Type { get; private set; }
         protected ScreenManager Parent { get; private set; }
 
         protected ContentManager ContentManager { get; private set; }

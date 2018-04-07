@@ -62,6 +62,8 @@ namespace WareHouse3
             manager.AddKeyboardBinding(Keys.Up, UpArrow);
             manager.AddKeyboardBinding(Keys.Down, DownArrow);
             manager.AddKeyboardBinding(Keys.Space, Space);
+            manager.AddKeyboardBinding(Keys.U, ProgressUp);
+            manager.AddKeyboardBinding(Keys.I, ProgressDown);
         }
         
         public void Exit(ButtonAction buttonState, Vector2 amount)
@@ -133,6 +135,23 @@ namespace WareHouse3
             if (CurrentScreen is LevelScreen)
             {
                 ((LevelScreen)CurrentScreen).Level.Ball.SetJumpMovement(buttonState);
+            }
+        }
+        
+        public void ProgressUp(ButtonAction buttonState, Vector2 amount)
+        {
+           
+            if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
+            {
+                ((LevelScreen)CurrentScreen).Hud.ProgressAmount += 1.0f;
+            }
+        }
+        
+        public void ProgressDown(ButtonAction buttonState, Vector2 amount)
+        {
+            if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
+            {
+                ((LevelScreen)CurrentScreen).Hud.ProgressAmount -= 1.0f;
             }
         }
         #endregion

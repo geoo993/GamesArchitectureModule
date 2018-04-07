@@ -105,6 +105,7 @@
     <Compile Include="Screens\LoseScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
     <Compile Include="Screens\GameObserver.cs" />
+    <Compile Include="Utilities\HUD.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
