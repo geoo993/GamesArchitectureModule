@@ -1,0 +1,14 @@
+﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Screens/ScreensManager.cs">
+    <Files>
+      <File FileName="Screens/ScreensManager.cs" Line="12" Column="24" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.XylophoneGame PreferredExecutionTarget="Test1" />
+  <MultiItemStartupConfigurations />
+</Properties>

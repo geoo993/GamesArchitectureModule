@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note8.wav</SourceFile>
+  <SourceTime>2017-12-27T17:40:27+00:00</SourceTime>
+  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/bin/DesktopGL/Content/note8.xnb</DestFile>
+  <DestTime>2018-04-08T16:28:42+01:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2018-02-16T07:17:46+00:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
