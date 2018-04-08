@@ -168,9 +168,9 @@ namespace WareHouse3
                 bool horizontalBoundary = (PreviousBounds.Center.X > tileBounds.Left && PreviousBounds.Center.X < tileBounds.Right);
 				// If we crossed the top of a tile, we are on the ground.
 				// If we crossed the bottom of a tile, we are hitting the tile from bellow.
-				if (PreviousBounds.Bottom <= tileBounds.Top) {// && horizontalBoundary) {
+				if (PreviousBounds.Bottom <= tileBounds.Top) {
 					this.Ground = tileBounds.Top + 1;
-				} else if (PreviousBounds.Top >= tileBounds.Bottom) {// && horizontalBoundary) {
+				} else if (PreviousBounds.Top >= tileBounds.Bottom) {
 					this.Ceiling = tileBounds.Bottom - 1;
 				} else if (horizontalBoundary == false && IsIntersecting == false) {
                     this.Ground = mapSize.Y;

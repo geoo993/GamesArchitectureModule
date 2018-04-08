@@ -18,6 +18,9 @@ namespace WareHouse3
         public static readonly int LevelHorizontalLength = (int)(double)GameManager.manager["LevelHorizontalLength"];
         public static readonly int LevelVerticalLength = (int)(double)GameManager.manager["LevelVerticalLength"];
         public static readonly int SplashScreenCountDown = (int)(double)GameManager.manager["SplashScreenCountDown"];
+        public static readonly List<string> Levels = new List<string>(){
+            "level1", "level2", "level3"
+        };
         
         public static readonly Camera Camera = new Camera();  
         public static readonly Random Random = new Random(DateTime.Now.Millisecond);
@@ -55,6 +58,10 @@ namespace WareHouse3
     public class TileInfo {
         public static int UnitWidth = (int)(double)GameManager.manager["TileWidth"];
         public static int UnitHeight = (int)(double)GameManager.manager["TileHeight"];
+    }
+    
+    public class CollectableInfo {
+        public static int Radius = (int)(double)GameManager.manager["CollectableRadius"];
     }
     
     public class NoteInfo {

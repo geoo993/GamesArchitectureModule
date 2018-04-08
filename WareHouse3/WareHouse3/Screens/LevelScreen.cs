@@ -10,6 +10,10 @@ namespace WareHouse3
 {
     public class LevelScreen: Screen
     {
+        /// <summary>
+        /// Game title
+        /// </summary>
+        public string GameTitle;
         
         /// <summary>
         /// HUD
@@ -21,7 +25,12 @@ namespace WareHouse3
         /// Level.
         /// </summary>
         public Level Level;
-        public SongType SongType = SongType.IncyIncySpider;
+        public String LevelTitle;
+
+        /// <summary>
+        /// Song.
+        /// </summary>
+        public SongType SongType;
         public string Song {
             get {
                 return XylophoneSongs.Instance.GetSong(SongType);
@@ -30,10 +39,13 @@ namespace WareHouse3
         public float SongProgressSpeed = 20.0f;
         public bool AutoPlay = false;
         
-        public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
+        public LevelScreen(string title, string level, SongType song, ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
-            Hud = new HUD();
+            SongType = song;
+            GameTitle = title;
+            LevelTitle = level;
+            Hud = new HUD(title);
         }
         
         //-----------------------------------------------------------------------------
@@ -66,8 +78,9 @@ namespace WareHouse3
         {
             base.OnEnter();
 
+            LoadLevel();
 			Hud.Construct(Song, ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
-            LoadLevel("level3");
+			Hud.Subscribe(Level.ScoreSubject);
         }
 
         //-----------------------------------------------------------------------------
@@ -79,14 +92,14 @@ namespace WareHouse3
             base.OnExit();
         }
         
-        private void LoadLevel(string level)
+        private void LoadLevel()
         {
             // Unloads the content for the current level before loading the next one.
             if (Level != null)
                 Level.Dispose();
 
             // Load the level.
-            string levelPath = string.Format("Content/Levels/"+level+".txt");
+            string levelPath = string.Format("Content/Levels/"+LevelTitle+".txt");
             using (Stream fileStream = TitleContainer.OpenStream(levelPath))
                 Level = new Level(Parent.Services, fileStream, SongType, Song);
                 
@@ -97,19 +110,8 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         public void SetCurrentLevel(string level)
         {
-            //switch (level)
-            //{
-            //    case GameStates.LEVEL_STATE_TUTORIAL:
-            //        if (mTutorialLevel == null)
-            //        {
-            //            mTutorialLevel = new GameLevelTutorial(EntityID.GAME_LEVEL_TUTORIAL, this, mContentManager);
-            //            mTutorialLevel.Construct();
-            //        }
-            //        mCurrentLevel = mTutorialLevel;
-            //        break;
-            //}
-
-            //mCurrentLevel.OnEnter();
+            LevelTitle = level;
+            LoadLevel();
         }
         
         //-----------------------------------------------------------------------------
@@ -131,8 +133,8 @@ namespace WareHouse3
         {
             BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
             base.Draw(spriteBatch, screenSafeArea);
-			
-			Hud.Draw(spriteBatch, screenSafeArea, Level.DidMatch, Level.Matches, Level.Errors);
+
+            Hud.Draw(spriteBatch, screenSafeArea);//, Level.ScoreSubject);// Level.DidMatch, Level.Matches, Level.Errors);
             
             if (Level != null)
             {

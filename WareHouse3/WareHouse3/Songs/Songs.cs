@@ -28,25 +28,23 @@ namespace WareHouse3
             }
         }
 
-
-        string JingleBellsNote = "EEE EEE EGCD E F F FFF EE EG G FD C";
-        
-        string TwinkleLittleStarNote = "CCGGAAG FFEEDDC GGFFEED GGFFEED CCGGAAG FFEEDDC";
-        
-        string RainRainGoAwayNote = "GEGGEGGE AGGE FFDDFFD GFEDECC";
-       
-        string IncyIncySpiderNote = "CCC DEE E DCD EC E E FG GF EFGE CC DEE D CD EC C CCC DE E E DCD EC";
+        public static readonly List<SongType> Songs = new List<SongType>(){
+            SongType.TwinkleLittle,
+            SongType.JingleBells,
+            SongType.RainRainGoAway,
+            SongType.IncyIncySpider
+        };
         
         public string GetSong(SongType type) {
             switch (type) {
             case SongType.JingleBells:
-                    return JingleBellsNote;
+                    return "EEE EEE EGCD E F F FFF EE EG G FD C";
             case SongType.TwinkleLittle:
-                    return TwinkleLittleStarNote;
+                    return "CCGGAAG FFEEDDC GGFFEED GGFFEED CCGGAAG FFEEDDC";
             case SongType.RainRainGoAway:
-                    return RainRainGoAwayNote;
+                    return "GEGGEGGE AGGE FFDDFFD GFEDECC";
             case SongType.IncyIncySpider:
-                    return IncyIncySpiderNote;
+                    return "CCC DEE E DCD EC E E FG GF EFGE CC DEE D CD EC C CCC DE E E DCD EC";
             default:
                     return "";
             }

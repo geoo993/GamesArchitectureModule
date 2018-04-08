@@ -1,18 +1,15 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Utilities/HUD.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WareHouse3/Screens/ScreensManager.cs">
     <Files>
-      <File FileName="WareHouse3/Levels/Level.cs" Line="328" Column="12" />
-      <File FileName="WareHouse3/Screens/ScreensManager.cs" Line="226" Column="1" />
+      <File FileName="WareHouse3/Levels/Level.cs" Line="247" Column="52" />
+      <File FileName="WareHouse3/Screens/ScreensManager.cs" Line="92" Column="7" />
       <File FileName="WareHouse3/DesignPattern/State.cs" Line="38" Column="79" />
       <File FileName="WareHouse3/DesignPattern/StateMachine.cs" Line="132" Column="74" />
-      <File FileName="WareHouse3/Screens/ScreensState.cs" Line="69" Column="90" />
-      <File FileName="WareHouse3/Screens/LevelScreen.cs" Line="136" Column="13" />
-      <File FileName="WareHouse3/Ball/Ball.cs" Line="294" Column="40" />
-      <File FileName="WareHouse3/Notes/Note.cs" Line="24" Column="224" />
-      <File FileName="WareHouse3/Screens/Screen.cs" Line="116" Column="13" />
-      <File FileName="WareHouse3/Utilities/ProgressBar.cs" Line="184" Column="13" />
-      <File FileName="WareHouse3/Utilities/HUD.cs" Line="136" Column="51" />
-      <File FileName="WareHouse3/Game1.cs" Line="145" Column="14" />
+      <File FileName="WareHouse3/Screens/ScreensState.cs" Line="207" Column="44" />
+      <File FileName="WareHouse3/Screens/LevelScreen.cs" Line="94" Column="9" />
+      <File FileName="WareHouse3/Ball/Ball.cs" Line="165" Column="52" />
+      <File FileName="WareHouse3/Songs/Songs.cs" Line="36" Column="11" />
+      <File FileName="WareHouse3/Animations/Animation.cs" Line="41" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

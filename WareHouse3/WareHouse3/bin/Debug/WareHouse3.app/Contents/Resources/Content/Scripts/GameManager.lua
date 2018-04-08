@@ -6,6 +6,7 @@ NumberOfObstacles = 50
 ObstatclesMaxSpeed = 40
 TileWidth = 100
 TileHeight = 50
+CollectableRadius = 50
 BallSpeed = 400
 BallJumpSpeed = 150
 BallMass = 5

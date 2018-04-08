@@ -7,7 +7,6 @@ namespace WareHouse3
 {
     public class MainScreen: Screen
     {
-		private Texture2D Title;
 		private Vector2 TitlePosition;
         
         public MainScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
@@ -22,8 +21,6 @@ namespace WareHouse3
         public override void Construct(Color backgroundColor, Texture2D backgroundTexture)
         {
             base.Construct(backgroundColor, backgroundTexture);
-            TitlePosition = Vector2.Zero;
-			//Title = ContentManager.Load<Texture2D>("");
 		}
 
         //-----------------------------------------------------------------------------

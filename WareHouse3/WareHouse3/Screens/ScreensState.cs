@@ -202,7 +202,7 @@ namespace WareHouse3
         {
            
             ScreenManager manager = (ScreenManager)owner;
-            screen = new LevelScreen(ScreensType.LEVEL, manager, manager.ContentManager);
+            screen = new LevelScreen(manager.Title, manager.Levels[2], manager.Songs[2], ScreensType.LEVEL, manager, manager.ContentManager);
             screen.Construct(GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();

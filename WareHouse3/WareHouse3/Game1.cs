@@ -81,11 +81,10 @@ namespace WareHouse3
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            ScreenManager = new ScreenManager(Content, Commands.manager, Services);
+            ScreenManager = new ScreenManager("Xylophone Game", Content, Commands.manager, Services);
             ScreenManager.Construct();
             
             //GameInfo.Camera.SetKeyoardBindings(Commands.manager);
-            
             
         }
         

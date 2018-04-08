@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -7,8 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WareHouse3
 {
-    public class HUD
+    public class HUD: ScoreObserver
     {
+
+        //private ScoreObserver ScoreObserver;
         
         /// <summary>
         /// Song
@@ -35,6 +38,7 @@ namespace WareHouse3
         }
 
         private string NotesCompletedScore;
+        private List<char> ScoreList;
         
         /// <summary>
         /// HUD elements
@@ -84,7 +88,8 @@ namespace WareHouse3
         
 		private FrameCounter FrameCounter;
         
-        public HUD()
+        public HUD(string title)
+        : base(title+" Score System")
         {
             HudFont = null;
             HudProgressBar = new Progressbar();
@@ -93,13 +98,13 @@ namespace WareHouse3
         
         public void Construct(string song, ContentManager contentManager, Color textColor, Color textProgressColor)
         {
-            
-			Song = song;
-			HudFont = contentManager.Load<SpriteFont>("Fonts/GameFont");
+            Song = song;
+            HudFont = contentManager.Load<SpriteFont>("Fonts/GameFont");
             HudPosition = Vector2.Zero;
             HudTextColor = textColor;
             HudTextProgressColor = textProgressColor;
             NotesCompletedScore = "";
+			ScoreList = new List<char>();
         }
    
         public void Update(GameTime gameTime, int progress, float timeProgress)
@@ -114,10 +119,41 @@ namespace WareHouse3
 
         }
         
-		//-----------------------------------------------------------------------------
-		//
-		//-----------------------------------------------------------------------------
-        public void Draw(SpriteBatch spriteBatch, Rectangle safeArea, bool didMatch, int matches, int errors)
+        // Update information.
+        public override void OnNext(ScoreInfo value) 
+        {
+            
+            // score text
+            if (value.DidMatch)
+            {
+                if (NotesCompleted.Length == 0) {
+                    ScoreList.Clear();
+                }
+                
+                NotesCompletedScore = "";
+                int length = NotesCompleted.Length - ScoreList.Count;
+                for (int i = -1; i < length; i++)
+                {
+                    if (i == length - 1)
+                    {
+                        var score = (value.Errors == 0) ? 'X' : '0';
+                        ScoreList.Add(score);
+                    } else {
+                        ScoreList.Add(' ');
+                    }
+                }
+                foreach(char c in ScoreList){
+                    NotesCompletedScore += c;
+                }   
+            }
+            
+            base.OnNext(value);
+        }
+        
+        //-----------------------------------------------------------------------------
+        //
+        //-----------------------------------------------------------------------------
+        public void Draw(SpriteBatch spriteBatch, Rectangle safeArea)
         {
         
             HudPosition = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (safeArea.Height / 2.0f));
@@ -127,17 +163,6 @@ namespace WareHouse3
             DrawShadowedString(spriteBatch, HudFont, Song, notesPosition, HudTextColor, 1.0f);
             DrawShadowedString(spriteBatch, HudFont, CurrentNote.ToString(), notesPosition + new Vector2(NotesCompletedWidth, Height * 1.2f), HudTextProgressColor, 1.0f);
 
-            // score text
-            if (didMatch)
-            {
-                int length = NotesCompleted.Length - NotesCompletedScore.Length;
-                for (int i = 0; i < length; i++)
-                {
-                    var score = (errors == 0) ? '$': ' ';
-                    NotesCompletedScore += (i == 0) ? score : ' ';
-                }
-            }
-            
             Color scoreColor = HudTextColor;
             //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, scoreColor, 1.0f);
 			DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), scoreColor, 1.0f);
@@ -163,6 +188,9 @@ namespace WareHouse3
 
             HudProgressBar.Destroy();
             HudProgressBar = null;
+
+            ScoreList.Clear();
+            base.OnCompleted();
         }
     }
 }

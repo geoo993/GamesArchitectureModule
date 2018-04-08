@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -12,6 +13,10 @@ namespace WareHouse3
 {
     public class ScreenManager
     {
+        public string Title { get; private set; }
+        public List<string> Levels { get; private set; }
+        public List<SongType> Songs { get; private set; }
+        
         
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
@@ -30,8 +35,11 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public ScreenManager(ContentManager contentManager, CommandManager manager, GameServiceContainer service)
+        public ScreenManager(string title, ContentManager contentManager, CommandManager manager, GameServiceContainer service)
         {
+            Title = title;
+            Levels = GameInfo.Levels;
+            Songs = XylophoneSongs.Songs;
             ContentManager = contentManager;
             CommandManager = manager;
             Services = service;
@@ -71,7 +79,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.PRESSED)
             {
-                SetShouldExit(true);
+               SetShouldExit(true);
             }
         }
         
@@ -81,9 +89,8 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.PRESSED)
             {
-                var nextScreen = State + 1;
-                SetState(nextScreen);
-                //Debug.Print("Next Screen "+ nextScreen.ToString());
+				//SetState(State + 1);
+                ScreensNavigation();
             }
         }
         
@@ -92,9 +99,7 @@ namespace WareHouse3
             
             if (buttonState == ButtonAction.PRESSED)
             {
-                var previousScreen = State - 1;
-                SetState(previousScreen);
-				//Debug.Print("Previous Screen "+previousScreen.ToString());
+            
             }
         }
         
@@ -164,6 +169,20 @@ namespace WareHouse3
                 ((LevelScreen)CurrentScreen).AutoPlay = !((LevelScreen)CurrentScreen).AutoPlay;
             }
         }
+        
+        private void ScreensNavigation() {
+        
+            if (CurrentScreen is MainScreen)
+            {
+                SetState(ScreensState.LEVEL);
+            } else if (CurrentScreen is WinScreen) {
+                SetState(ScreensState.MAIN);
+            } else if (CurrentScreen is LoseScreen) {
+                SetState(ScreensState.MAIN);
+            }
+            
+        }
+        
         #endregion
         
        

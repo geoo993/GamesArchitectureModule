@@ -28,6 +28,8 @@ namespace WareHouse3
     /// </summary>
     public class Level
     {
+        public ScoreSubject ScoreSubject { get; private set; }
+      
         private List<Tile> Tiles;
         public Ball Ball { get; private set; }
 
@@ -40,9 +42,9 @@ namespace WareHouse3
 		private bool FirstUpdate;
 		private double InitialTime;
         
-        public int Matches { get; private set; } 
-        public int Errors { get; private set; }
-        public bool DidMatch { get; private set; }
+        //public int Matches { get; private set; } 
+        //public int Errors { get; private set; }
+        //public bool DidMatch { get; private set; }
         
         
         // Level content.        
@@ -70,7 +72,7 @@ namespace WareHouse3
                 return TileCollision.Passable;
 
             //return tiles[x, y].Collision;
-            return ClosestTile(Tiles, new Vector2(x * TileInfo.UnitWidth, y * TileInfo.UnitHeight)).Collision;
+            return ClosestNote(Tiles, new Vector2(x * TileInfo.UnitWidth, y * TileInfo.UnitHeight)).Collision;
         }
 
         /// <summary>
@@ -82,10 +84,12 @@ namespace WareHouse3
         }
         
          
-        public Tile ClosestTile(List<Tile> tiles, Vector2 position)
+        public Tile ClosestNote(List<Tile> tiles, Vector2 position)
         {
+            
             // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
             return tiles
+                .Where(o => o is Note)
                 .OrderBy(o => (o.Position - position).LengthSquared())
                 .FirstOrDefault();
         }
@@ -117,6 +121,9 @@ namespace WareHouse3
         public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song)
         {
             // Create a new content manager to load content used just by this level.
+            ScoreSubject = new ScoreSubject();
+            ScoreSubject.StartScoreSystem(50);
+            
             Content = new ContentManager(serviceProvider, "Content");
             Loader = new Loader(fileStream);
             CurrentSong = song;
@@ -175,28 +182,20 @@ namespace WareHouse3
         {
             switch (tileType)
             {
-                 // Passable
                 case '1':
+					// Passable
                     return LoadPlayerTile(x, y, TileCollision.Passable);
-                // Blank space
                 case '.':
+					// Blank space
                     return LoadEmptyTile(TileCollision.Passable);
-                //case '$':
-                //    return LoadVarietyTile("Collectable", 0, x, y,  GameInfo.Instance.RandomColor(), TileCollision.Passable);
-                //// Impassable block
-                //case '~':
-                //    return LoadVarietyTile("Trolley", 0,  x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
-
-                //// Impassable block
-                //case ':':
-                //    return LoadVarietyTile("PackageBox", x, y,  GameInfo.Instance.RandomColor(),  TileCollision.Impassable);
-
-                //// Platform block
+                case 'T':
+					//// Passable
+                    return LoadTimeItem("Collectable", x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
                 case '#':
+					//// Platform block
                     return LoadNoteTile("Platform", x, y,  Color.White, TileCollision.Platform);
-
-                // Unknown tile type character
                 default:
+					// Unknown tile type character
                     throw new NotSupportedException(String.Format("Unsupported tile type character '{0}' at position {1}, {2}.", tileType, x, y));
             }
         }
@@ -208,20 +207,13 @@ namespace WareHouse3
         
         
         /// <summary>
-        /// Creates a new tile. The other tile loading methods typically chain to this
-        /// method after performing their special logic.
+        /// Creates a new note tile.
         /// </summary>
-        /// <param name="name">
-        /// Path to a tile texture relative to the Content/Tiles directory.
-        /// </param>
-        /// <param name="collision">
-        /// The tile collision type for the new tile.
-        /// </param>
-        /// <returns>The new tile.</returns>
-        private Tile LoadTile(string name, Vector2 position, Color color, TileCollision collision)
+        private Tile LoadNoteTile(string name, int x, int y, Color color, TileCollision collision)
         {
             Texture2D texture; 
             SoundEffect note;
+            Point position = GetBounds(x, y).Center;
             
             var randNote = NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes);
             var noteName = NoteInfo.KeyByValue(randNote);
@@ -236,26 +228,31 @@ namespace WareHouse3
                 texture = null;
                 note = null;
             } 
-            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
+            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position.ToVector2(), TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
             Note.NoteName = noteName;
             return Note;
         }
         
         /// <summary>
-        /// Loads a tile with a random appearance.
+        /// Create time collectable item.
         /// </summary>
-        /// <param name="baseName">
-        /// The content name prefix for this group of tile variations. Tile groups are
-        /// name LikeThis0.png and LikeThis1.png and LikeThis2.png.
-        /// </param>
-        /// <param name="variationCount">
-        /// The number of variations in this group.
-        /// </param>
-        private Tile LoadNoteTile(string name, int x, int y, Color color, TileCollision collision)
+        private Tile LoadTimeItem(string name, int x, int y, Color color, TileCollision collision)
         {
+            Texture2D texture; 
             Point position = GetBounds(x, y).Center;
-            return LoadTile(name, new Vector2(position.X, position.Y), color, collision);
+            
+            //<- file creating stuff here -> 
+            try { 
+            //<-- try to load the file --> 
+                texture = Content.Load<Texture2D>("Icons/timeIcon");
+            } catch {
+                //<--print exception--> 
+                texture = null;
+            }
+
+            return new Circle(name, position.ToVector2(), CollectableInfo.Radius, 10, 0, 0, color, null, texture, collision);
         }
+        
         
         /// <summary>
         /// Instantiates a player, puts him in the level, and remembers where to put him when he is resurrected.
@@ -290,6 +287,9 @@ namespace WareHouse3
         
             Ball.Destroy();
             Ball = null;
+
+            ScoreSubject.EndScoreSystems();
+            ScoreSubject = null;
             
             Dispose();
         }
@@ -317,27 +317,26 @@ namespace WareHouse3
 			}
             var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
 			var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
-            var closestNote = (Note)ClosestTile(Tiles, Ball.Position);
+            var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
             var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
             var isNoteSelectedWithMatch = false;
             var isNoteSelectedWithError = false;
+
+            ScoreSubject.ResetErrorsOnDidMatch();
+            ScoreSubject.Matched(false);
             
-            if (DidMatch)
-                Errors = 0;
-            
-			DidMatch = false;
             TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
             Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote);
             
             
             if (isNoteSelectedWithMatch)
             {
-                Matches++;
-                DidMatch = true;
+                ScoreSubject.AddMatches();
+                ScoreSubject.Matched(true);
             }
 
             if (isNoteSelectedWithError)
-                Errors++;
+                ScoreSubject.AddError();
             
             if (autoPlay)
             {
@@ -376,10 +375,12 @@ namespace WareHouse3
             
             for (int i = 0; i < Tiles.Count; ++i)
             {
-                var note = (Note)Tiles[i];
                 
-                if (Ball.NoteSelected != null && noteToSelect != null)
+                
+                if (Ball.NoteSelected != null && noteToSelect != null && Tiles[i] is Note)
                 {
+					var note = (Note)Tiles[i];
+                    
                     // give a random note to each notetile
 					var noteName = (GameInfo.Random.Next(10) > 6) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
                     var noteAsset = NoteInfo.AvailableNotes[noteName];
@@ -392,7 +393,7 @@ namespace WareHouse3
                     note.NoteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
                 }
                 
-                note.UpdatePosition(gameTime, mapSize);
+                Tiles[i].UpdatePosition(gameTime, mapSize);
             }
 
         }
