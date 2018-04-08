@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/PlatformerLab2/PlatformerLab2/Content/Layer2_2.png</SourceFile>
-  <SourceTime>2010-09-27T11:53:12+01:00</SourceTime>
+  <SourceTime>2018-03-29T16:17:36+01:00</SourceTime>
   <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/PlatformerLab2/PlatformerLab2/Content/bin/DesktopGL/Content/Layer2_2.xnb</DestFile>
-  <DestTime>2018-02-21T09:58:12+00:00</DestTime>
+  <DestTime>2018-04-08T17:38:18+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

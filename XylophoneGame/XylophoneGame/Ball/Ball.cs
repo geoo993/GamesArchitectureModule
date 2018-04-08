@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Diagnostics;
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Input;
 
 // https://www.gamedev.net/forums/topic/610640-xnac-method-for-jumping/
 // https://stackoverflow.com/questions/20705928/how-can-i-double-jump-in-my-platform-game-code
@@ -15,7 +13,6 @@ namespace XylophoneGame
 
     public class Ball: Circle
     {
-        
         /// <summary>
         /// trail particle of the ball
         /// </summary>
@@ -47,6 +44,9 @@ namespace XylophoneGame
         private Note PreviousNoteCollided;
         public Note PreviousNote { get; private set; }
         public String NoteSelected { get; private set; }
+
+
+        public bool DoAnimate;
         
         public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
@@ -58,6 +58,7 @@ namespace XylophoneGame
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
             this.IsIntersecting = false;
+            
         }
 
         public void SetLeftMovement(ButtonAction buttonState)
@@ -115,15 +116,27 @@ namespace XylophoneGame
                 DoJump = true;
             }
         }
-
-
-        private void UpdateCollisions(Note note, Vector2 mapSize)
+        
+        public void DoAnimateTimeItem(ButtonAction buttonState)
+        {
+            if (buttonState == ButtonAction.DOWN)
+            {
+                DoAnimate = true;
+            } 
+            
+            if (buttonState == ButtonAction.UP)
+            {
+                DoAnimate = false;
+            } 
+        }
+        
+        private void UpdateCollisions(Note note, TimeItem timeItem, Vector2 mapSize)
         {
             PreviousNote = PreviousNoteCollided;
-			var tileBounds = note.BoundingRectangle;
+			var noteBounds = note.BoundingRectangle;
             var previousTileName = (PreviousNoteCollided != null) ? PreviousNoteCollided.Name : "";
 
-            if (Intersects(tileBounds))
+            if (Intersects(noteBounds))
             {
                 IsIntersecting = true;
                 OnCollisionExit = false;
@@ -154,6 +167,16 @@ namespace XylophoneGame
                 OnCollisionExit = (PreviousNoteCollided != null);
 				PreviousNoteCollided = null;
             }
+
+            if (timeItem == null)
+                return;
+                
+            var timerItemBounds = timeItem.BoundingRectangle;
+            if (IntersectsCircle(timerItemBounds)) {
+                timeItem.Disable();
+            }
+
+            timeItem.Animate(DoAnimate);
           
         }
         
@@ -276,9 +299,9 @@ namespace XylophoneGame
             this.Position += this.Velocity * elapsed;
         }
         
-        public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote) {
+        public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote, ref TimeItem closestTimeItem) {
 			
-			this.UpdateCollisions(closestNote, mapSize);
+			this.UpdateCollisions(closestNote, closestTimeItem, mapSize);
 			this.UpdateBounds(closestNote, mapSize);
 			this.UpdateMovement(Ground);
             

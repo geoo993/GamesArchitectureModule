@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteC.png</SourceFile>
+  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteC.png</SourceFile>
   <SourceTime>2018-03-31T00:49:07+01:00</SourceTime>
-  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/bin/MacOSX/NoteC.xnb</DestFile>
-  <DestTime>2018-03-31T00:53:00+01:00</DestTime>
+  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/bin/MacOSX/NoteC.xnb</DestFile>
+  <DestTime>2018-04-08T17:44:29+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

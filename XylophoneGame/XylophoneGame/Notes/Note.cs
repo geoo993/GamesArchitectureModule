@@ -8,6 +8,8 @@ namespace XylophoneGame
 {
     public class Note: Tile
     {
+
+        private AnimationPlayer AnimationPlayer;
         
         /// <summary>
         /// box border 
@@ -89,6 +91,19 @@ namespace XylophoneGame
                 BoxBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
         }
+        
+        
+        public void Animate(bool doAnimate)
+        {
+            //if (doAnimate) {
+                
+            //    AnimationPlayer.PlayAnimation(new Animation(AnimationTexture, Position, 0.4f, 21, 60, Color, false));
+            //    //Debug.Print("Activated ");
+            //} else {
+            //    //Debug.Print("Not Activated " );
+            //}
+        }
+        
         
         //-----------------------------------------------------------------------------
         //

@@ -4,29 +4,30 @@
   <Platform>MacOSX</Platform>
   <Config />
   <SourceFiles>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/GameFont.spritefont</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/GameOverImage.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/GameWonImage.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/MainMenu.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note1.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note2.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note3.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note4.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note5.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note6.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note7.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note8.wav</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteA.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteB.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteC.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteC2.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteD.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteE.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteF.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/NoteG.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/Splash.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/Splash2.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/SplashScreen.png</File>
-    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/timeIcon.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameFont.spritefont</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameOverImage.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameWonImage.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/MainMenu.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note1.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note2.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note3.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note4.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note5.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note6.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note7.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note8.wav</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteA.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteB.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteC.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteC2.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteD.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteE.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteF.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/NoteG.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/Splash.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/Splash2.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/SplashScreen.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/timeIcon.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/timeIconAnimation.png</File>
   </SourceFiles>
 </SourceFileCollection>

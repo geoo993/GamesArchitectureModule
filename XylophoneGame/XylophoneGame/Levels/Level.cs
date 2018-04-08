@@ -93,6 +93,16 @@ namespace XylophoneGame
                 .OrderBy(o => (o.Position - position).LengthSquared())
                 .FirstOrDefault();
         }
+        
+        public Tile ClosestTimeItem(List<Tile> tiles, Vector2 position)
+        {
+            
+            // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
+            return tiles
+                .Where(o => (o is TimeItem && ((TimeItem)o).IsEnabled))
+                .OrderBy(o => (o.Position - position).LengthSquared())
+                .FirstOrDefault();
+        }
 
         /// <summary>
         /// horizontal length distance of the level measured in tiles.
@@ -130,6 +140,7 @@ namespace XylophoneGame
             CurrentSongType = songType;
             HorizontalLength = GameInfo.LevelHorizontalLength;
             VerticalLength = GameInfo.LevelVerticalLength;
+            
             LoadTiles(fileStream);
         }
         
@@ -238,19 +249,22 @@ namespace XylophoneGame
         /// </summary>
         private Tile LoadTimeItem(string name, int x, int y, Color color, TileCollision collision)
         {
-            Texture2D texture; 
+            Texture2D texture;
+            Texture2D animationTexture;
             Point position = GetBounds(x, y).Center;
-            
+           
             //<- file creating stuff here -> 
             try { 
             //<-- try to load the file --> 
                 texture = Content.Load<Texture2D>("Icons/timeIcon");
+                animationTexture = Content.Load<Texture2D>("SpriteSheets/timeIconAnimation");
             } catch {
                 //<--print exception--> 
                 texture = null;
+                animationTexture = null;
             }
-
-            return new Circle(name, position.ToVector2(), CollectableInfo.Radius, 10, 0, 0, color, null, texture, collision);
+            
+            return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 10, 0, 0, color, null, texture, animationTexture, collision);
         }
         
         
@@ -264,8 +278,8 @@ namespace XylophoneGame
 
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
-            
-            Ball = new Ball("Ball", this, start, rect.Width / 5, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
+            int radius = rect.Width / 5;
+            Ball = new Ball("Ball", this, start, radius, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
             
             return null;
         }
@@ -318,6 +332,7 @@ namespace XylophoneGame
             var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
 			var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
             var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
+            var closestTimeItem = (TimeItem)ClosestTimeItem(Tiles, Ball.Position);
             var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
             var isNoteSelectedWithMatch = false;
             var isNoteSelectedWithError = false;
@@ -326,7 +341,7 @@ namespace XylophoneGame
             ScoreSubject.Matched(false);
             
             TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
-            Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote);
+            Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote, ref closestTimeItem);
             
             
             if (isNoteSelectedWithMatch)
@@ -369,7 +384,6 @@ namespace XylophoneGame
 					var nextCharacterAtIndex = CurrentSong[Progress];
                     noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
                 }
-                
             }
             
             

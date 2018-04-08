@@ -104,6 +104,7 @@
     <Compile Include="Score\ScoreInfo.cs" />
     <Compile Include="Score\ScoreObserver.cs" />
     <Compile Include="Score\ScoreSubject.cs" />
+    <Compile Include="Collectables\TimeItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -202,6 +203,9 @@
     <Content Include="Content\bin\MacOSX\timeIcon.xnb">
       <Link>Content\Icons\timeIcon.xnb</Link>
     </Content>
+    <Content Include="Content\bin\MacOSX\timeIconAnimation.xnb">
+      <Link>Content\SpriteSheets\timeIconAnimation.xnb</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">
@@ -235,6 +239,7 @@
     <Folder Include="Content\Screens\" />
     <Folder Include="Score\" />
     <Folder Include="Content\Icons\" />
+    <Folder Include="Content\SpriteSheets\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

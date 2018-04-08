@@ -71,6 +71,7 @@ namespace XylophoneGame
             manager.AddKeyboardBinding(Keys.U, ProgressUp);
             manager.AddKeyboardBinding(Keys.I, ProgressDown);
             manager.AddKeyboardBinding(Keys.O, AutoPlaySwitch);
+            manager.AddKeyboardBinding(Keys.P, PButton);
             
         }
         
@@ -167,6 +168,14 @@ namespace XylophoneGame
             if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
             {
                 ((LevelScreen)CurrentScreen).AutoPlay = !((LevelScreen)CurrentScreen).AutoPlay;
+            }
+        }
+        
+        public void PButton(ButtonAction buttonState, Vector2 amount)
+        {
+            if (CurrentScreen is LevelScreen)
+            {
+                ((LevelScreen)CurrentScreen).Level.Ball.DoAnimateTimeItem(buttonState);
             }
         }
         

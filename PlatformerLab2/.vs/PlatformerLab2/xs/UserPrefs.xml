@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="PlatformerLab2/Game1.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PlatformerLab2/Animation.cs">
     <Files>
       <File FileName="PlatformerLab2/Game1.cs" Line="30" Column="9" />
       <File FileName="PlatformerLab2/Level.cs" Line="133" Column="23" />

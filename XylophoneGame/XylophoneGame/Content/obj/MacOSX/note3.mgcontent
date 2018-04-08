@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/note3.wav</SourceFile>
+  <SourceFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note3.wav</SourceFile>
   <SourceTime>2017-11-16T09:14:50+00:00</SourceTime>
-  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/WareHouse3/WareHouse3/Content/bin/MacOSX/note3.xnb</DestFile>
-  <DestTime>2018-03-29T18:32:15+01:00</DestTime>
+  <DestFile>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/bin/MacOSX/note3.xnb</DestFile>
+  <DestTime>2018-04-08T17:44:29+01:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2018-02-16T07:17:46+00:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
