@@ -95,7 +95,6 @@
     <Compile Include="DesignPattern\Transition.cs" />
     <Compile Include="Screens\ScreensManager.cs" />
     <Compile Include="Notes\Note.cs" />
-    <Compile Include="Notes\NoteStates.cs" />
     <Compile Include="Screens\ScreensState.cs" />
     <Compile Include="Songs\Songs.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
@@ -197,6 +196,9 @@
     </Content>
     <Content Include="Content\bin\MacOSX\Splash.xnb">
       <Link>Content\Screens\Splash.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\Splash2.xnb">
+      <Link>Content\Screens\Splash2.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

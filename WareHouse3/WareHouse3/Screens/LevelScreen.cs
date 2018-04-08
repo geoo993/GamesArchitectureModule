@@ -27,7 +27,7 @@ namespace WareHouse3
                 return XylophoneSongs.Instance.GetSong(SongType);
             }
         }
-        public float SongProgressSpeed = 0.0f;
+        public float SongProgressSpeed = 20.0f;
         public bool AutoPlay = false;
         
         public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
@@ -122,20 +122,21 @@ namespace WareHouse3
             Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), SongProgressSpeed, AutoPlay, Hud.Width);
             
             Hud.Update(gameTime, Level.Progress, Level.TimeProgress / 100.0f);
-
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            base.Draw(spriteBatch, screenCenter);
+            BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
+            base.Draw(spriteBatch, screenSafeArea);
 			
-			Hud.Draw(spriteBatch, Parent.ScreenSafeArea);
+			Hud.Draw(spriteBatch, screenSafeArea, Level.DidMatch, Level.Matches, Level.Errors);
+            
             if (Level != null)
             {
-                Level.Draw(spriteBatch);
+                Level.Draw(spriteBatch, screenSafeArea);
             }
         }
         

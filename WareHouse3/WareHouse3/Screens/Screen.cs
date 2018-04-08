@@ -17,7 +17,7 @@ namespace WareHouse3
 
         public Color BackgroundColor { get; private set; }
         public Texture2D BackgroundTexture;
-
+        
         protected bool IsBlocked { get; private set; }
         
         
@@ -30,6 +30,7 @@ namespace WareHouse3
 
             BackgroundColor = Color.Black;
             BackgroundTexture = null;
+
         }
         
         //-----------------------------------------------------------------------------
@@ -103,20 +104,20 @@ namespace WareHouse3
             if (IsBlocked) {
             
             } else {
-                // UpdateInput(currentGameTime);
+                
             }
-
         }
 
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public virtual void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-        
+            
             if (BackgroundTexture != null)
             {
-                spriteBatch.Draw(BackgroundTexture, screenCenter, Color.White);
+                Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - (screenSafeArea.Width / 2.0f), GameInfo.Camera.Position.Y - (screenSafeArea.Height / 2.0f) );
+                spriteBatch.Draw(BackgroundTexture, hudLocation, Color.White);
             }
         }
         

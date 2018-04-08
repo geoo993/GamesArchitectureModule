@@ -34,22 +34,22 @@ namespace WareHouse3
         public SongType CurrentSongType { get; private set; }
         private string CurrentSong;
       
-		//public int CurrentNoteIndex {
-  //          get {
-		//		var songNotesIndex = (int)MathExtensions.Value(Progress, CurrentSongNotes.Count, 0.0f);
-		//		return (songNotesIndex + 1) % CurrentSongNotes.Count;
-  //          }
-		//}
-        
         public int Progress { get; set; }
         public float TimeProgress { get; set; }
         
+		private bool FirstUpdate;
+		private double InitialTime;
+        
+        public int Matches { get; private set; } 
+        public int Errors { get; private set; }
+        public bool DidMatch { get; private set; }
         
         
         // Level content.        
         private ContentManager Content;
         
         private Loader Loader;
+        
 
         #region Bounds and collision
 
@@ -236,7 +236,7 @@ namespace WareHouse3
                 texture = null;
                 note = null;
             } 
-            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision, NoteStates.EMPTY);
+            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position, TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
             Note.NoteName = noteName;
             return Note;
         }
@@ -305,19 +305,39 @@ namespace WareHouse3
         /// </summary>
         public void Update(GameTime gameTime, Vector2 mapSize, float progressSpeed, bool autoPlay, float hudWidth)
         {
-
+            // center camera on ball
             GameInfo.Camera.CenterOn(Ball, false);
-
+            
             //Update Ball And Note Tiles
-			Ball.UpdatePosition(gameTime, mapSize);
+            Ball.UpdatePosition(gameTime, mapSize);
 			
-			var elapsed = (float)(gameTime.TotalGameTime.TotalSeconds * progressSpeed) % hudWidth;
+			if (FirstUpdate == false) {
+				InitialTime = gameTime.TotalGameTime.TotalSeconds;
+				FirstUpdate = true;
+			}
+            var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
+			var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
             var closestNote = (Note)ClosestTile(Tiles, Ball.Position);
             var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
+            var isNoteSelectedWithMatch = false;
+            var isNoteSelectedWithError = false;
             
+            if (DidMatch)
+                Errors = 0;
+            
+			DidMatch = false;
             TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
-            Ball.Update(gameTime, mapSize, noteToSelect, closestNote);
+            Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote);
             
+            
+            if (isNoteSelectedWithMatch)
+            {
+                Matches++;
+                DidMatch = true;
+            }
+
+            if (isNoteSelectedWithError)
+                Errors++;
             
             if (autoPlay)
             {
@@ -325,7 +345,7 @@ namespace WareHouse3
                 var timeProgressValue = (int)MathExtensions.Value(TimeProgress, CurrentSong.Length, 0.0f);
 				var characterAtIndex = CurrentSong[timeProgressValue];
                 
-                if (Progress != timeProgressValue && characterAtIndex != ' ' ) 
+                if (Progress != timeProgressValue && characterAtIndex != ' ') 
                 {
 					Progress = timeProgressValue;
                 
@@ -337,13 +357,12 @@ namespace WareHouse3
                     var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
                     noteSound.Play();
                 }
-            
             }
             else
             {
                 
                 // if ball has collided with the note to selct, we then go to the next note
-                if (Ball.IsNoteSelected && Ball.NoteSelected != null)
+                if (isNoteSelectedWithMatch && Ball.NoteSelected != null)
                 {
                     Progress = (Progress + 1) % CurrentSong.Length;
                     Progress = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
@@ -384,23 +403,16 @@ namespace WareHouse3
         /// <summary>
         /// Draw everything in the level from background to foreground.
         /// </summary>
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            DrawTiles(spriteBatch);
-			Ball.Render(spriteBatch);
-        }
-
-        /// <summary>
-        /// Draws each tile in the level.
-        /// </summary>
-        private void DrawTiles(SpriteBatch spriteBatch)
-        {
-          
+            
             foreach(Tile tile in Tiles) {
                 if (tile != null) {
-                    tile.Render(spriteBatch);
+                    tile.Draw(spriteBatch, screenSafeArea);
                 }
             }
+            
+			Ball.Draw(spriteBatch, screenSafeArea);
         }
 
         #endregion

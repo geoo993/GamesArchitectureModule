@@ -55,7 +55,6 @@ namespace WareHouse3
 			this.Radius = radius;
             this.IsBorderEnabled = false;
             this.CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
-            this.HasFSM = false;
         }
      
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -204,13 +203,13 @@ namespace WareHouse3
         /// <summary>
         /// Render  circle with sprite batch.
         /// </summary>
-        public override void Render(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
 
-            base.Render(spriteBatch);
+            base.Draw(spriteBatch, screenSafeArea);
 
             if (IsBorderEnabled)
             {
-                CircleBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+                CircleBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
         }
         

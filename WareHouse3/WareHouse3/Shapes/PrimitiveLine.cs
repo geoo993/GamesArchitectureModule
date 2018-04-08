@@ -166,7 +166,7 @@ namespace WareHouse3
         /// Renders the primtive line object.
         /// </summary>
         /// <param name="spriteBatch">The sprite batch to use to render the primitive line object.</param>
-        public void Render(SpriteBatch spriteBatch, float thickness, Color? color = null)
+        public void Draw(SpriteBatch spriteBatch, float thickness, Color? color = null)
         {
             if (color != null) {
                 Colour = color.Value;

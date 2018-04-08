@@ -35,7 +35,7 @@ namespace WareHouse3
         public abstract void Update(ref Object parent, GameTime gameTime);
         
         
-        public abstract void Draw(ref Object parent, SpriteBatch spriteBatch, Vector2 screenCenter);
+        public abstract void Draw(ref Object parent, SpriteBatch spriteBatch, Rectangle screenSafeArea);
 
         //-----------------------------------------------------------------------------
         // Exit() – This is called when the FSM is about to move to a different state. 

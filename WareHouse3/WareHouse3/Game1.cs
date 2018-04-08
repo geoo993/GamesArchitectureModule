@@ -120,8 +120,8 @@ namespace WareHouse3
             // Update the command manager (updates polling input and fires input events)
             Commands.manager.Update();
             //GameInfo.Camera.UpdateInputs();
-
-            ScreenManager.Update(gameTime, GraphicsDevice.Viewport.TitleSafeArea);
+            
+            ScreenManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -141,7 +141,7 @@ namespace WareHouse3
 			//this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
 			this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
             {
-                ScreenManager.Draw(gameTime, spriteBatch);
+                ScreenManager.Draw(spriteBatch, GraphicsDevice.Viewport.TitleSafeArea);
             }
             this.spriteBatch.End();
 

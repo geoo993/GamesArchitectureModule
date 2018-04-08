@@ -36,10 +36,7 @@ namespace WareHouse3
     {
         /// <summary>
         /// use state machine for tile
-        /// </summary>
-        public bool HasFSM;
-        protected StateMachine FSM { get; set; }
-        
+        /// </summary>        
         public TileCollision Collision { get; private set; }
 
         /// <summary>
@@ -215,7 +212,6 @@ namespace WareHouse3
             this.Collision = collision;
             this.NoteSound = note;
             this.MotionState = new MotionState();
-            this.HasFSM = false;
             this.LocalBounds = new Rectangle((int)this.Origin.X, (int)this.Origin.Y, width, height);
         }
         
@@ -251,11 +247,6 @@ namespace WareHouse3
             Position.Y = MathHelper.Clamp(Position.Y, Ceiling + Origin.Y, (Origin.Y + Ground) - Height);
             
             BorderColor = this.Color;
-
-            if (FSM != null)
-            {
-                FSM.Update(gameTime);
-            }
         }
 
         public virtual bool Intersects(Rectangle rectangle)
@@ -265,23 +256,22 @@ namespace WareHouse3
         
         protected virtual Texture2D CreateTexture() 
         {
-            
             return Texture;
         }
         
-        
-        public virtual void Render(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
+            
             if (Texture == null)
             {
                 this.Texture = OriginalTexture;
             }
-            
+
             if (HasTexture == false)
             {
                 Texture = CreateTexture();
-            } 
-			spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Vector2.Zero, SpriteEffects.None, Depth);
+            }
+            spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Vector2.Zero, SpriteEffects.None, Depth);
         }
         
         
@@ -292,13 +282,6 @@ namespace WareHouse3
             MotionState = null;
             OriginalTexture = null;
             Texture = null;
-        
-            if (FSM != null)
-            {
-                FSM.Destroy();
-                FSM = null;
-            }
-
         }
         
     }

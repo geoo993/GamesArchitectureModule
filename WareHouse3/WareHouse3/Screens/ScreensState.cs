@@ -66,7 +66,7 @@ namespace WareHouse3
             
             ScreenManager manager = (ScreenManager)owner;
             screen = new SplashScreen(ScreensType.SPLASH, manager, manager.ContentManager, GameInfo.SplashScreenCountDown);
-            screen.Construct(Color.Brown, manager.ContentManager.Load<Texture2D>("SplashScreen"));
+            screen.Construct(Color.Brown, manager.ContentManager.Load<Texture2D>("Splash2"));
 			screen.OnEnter();
             manager.CurrentScreen = screen;
             
@@ -85,9 +85,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------   
-        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            screen.Draw(spriteBatch, screenCenter);
+            screen.Draw(spriteBatch, screenSafeArea);
         }
          
         //-----------------------------------------------------------------------------
@@ -153,9 +153,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------   
-        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            screen.Draw(spriteBatch, screenCenter);
+            screen.Draw(spriteBatch, screenSafeArea);
         }
        
         //-----------------------------------------------------------------------------
@@ -203,7 +203,7 @@ namespace WareHouse3
            
             ScreenManager manager = (ScreenManager)owner;
             screen = new LevelScreen(ScreensType.LEVEL, manager, manager.ContentManager);
-            screen.Construct(GameInfo.Instance.RandomColor(), screen.CreateTexture((int)manager.ScreenSafeArea.Width, (int)manager.ScreenSafeArea.Height, Color.Ivory));
+            screen.Construct(GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             
@@ -222,9 +222,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------   
-        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            screen.Draw(spriteBatch, screenCenter);
+            screen.Draw(spriteBatch, screenSafeArea);
         }
         
         //-----------------------------------------------------------------------------
@@ -289,9 +289,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------   
-        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            screen.Draw(spriteBatch, screenCenter);
+            screen.Draw(spriteBatch, screenSafeArea);
         }
         
         //-----------------------------------------------------------------------------
@@ -357,9 +357,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------   
-        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(ref Object owner, SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            screen.Draw(spriteBatch, screenCenter);
+            screen.Draw(spriteBatch, screenSafeArea);
         }
        
         //-----------------------------------------------------------------------------

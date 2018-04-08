@@ -124,12 +124,12 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
 
             if (CurrentState != null)
             {
-                CurrentState.Draw(ref Parent, spriteBatch, screenCenter);
+                CurrentState.Draw(ref Parent, spriteBatch, screenSafeArea);
             }
         }
 

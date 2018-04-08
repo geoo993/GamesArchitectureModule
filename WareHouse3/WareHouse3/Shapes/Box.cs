@@ -19,12 +19,10 @@ namespace WareHouse3
         {
             this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
             this.IsBorderEnabled = false;
-            this.HasFSM = false;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
-           
 			base.UpdatePosition(gameTime, mapSize);
 
             if (IsBorderEnabled) {
@@ -73,13 +71,13 @@ namespace WareHouse3
         /// <summary>
         /// Render  box with sprite batch.
         /// </summary>
-        public override void Render(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
             
-            base.Render(spriteBatch);
+            base.Draw(spriteBatch, screenSafeArea);
 
-            if (IsBorderEnabled)
+            if (IsBorderEnabled )
             {
-                BoxBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+                BoxBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
 
         }

@@ -61,9 +61,9 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Draw(SpriteBatch spriteBatch, Vector2 screenCenter)
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            base.Draw(spriteBatch, screenCenter);
+            base.Draw(spriteBatch, screenSafeArea);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace WareHouse3
 {
     public class Note: Tile
     {
+        
         /// <summary>
         /// box border 
         /// </summary>
@@ -16,40 +17,28 @@ namespace WareHouse3
         
         
         /// <summary>
-        /// The state of the Note.
+        /// name of the Note.
         /// </summary>
-        protected NoteStates State;
         public string NoteName { get; set; }
         
-        
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-        public NoteStates GetState()
-        {
-            return State;
-        }
-
-        public Note(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable, NoteStates state = NoteStates.EMPTY)
+        public Note(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, width, height, speed, jump, mass, color, note, texture, collision)
         {
             this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
             this.IsBorderEnabled = false;
-            this.HasFSM = true;
-            this.FSM = new StateMachine(this, 0.0f, null);
-            this.SetState(state);
             this.HasTexture = true;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
             base.UpdatePosition(gameTime, mapSize);
-
+            
+            // move
             if (IsBorderEnabled) {
                 BoxBorder.CreateBox(Position - Origin, Position + Origin);
             }
+            
         }
-        
         
         /// <summary>
         /// texture area of the box
@@ -91,37 +80,15 @@ namespace WareHouse3
         /// <summary>
         /// Render  box with sprite batch.
         /// </summary>
-        public override void Render(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
             
-            base.Render(spriteBatch);
+            base.Draw(spriteBatch, screenSafeArea);
 
             if (IsBorderEnabled)
             {
-                BoxBorder.Render(spriteBatch, 2.0f, this.BorderColor * Opacity);
+                BoxBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
-
         }
-        
-        //-----------------------------------------------------------------------------
-        //Set a New state of Finite State Machine
-        //-----------------------------------------------------------------------------
-        public void SetState(NoteStates state)
-        {
-            switch (state)
-            {
-                case NoteStates.EMPTY:
-                    FSM.SetState(NoteStatesEmpty.Instance());
-                    break;
-                case NoteStates.ENABLED:
-                    FSM.SetState(NoteStatesEnabled.Instance());
-                    break;
-                case NoteStates.DISABLED:
-                    FSM.SetState(NoteStatesDisabled.Instance());
-                    break;
-            }
-            State = state;
-        }
-        
         
         //-----------------------------------------------------------------------------
         //

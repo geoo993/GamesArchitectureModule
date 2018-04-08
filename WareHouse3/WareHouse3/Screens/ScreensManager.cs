@@ -18,7 +18,6 @@ namespace WareHouse3
         public GameServiceContainer Services { get; private set; }
         
         public Screen CurrentScreen;
-        public Rectangle ScreenSafeArea { get; private set; } 
       
         public bool ShouldExit { get; private set; }
         
@@ -37,7 +36,6 @@ namespace WareHouse3
             CommandManager = manager;
             Services = service;
             CurrentScreen = null;
-            ScreenSafeArea = Rectangle.Empty;
         }
         
         
@@ -208,11 +206,8 @@ namespace WareHouse3
           //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Update(GameTime gameTime, Rectangle screenSafeArea)
+        public void Update(GameTime gameTime)
         {
-            
-			var currentGameTime = gameTime.TotalGameTime;
-			ScreenSafeArea = screenSafeArea;
             
             if (FSM != null)
             {
@@ -223,14 +218,12 @@ namespace WareHouse3
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
             
             if (CurrentScreen != null)
             {
-                Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - (ScreenSafeArea.Width / 2.0f), GameInfo.Camera.Position.Y - (ScreenSafeArea.Height / 2.0f) );
-                var currentGameTime = gameTime.TotalGameTime;
-                FSM.Draw(spriteBatch, hudLocation);
+                FSM.Draw(spriteBatch, screenSafeArea);
             }
         }
         

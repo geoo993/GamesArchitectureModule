@@ -15,7 +15,7 @@ namespace WareHouse3
 
     public class Ball: Circle
     {
-    
+        
         /// <summary>
         /// trail particle of the ball
         /// </summary>
@@ -46,10 +46,7 @@ namespace WareHouse3
         private bool OnCollisionExit;
         private Note PreviousNoteCollided;
         public Note PreviousNote { get; private set; }
-        
         public String NoteSelected { get; private set; }
-        public bool IsNoteSelected { get; private set; }
-        
         
         public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
@@ -60,15 +57,11 @@ namespace WareHouse3
             this.AvailableJumps = MaxJumps;
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
-            this.HasFSM = false;
-            this.NoteSelected = null;
             this.IsIntersecting = false;
-            this.IsNoteSelected = false;
         }
 
         public void SetLeftMovement(ButtonAction buttonState)
         {
-            
             if (buttonState == ButtonAction.DOWN)
             {
                 Velocity.X = -MoveSpeed.X;
@@ -283,47 +276,50 @@ namespace WareHouse3
             this.Position += this.Velocity * elapsed;
         }
         
-        public void Update(GameTime gameTime, Vector2 mapSize, string noteToSlect, Note closestNote) {
+        public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote) {
 			
 			this.UpdateCollisions(closestNote, mapSize);
 			this.UpdateBounds(closestNote, mapSize);
 			this.UpdateMovement(Ground);
             
 			this.NoteSelected = null;
-            this.IsNoteSelected = false;
 
 			if (OnCollisionEnter)
 			{
 				
-				if (noteToSlect == closestNote.NoteName) {
+				if (noteToSelect == closestNote.NoteName) {
 					NoteSelected = closestNote.NoteName;
-                    IsNoteSelected = true;
-				} 
-                closestNote.SetState(NoteStates.ENABLED);
+                    isNoteMatched = true;
+				} else {
+                    isNoteError = true;
+                }
+                
+                if (closestNote.NoteSound != null) {
+                    closestNote.NoteSound.Play();
+                }
             }
 			
 			if (OnCollisionExit)
 			{
-				PreviousNote.SetState(NoteStates.DISABLED);
+				
 			}
             
 			base.UpdatePosition(gameTime, mapSize);
         }
-
+        
         public override bool Intersects(Rectangle rectangle)
         {
             return base.Intersects(rectangle);
         }
         
-        public override void Render(SpriteBatch spriteBatch) 
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
         {
-
             // Draw the particles
             foreach (Circle particle in particles)
             {
-                particle.Render(spriteBatch);
+                particle.Draw(spriteBatch, screenSafeArea);
             }
-            base.Render(spriteBatch);
+            base.Draw(spriteBatch, screenSafeArea);
         }
 
         public override void Destroy()
