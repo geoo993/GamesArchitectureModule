@@ -106,6 +106,7 @@
     <Compile Include="Score\ScoreSubject.cs" />
     <Compile Include="Collectables\TimeItem.cs" />
     <Compile Include="Particles\Particles.cs" />
+    <Compile Include="Notes\NotesInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

@@ -28,8 +28,7 @@ namespace XylophoneGame
     /// </summary>
     public class Level
     {
-        public ScoreSubject ScoreSubject { get; private set; }
-      
+       
         private List<Tile> Tiles;
         public Ball Ball { get; private set; }
 
@@ -123,12 +122,10 @@ namespace XylophoneGame
         /// <param name="fileStream">
         /// A stream containing the tile data.
         /// </param>
-        public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song, float songSpeed)
+        public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song)
         {
             // Create a new content manager to load content used just by this level.
-            ScoreSubject = new ScoreSubject();
-            ScoreSubject.StartScoreSystem(song, songSpeed);
-            
+           
             Content = new ContentManager(serviceProvider, "Content");
             Loader = new Loader(fileStream);
             CurrentSong = song;
@@ -300,9 +297,6 @@ namespace XylophoneGame
             Ball.Destroy();
             Ball = null;
 
-            ScoreSubject.EndScoreSystems();
-            ScoreSubject = null;
-            
             Dispose();
         }
 
@@ -315,9 +309,13 @@ namespace XylophoneGame
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update(GameTime gameTime, Vector2 mapSize, bool hasGameEnded, float progressSpeed, bool autoPlay, float hudWidth)
+        public void Update(GameTime gameTime, Vector2 mapSize, ScoreSubject ScoreSubject, float hudWidth)
         {
-            if (hasGameEnded == false)
+        
+			ScoreObserver observer = new ScoreObserver("Game Observer");
+			observer.Subscribe(ScoreSubject);
+
+            if (observer.HasSongEnded == false)
             {
 
                 // center camera on ball
@@ -333,7 +331,7 @@ namespace XylophoneGame
                 }
 
                 var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
-                var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
+                var elapsed = (float)(totalTime * observer.ProgressSpeed) % hudWidth;
                 var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
                 var closestTimeItem = (TimeItem)ClosestTimeItem(Tiles, Ball.Position);
                 var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
@@ -367,7 +365,7 @@ namespace XylophoneGame
                     ScoreSubject.AddError();
                 }
 
-                if (autoPlay)
+                if (observer.AutoPlay)
                 {
                     // if update the note regardless of the player, we play automatically
                     var timeProgressValue = (int)MathExtensions.Value(TimeProgress, CurrentSong.Length, 0.0f);

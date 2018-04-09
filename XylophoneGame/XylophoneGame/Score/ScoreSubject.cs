@@ -16,7 +16,6 @@ namespace XylophoneGame
     public class ScoreSubject: IObservable<ScoreInfo>
     {
         private List<IObserver<ScoreInfo>> observers;
-        private float timeDelay;
         private ScoreInfo score;
         
         public ScoreSubject()
@@ -90,10 +89,14 @@ namespace XylophoneGame
         
         public void SetProgress(int progress)
         {
-           
+            
             if (score.HasSongEnded == false)
             {
-				score.HasSongEnded = (progress >= score.Song.Length);
+                score.HasSongEnded = false;
+                if ((progress >= score.Song.Length - 1)) {
+					score.HasSongEnded = true;
+                    score.IsGameSuccess = true;
+                }
                 score.Progress = progress;
             }
                 
@@ -107,8 +110,14 @@ namespace XylophoneGame
         {
             if (score.HasSongEnded == false)
             {
-				score.HasSongEnded = (timeProgress >= 99.9);
-                score.TimeProgress = timeProgress;
+                score.HasSongEnded = false;
+                if (timeProgress >= 99.9)
+                {
+                    score.HasSongEnded = true;
+                    score.IsGameSuccess = false;
+                }
+				score.TimeProgress = timeProgress;
+                
             }
 
             if (score.HasSongEnded == true)
@@ -123,7 +132,12 @@ namespace XylophoneGame
             //UpdateScore(score);
         }
        
-   
+        public void SwitchAutopPlay()
+        {
+            score.AutoPlay = !score.AutoPlay;
+            UpdateScore(score);
+        }
+        
         public void EndScoreSystems()
         {
             foreach (var observer in observers.ToArray())
@@ -132,7 +146,6 @@ namespace XylophoneGame
             
                 observers.Clear();
         }
-   
     
     }
     

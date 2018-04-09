@@ -200,13 +200,10 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
-            int levelToPlay = 2;
-            int songToPlay = 3;
-            float songSpeed = 30.0f;
-            
             ScreenManager manager = (ScreenManager)owner;
+            
             screen = new LevelScreen(manager.Title, ScreensType.LEVEL, manager, manager.ContentManager);
-            screen.Construct(manager.Levels[levelToPlay], manager.Songs[songToPlay], songSpeed, GameInfo.Instance.RandomColor(), null);
+            screen.Construct(manager.Level, manager.Song, manager.SongSpeed, GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             

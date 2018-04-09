@@ -17,7 +17,6 @@ namespace XylophoneGame
         
         public static float GetDistance(Vector2 start, Vector2 end)
         {
-           
             float dx = end.X - start.X;
             float dy = end.Y - start.Y;
             
@@ -36,6 +35,7 @@ namespace XylophoneGame
             float difference = (minValue < 0) ? maxValue : maxValue - minValue;
             return ((value - minValue) / difference) * 100.0f;
         }
+       
         
     }
 }

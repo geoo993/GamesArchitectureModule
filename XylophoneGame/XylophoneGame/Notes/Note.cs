@@ -16,6 +16,7 @@ namespace XylophoneGame
         private PrimitiveLine BoxBorder;
         public bool IsBorderEnabled { get; set; }
         private float InitialGround;
+        private Vector2 InitialPosition;
         
         /// <summary>
         /// name of the Note.
@@ -29,6 +30,7 @@ namespace XylophoneGame
             this.IsBorderEnabled = false;
             this.HasTexture = true;
             this.InitialGround = Ground;
+            this.InitialPosition = position;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -90,17 +92,22 @@ namespace XylophoneGame
             }
         }
         
-        
-        public void Pressed()
+        public void Pressed(Ball ball)
         {
-            var speed = MoveSpeed.Y;
-            Position.Y += speed;
-            Ground += speed;
+            if (ball.MotionState.state.IsFalling)
+            {
+                var speed = MoveSpeed.Y;
+                Position.Y += speed;
+                Ground += speed;
+            } 
+            //Debug.Print("Motion State " + ball.MotionState.state.mode.ToString());
+            //Debug.Print("is Intersecting " + ball.IsIntersectingNote.ToString());
         }
         
         public void Released()
         {
             Ground = InitialGround;
+            Position = InitialPosition;
         }
         
         

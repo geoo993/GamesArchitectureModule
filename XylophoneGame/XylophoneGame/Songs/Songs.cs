@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,8 @@ namespace XylophoneGame
     
     public class XylophoneSongs {
     
+		private static readonly Random Random = new Random(DateTime.Now.Millisecond);
+        
         private static XylophoneSongs instance = null;
         public static XylophoneSongs Instance
         {
@@ -28,12 +31,20 @@ namespace XylophoneGame
             }
         }
 
-        public static readonly List<SongType> Songs = new List<SongType>(){
-            SongType.TwinkleLittle,
-            SongType.JingleBells,
-            SongType.RainRainGoAway,
-            SongType.IncyIncySpider
+        public static readonly Dictionary<SongType, float> Songs = new Dictionary<SongType, float>() {
+            {SongType.TwinkleLittle, 30.0f},
+            {SongType.JingleBells, 30.0f},
+            {SongType.RainRainGoAway, 30.0f},
+            {SongType.IncyIncySpider, 30.0f}
         };
+        
+         
+        public static SongType RandomSong {
+            get
+            {
+                return Songs.Keys.ToList()[Random.Next(Songs.Count)];
+            }
+        }
         
         public string GetSong(SongType type) {
             switch (type) {

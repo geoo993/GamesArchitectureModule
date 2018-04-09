@@ -46,9 +46,6 @@ namespace XylophoneGame
         public Note PreviousNote { get; private set; }
         public String NoteSelected { get; private set; }
 
-
-        public bool DoAnimate;
-        
         public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
         {
@@ -118,18 +115,6 @@ namespace XylophoneGame
             }
         }
         
-        public void DoAnimateTimeItem(ButtonAction buttonState)
-        {
-            if (buttonState == ButtonAction.DOWN)
-            {
-                DoAnimate = true;
-            } 
-            
-            if (buttonState == ButtonAction.UP)
-            {
-                DoAnimate = false;
-            } 
-        }
         
         private void UpdateCollisions(Note note, TimeItem timeItem, Vector2 mapSize)
         {
@@ -289,8 +274,8 @@ namespace XylophoneGame
                 if (closestNote.NoteSound != null) {
                     closestNote.NoteSound.Play();
                 }
-
-                closestNote.Pressed();
+                
+                closestNote.Pressed(this);
             }
 			
 			if (OnCollisionExit)

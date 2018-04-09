@@ -105,11 +105,12 @@ namespace XylophoneGame
             CurrentNote = Song[value.Progress];
             NotesCompleted = Song.Substring(0, value.Progress);
 
-            //Debug.Print("");
-            //Debug.Print("Song length " + LengthOfSong);
-            //Debug.Print("Progress " + value.Progress);
-            //Debug.Print("Time Progress " + value.TimeProgress);
-            //Debug.Print("has Ended " + value.HasSongEnded);
+            Debug.Print("");
+            Debug.Print("Auto play " + value.AutoPlay);
+            Debug.Print("Song length " + LengthOfSong);
+            Debug.Print("Progress " + value.Progress);
+            Debug.Print("Time Progress " + value.TimeProgress);
+            Debug.Print("has Ended " + value.HasSongEnded);
         
 			HudProgressBar.SetProgress(value.Progress, LengthOfSong);
 			HudProgressBar.SetTimeProgress(value.TimeProgress);
@@ -156,9 +157,9 @@ namespace XylophoneGame
 
             //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, HudTextColor, 1.0f);
             //DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), HudTextColor, 1.0f);
-            
-            
-            var word = Matches.ToString() +"/"+MaxNotes.ToString();
+
+            var Max = MaxNotes - 1;
+            var word = Matches.ToString() +"/"+Max.ToString();
             var width = HudLargeFont.MeasureString(word).X;
             var color = HudTextColor * 0.2f;
             var origin = new Vector2(width / 2, 0);

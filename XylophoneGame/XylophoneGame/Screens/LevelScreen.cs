@@ -10,10 +10,7 @@ namespace XylophoneGame
 {
     public class LevelScreen: Screen
     {
-        /// <summary>
-        /// Game title
-        /// </summary>
-        public string GameTitle;
+        public ScoreSubject ScoreSubject { get; private set; }
         
         /// <summary>
         /// HUD
@@ -27,16 +24,13 @@ namespace XylophoneGame
         /// Level.
         /// </summary>
         public Level Level;
-        public String LevelTitle;
-
-        public bool AutoPlay;
         
         public LevelScreen(string title, ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
-            GameTitle = title;
+           
             Hud = new HUD(title);
-            AutoPlay = false;
+            
             //Particles = new Particles(1, 40, 0.005f);
             AnimateExplosion = false;
         }
@@ -44,10 +38,14 @@ namespace XylophoneGame
         public void Construct(string level, SongType songType, float progressSpeed, Color backgroundColor, Texture2D backgroundTexture)
         {
             Construct(backgroundColor, backgroundTexture);
-			LoadLevel(level, songType, XylophoneSongs.Instance.GetSong(songType), progressSpeed);
+            var song = XylophoneSongs.Instance.GetSong(songType);
+            ScoreSubject = new ScoreSubject();
+            ScoreSubject.StartScoreSystem(song, progressSpeed);
+            
+			LoadLevel(level, songType, song);
 			
 			Hud.Construct(ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
-			Hud.Subscribe(Level.ScoreSubject);
+			Hud.Subscribe(ScoreSubject);
         }
         
         //-----------------------------------------------------------------------------
@@ -68,6 +66,10 @@ namespace XylophoneGame
 
             Hud.Destroy();
             Hud = null;
+            
+            ScoreSubject.EndScoreSystems();
+            ScoreSubject = null;
+            
             
             base.Destroy();
         }
@@ -90,7 +92,7 @@ namespace XylophoneGame
             base.OnExit();
         }
         
-        private void LoadLevel(string title, SongType songType, string song, float progressSpeed)
+        private void LoadLevel(string title, SongType songType, string song)
         {
             // Unloads the content for the current level before loading the next one.
             if (Level != null)
@@ -99,7 +101,7 @@ namespace XylophoneGame
             // Load the level.
             string levelPath = string.Format("Content/Levels/"+title+".txt");
             using (Stream fileStream = TitleContainer.OpenStream(levelPath))
-                Level = new Level(Parent.Services, fileStream, songType, song, progressSpeed);
+                Level = new Level(Parent.Services, fileStream, songType, song);
                 
         }
         
@@ -110,7 +112,7 @@ namespace XylophoneGame
         {
             base.Update(gameTime);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Hud.HasSongEnded, Hud.ProgressSpeed, AutoPlay, Hud.Width);
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), ScoreSubject, Hud.Width);
             
             Hud.Update(gameTime);
 
@@ -143,7 +145,6 @@ namespace XylophoneGame
             {
                 Level.Draw(spriteBatch, screenSafeArea);
             }
-
         }
         
         

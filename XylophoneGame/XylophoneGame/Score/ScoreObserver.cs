@@ -32,7 +32,6 @@ namespace XylophoneGame
           if (provider != null) 
              unsubscriber = provider.Subscribe(this);
         }
-   
         
         public virtual void Unsubscribe()
         {
@@ -41,7 +40,7 @@ namespace XylophoneGame
         
         public virtual void OnCompleted() 
         {
-            Console.WriteLine("The score system has completed {0}.", this.Name);
+            //Console.WriteLine("The score system has completed {0}.", this.Name);
             this.Unsubscribe();
         }
         
@@ -71,13 +70,17 @@ namespace XylophoneGame
             get { return LatestScore.Matches; }
         }
         
-        
         public bool HasSongEnded {
             get { return LatestScore.HasSongEnded; }
         }
-    
+        
+        public bool IsGameSuccess {
+            get { return LatestScore.IsGameSuccess; }
+        }
+   
+        public bool AutoPlay {
+            get { return LatestScore.AutoPlay; }
+        }
    
     }
-    
-  
 }
