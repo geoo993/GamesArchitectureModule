@@ -16,7 +16,7 @@ namespace XylophoneGame
     public class ScoreSubject: IObservable<ScoreInfo>
     {
         private List<IObserver<ScoreInfo>> observers;
-        //private List<ScoreInfo> scores;
+        private float timeDelay;
         private ScoreInfo score;
         
         public ScoreSubject()
@@ -49,9 +49,9 @@ namespace XylophoneGame
         }
         
 		// new score system is assigned, so add new info object to list.
-        public void StartScoreSystem(int maxScore)
+        public void StartScoreSystem(string song, float progressSpeed)
         {
-            score = new ScoreInfo(maxScore);
+            score = new ScoreInfo(song, progressSpeed);
             UpdateScore(score);
         }
         
@@ -86,6 +86,51 @@ namespace XylophoneGame
             score.DidMatch = didMatch;
             UpdateScore(score);
         }
+        
+        public void SetProgress(int progress)
+        {
+           
+            if (score.HasSongEnded == false)
+            {
+				score.HasSongEnded = (progress >= score.Song.Length - 1);
+                score.Progress = progress;
+            }
+                
+            if (score.HasSongEnded == true)
+                score.SongProgressSpeed = 0;
+            
+			UpdateScore(score);
+        }
+        
+        public void SetTimeProgress(float timeProgress)
+        {
+            if (score.HasSongEnded == false)
+            {
+				score.HasSongEnded = (timeProgress >= 99.9);
+                score.TimeProgress = timeProgress;
+            }
+
+            if (score.HasSongEnded == true)
+                score.SongProgressSpeed = 0;
+            
+			UpdateScore(score);
+        }
+        
+        public void AddProgressSpeed()
+        {
+            //score.SongProgressSpeed += 1.0f;
+            //if (score.HasSongEnded) {
+            //    score.SongProgressSpeed = 0.0f;
+            //}
+			//UpdateScore(score);
+        }
+        
+        public void ReduceProgressSpeed()
+        {
+            //score.SongProgressSpeed -= 10.0f;
+            //UpdateScore(score);
+        }
+       
    
         public void EndScoreSystems()
         {

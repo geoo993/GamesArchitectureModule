@@ -205,8 +205,8 @@ namespace XylophoneGame
             float songSpeed = 20.0f;
             
             ScreenManager manager = (ScreenManager)owner;
-            screen = new LevelScreen(manager.Title, manager.Levels[levelToPlay], manager.Songs[songToPlay], songSpeed, ScreensType.LEVEL, manager, manager.ContentManager);
-            screen.Construct(GameInfo.Instance.RandomColor(), null);
+            screen = new LevelScreen(manager.Title, ScreensType.LEVEL, manager, manager.ContentManager);
+            screen.Construct(manager.Levels[levelToPlay], manager.Songs[songToPlay], songSpeed, GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             

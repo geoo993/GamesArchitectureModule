@@ -1,22 +1,21 @@
 ﻿using System;
+using System.Diagnostics;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
 namespace XylophoneGame
 {
     public class Note: Tile
     {
-
-        private AnimationPlayer AnimationPlayer;
         
         /// <summary>
         /// box border 
         /// </summary>
         private PrimitiveLine BoxBorder;
         public bool IsBorderEnabled { get; set; }
-        
+        private float InitialGround;
         
         /// <summary>
         /// name of the Note.
@@ -29,6 +28,7 @@ namespace XylophoneGame
             this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
             this.IsBorderEnabled = false;
             this.HasTexture = true;
+            this.InitialGround = Ground;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -39,7 +39,6 @@ namespace XylophoneGame
             if (IsBorderEnabled) {
                 BoxBorder.CreateBox(Position - Origin, Position + Origin);
             }
-            
         }
         
         /// <summary>
@@ -83,9 +82,8 @@ namespace XylophoneGame
         /// Render  box with sprite batch.
         /// </summary>
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
-            
-            base.Draw(spriteBatch, screenSafeArea);
-
+          
+		    base.Draw(spriteBatch, screenSafeArea);
             if (IsBorderEnabled)
             {
                 BoxBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
@@ -93,15 +91,16 @@ namespace XylophoneGame
         }
         
         
-        public void Animate(bool doAnimate)
+        public void Pressed()
         {
-            //if (doAnimate) {
-                
-            //    AnimationPlayer.PlayAnimation(new Animation(AnimationTexture, Position, 0.4f, 21, 60, Color, false));
-            //    //Debug.Print("Activated ");
-            //} else {
-            //    //Debug.Print("Not Activated " );
-            //}
+            var speed = MoveSpeed.Y;
+            Position.Y += speed;
+            Ground += speed;
+        }
+        
+        public void Released()
+        {
+            Ground = InitialGround;
         }
         
         
@@ -110,6 +109,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Destroy()
         {
+            BoxBorder.Destroy();
             base.Destroy();
         }
         

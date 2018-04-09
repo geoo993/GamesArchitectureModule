@@ -6,21 +6,34 @@ namespace XylophoneGame
 {
     public struct ScoreInfo
     {
-
+        public string Song;
+        public int Progress;
+        public float TimeProgress;
+        
+        public float SongProgressSpeed;
+        public int CollectedItems;
+        
         public bool DidMatch;
         public int Errors;
         public int TotalErrors;
         public int Matches;
-        public int MaxScore;
+        
+        public bool HasSongEnded;
        
-        internal ScoreInfo(int maxScore)
+        internal ScoreInfo(string song, float progressSpeed)
         {
-			this.MaxScore = maxScore;
+			this.Song = song;
+            this.SongProgressSpeed = progressSpeed;
+            this.Progress = 0;
+            this.TimeProgress = 0.0f;
             this.Matches = 0;
             this.Errors = 0;
             this.TotalErrors = 0;
             this.DidMatch = false;
+            this.CollectedItems = 0;
+            this.HasSongEnded = false;
         }
+        
     }
    
 }

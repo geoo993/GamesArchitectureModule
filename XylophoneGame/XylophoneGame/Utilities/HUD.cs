@@ -11,32 +11,14 @@ namespace XylophoneGame
     public class HUD: ScoreObserver
     {
 
-        //private ScoreObserver ScoreObserver;
-        
         /// <summary>
         /// Song
         /// </summary>
 		private string Song;
+        private int LengthOfSong;
+        private char CurrentNote;
+        private string NotesCompleted;
         
-        private int LengthOfSong
-        {
-            get { return Song.Length; }
-        }
-
-        private int CurrentNoteIndex;
-        
-        private char CurrentNote {
-            get{
-                return Song[CurrentNoteIndex];
-            }
-        } 
-        
-        private string NotesCompleted {
-            get {
-                return Song.Substring(0, CurrentNoteIndex);
-            }
-        }
-
         private string NotesCompletedScore;
         private List<char> ScoreList;
         
@@ -96,9 +78,8 @@ namespace XylophoneGame
             FrameCounter = new FrameCounter();
         }
         
-        public void Construct(string song, ContentManager contentManager, Color textColor, Color textProgressColor)
+        public void Construct(ContentManager contentManager, Color textColor, Color textProgressColor)
         {
-            Song = song;
             HudFont = contentManager.Load<SpriteFont>("Fonts/GameFont");
             HudPosition = Vector2.Zero;
             HudTextColor = textColor;
@@ -107,21 +88,29 @@ namespace XylophoneGame
 			ScoreList = new List<char>();
         }
    
-        public void Update(GameTime gameTime, int progress, float timeProgress)
+        public void Update(GameTime gameTime)
         {
-            CurrentNoteIndex = progress;
-            HudProgressBar.Update(gameTime);
-            
-			HudProgressBar.SetProgress(MathExtensions.Percentage(progress + 1, LengthOfSong, 0));
-            HudProgressBar.SetTimeProgress(timeProgress);
             
             FrameCounter.Update(gameTime);
-
         }
         
         // Update information.
         public override void OnNext(ScoreInfo value) 
         {
+        
+            Song = value.Song;
+            LengthOfSong = Song.Length;
+            CurrentNote = Song[value.Progress];
+            NotesCompleted = Song.Substring(0, value.Progress);
+
+            Debug.Print("");
+            Debug.Print("Song length " + LengthOfSong);
+            Debug.Print("Progress " + value.Progress);
+            Debug.Print("Time Progress " + value.TimeProgress);
+            Debug.Print("has Ended " + value.HasSongEnded);
+        
+			HudProgressBar.SetProgress(value.Progress, LengthOfSong);
+			HudProgressBar.SetTimeProgress(value.TimeProgress);
             
             // score text
             if (value.DidMatch)
@@ -163,9 +152,8 @@ namespace XylophoneGame
             DrawShadowedString(spriteBatch, HudFont, Song, notesPosition, HudTextColor, 1.0f);
             DrawShadowedString(spriteBatch, HudFont, CurrentNote.ToString(), notesPosition + new Vector2(NotesCompletedWidth, Height * 1.2f), HudTextProgressColor, 1.0f);
 
-            Color scoreColor = HudTextColor;
-            //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, scoreColor, 1.0f);
-			DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), scoreColor, 1.0f);
+            //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, HudTextColor, 1.0f);
+			DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), HudTextColor, 1.0f);
             
             // hud frames
             HudProgressBar.Construct((int)Width, (int)Height, HudPosition - new Vector2((Width * 0.5f), 0.0f), Color.Orange, Color.Gold, Color.Thistle);

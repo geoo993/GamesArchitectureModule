@@ -175,21 +175,20 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void SetProgress(float percent)
+        public void SetProgress(float progress, float lengthOfSong)
         {
             //Debug.Print(" ");
             //Debug.Print("Width "+Width.ToString());
             //Debug.Print("Percent Given "+percent.ToString());
-            var Progress = MathExtensions.Value(percent, Width, 0) / Width;
+            var percent = MathExtensions.Percentage(progress + 1, lengthOfSong, 0); // 66
+            var value = MathExtensions.Value(percent, Width, 0) / Width;
             
-            //Debug.Print("Percent Calculated "+Progress.ToString());
-            SetScaleFactorX(Progress);
+            SetScaleFactorX(value);
         }
         
         public void SetTimeProgress(float progress)
         {
-            var TimeProgress = progress;
-            SetTimeScaleFactorX(TimeProgress);
+            SetTimeScaleFactorX(progress / 100.0f);
         }
         
         //-----------------------------------------------------------------------------

@@ -27,26 +27,22 @@ namespace XylophoneGame
         public Level Level;
         public String LevelTitle;
 
-        /// <summary>
-        /// Song.
-        /// </summary>
-        public SongType SongType;
-        public string Song {
-            get {
-                return XylophoneSongs.Instance.GetSong(SongType);
-            }
-        }
-        public float SongProgressSpeed;
         public bool AutoPlay = false;
         
-        public LevelScreen(string title, string level, SongType song, float songSpeed, ScreensType type, ScreenManager parent, ContentManager contentManager)
+        public LevelScreen(string title, ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
-            SongType = song;
-            SongProgressSpeed = songSpeed;
             GameTitle = title;
-            LevelTitle = level;
             Hud = new HUD(title);
+        }
+
+        public void Construct(string level, SongType songType, float progressSpeed, Color backgroundColor, Texture2D backgroundTexture)
+        {
+            Construct(backgroundColor, backgroundTexture);
+			LoadLevel(level, songType, XylophoneSongs.Instance.GetSong(songType), progressSpeed);
+			
+			Hud.Construct(ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
+			Hud.Subscribe(Level.ScoreSubject);
         }
         
         //-----------------------------------------------------------------------------
@@ -55,7 +51,7 @@ namespace XylophoneGame
         public override void Construct(Color backgroundColor, Texture2D backgroundTexture)
         {
             base.Construct(backgroundColor, backgroundTexture);
-
+            
         }
         
         //-----------------------------------------------------------------------------
@@ -79,9 +75,6 @@ namespace XylophoneGame
         {
             base.OnEnter();
 
-            LoadLevel();
-			Hud.Construct(Song, ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
-			Hud.Subscribe(Level.ScoreSubject);
         }
 
         //-----------------------------------------------------------------------------
@@ -93,26 +86,17 @@ namespace XylophoneGame
             base.OnExit();
         }
         
-        private void LoadLevel()
+        private void LoadLevel(string title, SongType songType, string song, float progressSpeed)
         {
             // Unloads the content for the current level before loading the next one.
             if (Level != null)
                 Level.Dispose();
 
             // Load the level.
-            string levelPath = string.Format("Content/Levels/"+LevelTitle+".txt");
+            string levelPath = string.Format("Content/Levels/"+title+".txt");
             using (Stream fileStream = TitleContainer.OpenStream(levelPath))
-                Level = new Level(Parent.Services, fileStream, SongType, Song);
+                Level = new Level(Parent.Services, fileStream, songType, song, progressSpeed);
                 
-        }
-        
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-        public void SetCurrentLevel(string level)
-        {
-            LevelTitle = level;
-            LoadLevel();
         }
         
         //-----------------------------------------------------------------------------
@@ -122,9 +106,9 @@ namespace XylophoneGame
         {
             base.Update(gameTime);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), SongProgressSpeed, AutoPlay, Hud.Width);
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Hud.HasSongEnded, Hud.ProgressSpeed, AutoPlay, Hud.Width);
             
-            Hud.Update(gameTime, Level.Progress, Level.TimeProgress / 100.0f);
+            Hud.Update(gameTime);
         }
 
         //-----------------------------------------------------------------------------
@@ -135,7 +119,7 @@ namespace XylophoneGame
             BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
             base.Draw(spriteBatch, screenSafeArea);
 
-            Hud.Draw(spriteBatch, screenSafeArea);//, Level.ScoreSubject);// Level.DidMatch, Level.Matches, Level.Errors);
+            Hud.Draw(spriteBatch, screenSafeArea);
             
             if (Level != null)
             {

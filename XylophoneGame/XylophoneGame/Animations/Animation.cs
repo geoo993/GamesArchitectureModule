@@ -21,8 +21,7 @@ namespace XylophoneGame
         /// Gets the width of a frame in the animation.
         /// </summary>
         /// <value>The width of the frame.</value>
-        //public int FrameWidth { get; private set; }
-        public int FrameWidth {  get { return Texture.Width / FrameCount; } }
+        public int FrameWidth { get { return Texture.Width / FrameCount; } }
         
         /// <summary>
         /// Gets the height of the frame.
@@ -93,7 +92,7 @@ namespace XylophoneGame
         public Vector2 Origin
         {
             get { 
-                return FrameOrigin.GetOrigin(FrameWidth, FrameHeight, OriginType); // //new Vector2(FrameWidth / 2.0f, FrameHeight / 2.0f); } 
+                return FrameOrigin.GetOrigin(FrameWidth, FrameHeight, OriginType);
             }
         }
         
@@ -144,6 +143,10 @@ namespace XylophoneGame
             this.Effects = SpriteEffects.None;
         }
         
+        
+        public void Destroy(){
+            Texture = null;
+        }
         
     }
     

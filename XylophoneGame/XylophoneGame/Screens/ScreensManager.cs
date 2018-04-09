@@ -17,7 +17,6 @@ namespace XylophoneGame
         public List<string> Levels { get; private set; }
         public List<SongType> Songs { get; private set; }
         
-        
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public GameServiceContainer Services { get; private set; }
@@ -68,8 +67,6 @@ namespace XylophoneGame
             manager.AddKeyboardBinding(Keys.Up, UpArrow);
             manager.AddKeyboardBinding(Keys.Down, DownArrow);
             manager.AddKeyboardBinding(Keys.Space, Space);
-            manager.AddKeyboardBinding(Keys.U, ProgressUp);
-            manager.AddKeyboardBinding(Keys.I, ProgressDown);
             manager.AddKeyboardBinding(Keys.O, AutoPlaySwitch);
             manager.AddKeyboardBinding(Keys.P, PButton);
             
@@ -90,7 +87,6 @@ namespace XylophoneGame
             
             if (buttonState == ButtonAction.PRESSED)
             {
-				//SetState(State + 1);
                 ScreensNavigation();
             }
         }
@@ -143,26 +139,7 @@ namespace XylophoneGame
                 ((LevelScreen)CurrentScreen).Level.Ball.SetJumpMovement(buttonState);
             }
         }
-        
-        public void ProgressUp(ButtonAction buttonState, Vector2 amount)
-        {
-           
-            if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
-            {
-                //((LevelScreen)CurrentScreen).Hud.ProgressAmount += 1.0f;
-                ((LevelScreen)CurrentScreen).SongProgressSpeed += 1.0f;
-            }
-        }
-        
-        public void ProgressDown(ButtonAction buttonState, Vector2 amount)
-        {
-            if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
-            {
-                //((LevelScreen)CurrentScreen).Hud.ProgressAmount -= 1.0f;
-                ((LevelScreen)CurrentScreen).SongProgressSpeed -= 1.0f;
-            }
-        }
-        
+       
         public void AutoPlaySwitch(ButtonAction buttonState, Vector2 amount)
         {
             if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)

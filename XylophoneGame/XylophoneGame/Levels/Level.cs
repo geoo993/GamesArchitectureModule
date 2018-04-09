@@ -42,11 +42,6 @@ namespace XylophoneGame
 		private bool FirstUpdate;
 		private double InitialTime;
         
-        //public int Matches { get; private set; } 
-        //public int Errors { get; private set; }
-        //public bool DidMatch { get; private set; }
-        
-        
         // Level content.        
         private ContentManager Content;
         
@@ -128,11 +123,11 @@ namespace XylophoneGame
         /// <param name="fileStream">
         /// A stream containing the tile data.
         /// </param>
-        public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song)
+        public Level(IServiceProvider serviceProvider, Stream fileStream, SongType songType, string song, float songSpeed)
         {
             // Create a new content manager to load content used just by this level.
             ScoreSubject = new ScoreSubject();
-            ScoreSubject.StartScoreSystem(50);
+            ScoreSubject.StartScoreSystem(song, songSpeed);
             
             Content = new ContentManager(serviceProvider, "Content");
             Loader = new Loader(fileStream);
@@ -201,7 +196,7 @@ namespace XylophoneGame
                     return LoadEmptyTile(TileCollision.Passable);
                 case 'T':
 					//// Passable
-                    return LoadTimeItem("Collectable", x, y,  GameInfo.Instance.RandomColor(), TileCollision.Impassable);
+                    return LoadTimeItem("Collectable", x, y, Color.White, TileCollision.Impassable);
                 case '#':
 					//// Platform block
                     return LoadNoteTile("Platform", x, y,  Color.White, TileCollision.Platform);
@@ -222,7 +217,7 @@ namespace XylophoneGame
         /// </summary>
         private Tile LoadNoteTile(string name, int x, int y, Color color, TileCollision collision)
         {
-            Texture2D texture; 
+            Texture2D texture;
             SoundEffect note;
             Point position = GetBounds(x, y).Center;
             
@@ -239,7 +234,7 @@ namespace XylophoneGame
                 texture = null;
                 note = null;
             } 
-            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position.ToVector2(), TileInfo.UnitWidth, TileInfo.UnitHeight, 0.0f, 0.0f, 1.0f, color, note, texture, collision);
+            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position.ToVector2(), TileInfo.UnitWidth, TileInfo.UnitHeight, 4.0f, 1.0f, 1.0f, color, note, texture, collision);
             Note.NoteName = noteName;
             return Note;
         }
@@ -264,7 +259,7 @@ namespace XylophoneGame
                 animationTexture = null;
             }
             
-            return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 10, 0, 0, color, null, texture, animationTexture, collision);
+            return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 0, 0, 0, color, null, texture, animationTexture, collision);
         }
         
         
@@ -317,97 +312,119 @@ namespace XylophoneGame
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update(GameTime gameTime, Vector2 mapSize, float progressSpeed, bool autoPlay, float hudWidth)
+        public void Update(GameTime gameTime, Vector2 mapSize, bool hasGameEnded, float progressSpeed, bool autoPlay, float hudWidth)
         {
-            // center camera on ball
-            GameInfo.Camera.CenterOn(Ball, false);
-            
-            //Update Ball And Note Tiles
-            Ball.UpdatePosition(gameTime, mapSize);
-			
-			if (FirstUpdate == false) {
-				InitialTime = gameTime.TotalGameTime.TotalSeconds;
-				FirstUpdate = true;
-			}
-            var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
-			var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
-            var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
-            var closestTimeItem = (TimeItem)ClosestTimeItem(Tiles, Ball.Position);
-            var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
-            var isNoteSelectedWithMatch = false;
-            var isNoteSelectedWithError = false;
+            if (hasGameEnded == false)
+            {
 
-            ScoreSubject.ResetErrorsOnDidMatch();
-            ScoreSubject.Matched(false);
-            
-            TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
-            Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote, ref closestTimeItem);
-            
-            
-            if (isNoteSelectedWithMatch)
-            {
-                ScoreSubject.AddMatches();
-                ScoreSubject.Matched(true);
-            }
+                // center camera on ball
+                GameInfo.Camera.CenterOn(Ball, false);
 
-            if (isNoteSelectedWithError)
-                ScoreSubject.AddError();
-            
-            if (autoPlay)
-            {
-                // if update the note regardless of the player, we play automatically
-                var timeProgressValue = (int)MathExtensions.Value(TimeProgress, CurrentSong.Length, 0.0f);
-				var characterAtIndex = CurrentSong[timeProgressValue];
-                
-                if (Progress != timeProgressValue && characterAtIndex != ' ') 
-                {
-					Progress = timeProgressValue;
-                
-                    var getNextCharacterIndex = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
-                    var nextCharacterAtIndex = CurrentSong[getNextCharacterIndex];
-                    noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
-                    
-                    var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
-                    var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
-                    noteSound.Play();
-                }
-            }
-            else
-            {
-                
-                // if ball has collided with the note to selct, we then go to the next note
-                if (isNoteSelectedWithMatch && Ball.NoteSelected != null)
-                {
-                    Progress = (Progress + 1) % CurrentSong.Length;
-                    Progress = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
-                    
-					var nextCharacterAtIndex = CurrentSong[Progress];
-                    noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
-                }
-            }
-            
-            
-            for (int i = 0; i < Tiles.Count; ++i)
-            {
-                
-                
-                if (Ball.NoteSelected != null && noteToSelect != null && Tiles[i] is Note)
-                {
-					var note = (Note)Tiles[i];
-                    
-                    // give a random note to each notetile
-					var noteName = (GameInfo.Random.Next(10) > 6) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
-                    var noteAsset = NoteInfo.AvailableNotes[noteName];
+                //Update Ball And Note Tiles
+                Ball.UpdatePosition(gameTime, mapSize);
 
-                    note.Name = noteName+(i+1).ToString();
-                    note.NoteName = noteName;
-                    note.HasTexture = true;
-                    note.Color = Color.White;
-                    note.Texture = Content.Load<Texture2D>("Notes/" + noteName);
-                    note.NoteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                if (FirstUpdate == false)
+                {
+                    InitialTime = gameTime.TotalGameTime.TotalSeconds;
+                    FirstUpdate = true;
                 }
-                
-                Tiles[i].UpdatePosition(gameTime, mapSize);
+
+                var totalTime = gameTime.TotalGameTime.TotalSeconds - InitialTime;
+                var elapsed = (float)(totalTime * progressSpeed) % hudWidth;
+                var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
+                var closestTimeItem = (TimeItem)ClosestTimeItem(Tiles, Ball.Position);
+                var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
+                var isNoteSelectedWithMatch = false;
+                var isNoteSelectedWithError = false;
+
+                ScoreSubject.ResetErrorsOnDidMatch();
+                ScoreSubject.Matched(false);
+
+                TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
+                ScoreSubject.SetTimeProgress(TimeProgress);
+
+                Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote, ref closestTimeItem);
+
+                if (Ball.IsIntersectingTimeItem)
+                {
+					ScoreSubject.ReduceProgressSpeed();
+                    if (closestTimeItem != null)
+                        closestTimeItem.Disable();
+                    
+                }
+
+                if (isNoteSelectedWithMatch)
+                {
+                    ScoreSubject.AddMatches();
+                    ScoreSubject.Matched(true);
+                    ScoreSubject.AddProgressSpeed();
+                }
+
+                if (isNoteSelectedWithError)
+                {
+                    ScoreSubject.AddError();
+                }
+
+                if (autoPlay)
+                {
+                    // if update the note regardless of the player, we play automatically
+                    var timeProgressValue = (int)MathExtensions.Value(TimeProgress, CurrentSong.Length, 0.0f);
+                    var characterAtIndex = CurrentSong[timeProgressValue];
+
+                    if (Progress != timeProgressValue && characterAtIndex != ' ')
+                    {
+                        Progress = timeProgressValue;
+                        ScoreSubject.SetProgress(Progress);
+
+                        var getNextCharacterIndex = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
+                        var nextCharacterAtIndex = CurrentSong[getNextCharacterIndex];
+                        noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
+
+                        var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
+                        var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                        noteSound.Play();
+
+                    }
+                }
+                else
+                {
+
+                    // if ball has collided with the note to selct, we then go to the next note
+                    if (isNoteSelectedWithMatch && Ball.NoteSelected != null)
+                    {
+                        Progress = (Progress + 1) % CurrentSong.Length;
+                        Progress = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
+                        ScoreSubject.SetProgress(Progress);
+
+                        var nextCharacterAtIndex = CurrentSong[Progress];
+                        noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
+                    }
+                }
+
+
+                for (int i = 0; i < Tiles.Count; ++i)
+                {
+
+
+                    if (Ball.NoteSelected != null && noteToSelect != null && Tiles[i] is Note)
+                    {
+                        var note = (Note)Tiles[i];
+
+                        // give a random note to each notetile
+                        var noteName = (GameInfo.Random.Next(10) > 6) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
+                        var noteAsset = NoteInfo.AvailableNotes[noteName];
+
+                        note.Name = noteName + (i + 1).ToString();
+                        note.NoteName = noteName;
+                        note.HasTexture = true;
+                        note.Color = Color.White;
+                        note.Texture = Content.Load<Texture2D>("Notes/" + noteName);
+                        note.NoteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                    }
+
+                    Tiles[i].UpdatePosition(gameTime, mapSize);
+                }
+
             }
 
         }

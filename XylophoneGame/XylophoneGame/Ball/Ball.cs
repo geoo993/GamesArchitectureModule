@@ -16,7 +16,7 @@ namespace XylophoneGame
         /// <summary>
         /// trail particle of the ball
         /// </summary>
-        List<Circle> particles;
+        private List<Circle> Particles;
         
         /// <summary>
         /// should the trail particle be enabled
@@ -38,7 +38,8 @@ namespace XylophoneGame
         private bool LeftPressed, RightPressed;
         private Rectangle PreviousBounds;
 
-        private bool IsIntersecting;
+        public bool IsIntersectingNote { get; private set; }
+        public bool IsIntersectingTimeItem { get; private set; }
         private bool OnCollisionEnter;
         private bool OnCollisionExit;
         private Note PreviousNoteCollided;
@@ -53,12 +54,12 @@ namespace XylophoneGame
         {
             this.EnableParticles = true;
             this.HasJumped = true;
-            this.particles = new List<Circle>();
+            this.Particles = new List<Circle>();
             this.AvailableJumps = MaxJumps;
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
-            this.IsIntersecting = false;
-            
+            this.IsIntersectingNote = false;
+            this.IsIntersectingTimeItem = false;
         }
 
         public void SetLeftMovement(ButtonAction buttonState)
@@ -138,12 +139,12 @@ namespace XylophoneGame
 
             if (Intersects(noteBounds))
             {
-                IsIntersecting = true;
+                IsIntersectingNote = true;
                 OnCollisionExit = false;
-
+                
                 if (OnCollisionEnter == false && (previousTileName != note.Name || PreviousNoteCollided == null))
                 {
-                    OnCollisionEnter = true;
+                    OnCollisionEnter = !MotionState.state.IsJumping;
                 }
 
                 if (OnCollisionExit == false && previousTileName != note.Name && PreviousNoteCollided != null)
@@ -162,7 +163,7 @@ namespace XylophoneGame
             {
                 Ground = mapSize.Y;
                 Ceiling = 0.0f;
-                IsIntersecting = false;
+                IsIntersectingNote = false;
                 OnCollisionEnter = false;
                 OnCollisionExit = (PreviousNoteCollided != null);
 				PreviousNoteCollided = null;
@@ -171,13 +172,12 @@ namespace XylophoneGame
             if (timeItem == null)
                 return;
                 
+            IsIntersectingTimeItem = false;
             var timerItemBounds = timeItem.BoundingRectangle;
             if (IntersectsCircle(timerItemBounds)) {
-                timeItem.Disable();
+                IsIntersectingTimeItem = true;
             }
 
-            timeItem.Animate(DoAnimate);
-          
         }
         
 	    public void UpdateBounds(Note note, Vector2 mapSize)
@@ -195,7 +195,7 @@ namespace XylophoneGame
 					this.Ground = tileBounds.Top + 1;
 				} else if (PreviousBounds.Top >= tileBounds.Bottom) {
 					this.Ceiling = tileBounds.Bottom - 1;
-				} else if (horizontalBoundary == false && IsIntersecting == false) {
+				} else if (horizontalBoundary == false && IsIntersectingNote == false) {
                     this.Ground = mapSize.Y;
                     this.Ceiling = 0.0f;
                 }
@@ -234,7 +234,7 @@ namespace XylophoneGame
 
                 if (EnableParticles)
                 {
-                    //AddParticle(Position);
+                    AddParticle(Position);
                 }
                 
                 Acceleration.Y -= Gravity.Y;
@@ -258,7 +258,7 @@ namespace XylophoneGame
                 HasJumped = true;
             }
             
-			//UpdateParticles();
+			UpdateParticles();
             
         }
        
@@ -270,20 +270,20 @@ namespace XylophoneGame
             Color col =  new Color(red, green, blue);
         
             Circle particle = new Circle("",position, Radius, 0.0f, 0.0f, 1.0f, col, null);
-            particles.Add(particle);
+            Particles.Add(particle);
         }
         
         private void UpdateParticles() {
 
-            if (particles.Count > 0) {
+            if (Particles.Count > 0) {
             
-                for (int i = 0; i < particles.Count; i++)
+                for (int i = 0; i < Particles.Count; i++)
                 {
-                    particles[i].Opacity -= 0.02f;
-                    particles[i].Scale -= 0.02f;
-                    if (particles[i].Opacity <= 0.0f || particles[i].Scale <= 0.001f)
+                    Particles[i].Opacity -= 0.02f;
+                    Particles[i].Scale -= 0.02f;
+                    if (Particles[i].Opacity <= 0.0f || Particles[i].Scale <= 0.001f)
                     {
-                        particles.RemoveAt(i);
+                        Particles.RemoveAt(i);
                         i--;
                         continue;
                     }
@@ -320,11 +320,13 @@ namespace XylophoneGame
                 if (closestNote.NoteSound != null) {
                     closestNote.NoteSound.Play();
                 }
+
+                closestNote.Pressed();
             }
 			
 			if (OnCollisionExit)
 			{
-				
+                PreviousNote.Released();
 			}
             
 			base.UpdatePosition(gameTime, mapSize);
@@ -338,7 +340,7 @@ namespace XylophoneGame
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
         {
             // Draw the particles
-            foreach (Circle particle in particles)
+            foreach (Circle particle in Particles)
             {
                 particle.Draw(spriteBatch, screenSafeArea);
             }
@@ -347,10 +349,10 @@ namespace XylophoneGame
 
         public override void Destroy()
         {
-            foreach (Circle cir in particles){
-                cir.Destroy();
+            foreach (Circle particle in Particles){
+                particle.Destroy();
             }
-            particles.Clear();
+            Particles.Clear();
 
             PreviousNoteCollided.Destroy();
             PreviousNoteCollided = null;

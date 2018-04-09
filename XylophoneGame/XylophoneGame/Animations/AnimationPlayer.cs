@@ -85,8 +85,15 @@ namespace XylophoneGame
              // Only draw the animation when we are active
             if (Animation.Active)
             {
+            
                 spriteBatch.Draw(Animation.Texture, Animation.DestinationRect, Animation.SourceRect, Animation.Color, 0.0f, Animation.Origin, Animation.Effects, 0.0f);
             }
+        }
+        
+        
+        public void Destroy() {
+            Animation.Destroy();
+            Animation = null;
         }
         
     }

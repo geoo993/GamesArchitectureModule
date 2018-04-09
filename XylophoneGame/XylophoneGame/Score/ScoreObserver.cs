@@ -19,6 +19,7 @@ namespace XylophoneGame
         
         */
         private IDisposable unsubscriber;
+        private ScoreInfo LatestScore;
         public string Name { get; private set; }
         
         public ScoreObserver(string name)
@@ -55,7 +56,17 @@ namespace XylophoneGame
         public virtual void OnNext(ScoreInfo value) 
         {
             //Console.WriteLine("Errors {0}, Matches {1} of {2}.", value.Errors, value.Matches, this.Name);
+            LatestScore = value;
         }
+        
+        public float ProgressSpeed {
+            get { return LatestScore.SongProgressSpeed; }
+        }
+        
+        public bool HasSongEnded {
+            get { return LatestScore.HasSongEnded; }
+        }
+    
    
     }
     
