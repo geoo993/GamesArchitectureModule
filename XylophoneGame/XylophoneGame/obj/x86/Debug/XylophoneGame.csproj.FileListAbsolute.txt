@@ -69,3 +69,5 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/obj/x86/Debug/WareHouse3.exe
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/obj/x86/Debug/WareHouse3.pdb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/timeIconAnimation.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/star.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/LargeGameFont.xnb

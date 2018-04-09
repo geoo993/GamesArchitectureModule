@@ -246,6 +246,7 @@ namespace XylophoneGame
         {
             Texture2D texture;
             Texture2D animationTexture;
+            Texture2D particlesTexture;
             Point position = GetBounds(x, y).Center;
            
             //<- file creating stuff here -> 
@@ -253,13 +254,15 @@ namespace XylophoneGame
             //<-- try to load the file --> 
                 texture = Content.Load<Texture2D>("Icons/timeIcon");
                 animationTexture = Content.Load<Texture2D>("SpriteSheets/timeIconAnimation");
+                particlesTexture = Content.Load<Texture2D>("Icons/star");
             } catch {
                 //<--print exception--> 
                 texture = null;
                 animationTexture = null;
+                particlesTexture = null;
             }
             
-            return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 0, 0, 0, color, null, texture, animationTexture, collision);
+            return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 0, 0, 0, color, null, texture, animationTexture, particlesTexture, collision);
         }
         
         
@@ -357,7 +360,6 @@ namespace XylophoneGame
                 {
                     ScoreSubject.AddMatches();
                     ScoreSubject.Matched(true);
-                    ScoreSubject.AddProgressSpeed();
                 }
 
                 if (isNoteSelectedWithError)
@@ -411,7 +413,7 @@ namespace XylophoneGame
                         var note = (Note)Tiles[i];
 
                         // give a random note to each notetile
-                        var noteName = (GameInfo.Random.Next(10) > 6) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
+                        var noteName = (GameInfo.Random.Next(10) > 5) ? NoteInfo.KeyByValue(NoteInfo.UniqueRandomValue(NoteInfo.AvailableNotes)) : noteToSelect;
                         var noteAsset = NoteInfo.AvailableNotes[noteName];
 
                         note.Name = noteName + (i + 1).ToString();

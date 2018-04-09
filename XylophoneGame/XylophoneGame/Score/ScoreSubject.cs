@@ -52,6 +52,7 @@ namespace XylophoneGame
         public void StartScoreSystem(string song, float progressSpeed)
         {
             score = new ScoreInfo(song, progressSpeed);
+            score.MaxNotes = XylophoneSongs.Instance.GetNumberOfNotesInSong(song);
             UpdateScore(score);
         }
         
@@ -92,7 +93,7 @@ namespace XylophoneGame
            
             if (score.HasSongEnded == false)
             {
-				score.HasSongEnded = (progress >= score.Song.Length - 1);
+				score.HasSongEnded = (progress >= score.Song.Length);
                 score.Progress = progress;
             }
                 
@@ -114,15 +115,6 @@ namespace XylophoneGame
                 score.SongProgressSpeed = 0;
             
 			UpdateScore(score);
-        }
-        
-        public void AddProgressSpeed()
-        {
-            //score.SongProgressSpeed += 1.0f;
-            //if (score.HasSongEnded) {
-            //    score.SongProgressSpeed = 0.0f;
-            //}
-			//UpdateScore(score);
         }
         
         public void ReduceProgressSpeed()

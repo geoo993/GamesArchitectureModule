@@ -63,6 +63,15 @@ namespace XylophoneGame
             get { return LatestScore.SongProgressSpeed; }
         }
         
+        public int MaxNotes {
+            get { return LatestScore.MaxNotes; }
+        }
+        
+        public int Matches {
+            get { return LatestScore.Matches; }
+        }
+        
+        
         public bool HasSongEnded {
             get { return LatestScore.HasSongEnded; }
         }

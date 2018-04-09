@@ -1,21 +1,14 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="Levels/Level.cs">
     <Files>
-      <File FileName="Screens/ScreensManager.cs" Line="89" Column="14" />
-      <File FileName="Ball/Ball.cs" Line="172" Column="13" />
-      <File FileName="Levels/Level.cs" Line="354" Column="18" />
-      <File FileName="Collectables/TimeItem.cs" Line="76" Column="90" />
-      <File FileName="Tile/Tile.cs" Line="274" Column="86" />
-      <File FileName="Notes/Note.cs" Line="112" Column="33" />
-      <File FileName="Screens/LevelScreen.cs" Line="107" Column="35" />
-      <File FileName="Utilities/HUD.cs" Line="156" Column="4" />
-      <File FileName="Utilities/ProgressBar.cs" Line="178" Column="32" />
-      <File FileName="Score/ScoreInfo.cs" Line="34" Column="13" />
-      <File FileName="Score/ScoreObserver.cs" Line="66" Column="33" />
-      <File FileName="Score/ScoreSubject.cs" Line="95" Column="60" />
-      <File FileName="Screens/ScreensState.cs" Line="204" Column="32" />
-      <File FileName="Animations/AnimationPlayer.cs" Line="96" Column="30" />
-      <File FileName="Animations/Animation.cs" Line="148" Column="1" />
+      <File FileName="Screens/ScreensManager.cs" Line="172" Column="9" />
+      <File FileName="Ball/Ball.cs" Line="312" Column="73" />
+      <File FileName="Levels/Level.cs" Line="361" Column="47" />
+      <File FileName="Screens/LevelScreen.cs" Line="22" Column="1" />
+      <File FileName="Utilities/HUD.cs" Line="160" Column="13" />
+      <File FileName="Utilities/ProgressBar.cs" Line="197" Column="45" />
+      <File FileName="Screens/ScreensState.cs" Line="210" Column="44" />
+      <File FileName="Particles/Particles.cs" Line="51" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

@@ -16,7 +16,7 @@ namespace XylophoneGame
         /// <summary>
         /// trail particle of the ball
         /// </summary>
-        private List<Circle> Particles;
+        private Particles Particles;
         
         /// <summary>
         /// should the trail particle be enabled
@@ -54,7 +54,7 @@ namespace XylophoneGame
         {
             this.EnableParticles = true;
             this.HasJumped = true;
-            this.Particles = new List<Circle>();
+            this.Particles = new Particles();
             this.AvailableJumps = MaxJumps;
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
@@ -234,7 +234,7 @@ namespace XylophoneGame
 
                 if (EnableParticles)
                 {
-                    AddParticle(Position);
+                    //Particles.AddTrailParticle(Position, Radius);
                 }
                 
                 Acceleration.Y -= Gravity.Y;
@@ -258,40 +258,9 @@ namespace XylophoneGame
                 HasJumped = true;
             }
             
-			UpdateParticles();
-            
+            //Particles.UpdateTrailParticles();
         }
        
-        private void AddParticle(Vector2 position)
-        {
-            byte red = (byte)GameInfo.Random.Next(0, 255);
-            byte green = (byte)GameInfo.Random.Next(0, 255);
-            byte blue = (byte)GameInfo.Random.Next(0, 255);
-            Color col =  new Color(red, green, blue);
-        
-            Circle particle = new Circle("",position, Radius, 0.0f, 0.0f, 1.0f, col, null);
-            Particles.Add(particle);
-        }
-        
-        private void UpdateParticles() {
-
-            if (Particles.Count > 0) {
-            
-                for (int i = 0; i < Particles.Count; i++)
-                {
-                    Particles[i].Opacity -= 0.02f;
-                    Particles[i].Scale -= 0.02f;
-                    if (Particles[i].Opacity <= 0.0f || Particles[i].Scale <= 0.001f)
-                    {
-                        Particles.RemoveAt(i);
-                        i--;
-                        continue;
-                    }
-                }
-            }
-        }
-        
-        
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -339,20 +308,15 @@ namespace XylophoneGame
         
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
         {
-            // Draw the particles
-            foreach (Circle particle in Particles)
-            {
-                particle.Draw(spriteBatch, screenSafeArea);
-            }
+            
+            //Particles.DrawTrailParticles(spriteBatch, screenSafeArea);
             base.Draw(spriteBatch, screenSafeArea);
         }
 
         public override void Destroy()
         {
-            foreach (Circle particle in Particles){
-                particle.Destroy();
-            }
-            Particles.Clear();
+            Particles.Destroy();
+            Particles = null;
 
             PreviousNoteCollided.Destroy();
             PreviousNoteCollided = null;

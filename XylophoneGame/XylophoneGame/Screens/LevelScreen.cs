@@ -19,7 +19,9 @@ namespace XylophoneGame
         /// HUD
         /// </summary>
         public HUD Hud;
-        
+
+        //private Particles Particles;
+        private bool AnimateExplosion;
         
         /// <summary>
         /// Level.
@@ -27,13 +29,16 @@ namespace XylophoneGame
         public Level Level;
         public String LevelTitle;
 
-        public bool AutoPlay = false;
+        public bool AutoPlay;
         
         public LevelScreen(string title, ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
             GameTitle = title;
             Hud = new HUD(title);
+            AutoPlay = false;
+            //Particles = new Particles(1, 40, 0.005f);
+            AnimateExplosion = false;
         }
 
         public void Construct(string level, SongType songType, float progressSpeed, Color backgroundColor, Texture2D backgroundTexture)
@@ -51,7 +56,6 @@ namespace XylophoneGame
         public override void Construct(Color backgroundColor, Texture2D backgroundTexture)
         {
             base.Construct(backgroundColor, backgroundTexture);
-            
         }
         
         //-----------------------------------------------------------------------------
@@ -109,6 +113,19 @@ namespace XylophoneGame
             Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Hud.HasSongEnded, Hud.ProgressSpeed, AutoPlay, Hud.Width);
             
             Hud.Update(gameTime);
+
+            if (Hud.HasSongEnded)
+            {
+                AnimateExplosion = true;
+            }
+
+            if (AnimateExplosion)
+            {
+                //Particles.AddExplosionParticle(GameInfo.Camera.Position, 40);
+                AnimateExplosion = false;
+            }
+            
+            //Particles.UpdateExplosionParticles();
         }
 
         //-----------------------------------------------------------------------------
@@ -119,12 +136,14 @@ namespace XylophoneGame
             BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
             base.Draw(spriteBatch, screenSafeArea);
 
+			//Particles.DrawExplosionParticles(spriteBatch, screenSafeArea);
             Hud.Draw(spriteBatch, screenSafeArea);
             
             if (Level != null)
             {
                 Level.Draw(spriteBatch, screenSafeArea);
             }
+
         }
         
         
@@ -140,7 +159,6 @@ namespace XylophoneGame
             rectangle.SetData<Color>(colorData);
             return rectangle;
         }
-        
         
         #endregion
         

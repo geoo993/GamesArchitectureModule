@@ -7,6 +7,7 @@
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameFont.spritefont</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameOverImage.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/GameWonImage.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/LargeGameFont.spritefont</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/MainMenu.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note1.wav</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/note2.wav</File>
@@ -27,6 +28,7 @@
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/Splash.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/Splash2.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/SplashScreen.png</File>
+    <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/star.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/timeIcon.png</File>
     <File>/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/Content/timeIconAnimation.png</File>
   </SourceFiles>

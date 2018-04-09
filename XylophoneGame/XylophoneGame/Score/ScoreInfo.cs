@@ -19,11 +19,13 @@ namespace XylophoneGame
         public int Matches;
         
         public bool HasSongEnded;
+        public int MaxNotes;
        
         internal ScoreInfo(string song, float progressSpeed)
         {
 			this.Song = song;
             this.SongProgressSpeed = progressSpeed;
+            this.MaxNotes = 0;
             this.Progress = 0;
             this.TimeProgress = 0.0f;
             this.Matches = 0;

@@ -83,6 +83,17 @@ namespace XylophoneGame
             return index;
         }
         
+        public int GetNumberOfNotesInSong(string song) {
+            int count = 0;
+            for (int i = 0; i < song.Length; ++i) {
+                var tempLetter = song[i];
+                if (tempLetter != ' ') {
+                    count++;
+                }
+            }
+            return count;
+        }
+        
         
     }
     

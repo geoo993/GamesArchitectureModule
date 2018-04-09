@@ -65,7 +65,6 @@ namespace XylophoneGame
         public Rectangle SourceRect {
             get {
                 return new Rectangle(FrameIndex * FrameWidth, 0, FrameWidth, FrameHeight);
-            
             }
         }
         
