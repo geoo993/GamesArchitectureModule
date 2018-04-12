@@ -66,6 +66,7 @@ namespace XylophoneGame
         {
             // TODO: Add your initialization logic here
             Device.graphicsDevice = graphics.GraphicsDevice;
+			ScreenManager = new ScreenManager(Window.Title, "George", Content, Commands.manager, Services);
             
             base.Initialize();
         }
@@ -80,7 +81,6 @@ namespace XylophoneGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            ScreenManager = new ScreenManager("Xylophone Game", "George", Content, Commands.manager, Services);
             ScreenManager.Construct();
             
             //GameInfo.Camera.SetKeyoardBindings(Commands.manager);

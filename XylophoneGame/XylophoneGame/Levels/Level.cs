@@ -76,11 +76,9 @@ namespace XylophoneGame
         {
             return new Rectangle(x * TileInfo.UnitWidth, y * TileInfo.UnitHeight, TileInfo.UnitWidth, TileInfo.UnitHeight);
         }
-        
          
         public Tile ClosestNote(List<Tile> tiles, Vector2 position)
         {
-            
             // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
             return tiles
                 .Where(o => o is Note)
@@ -394,9 +392,10 @@ namespace XylophoneGame
                  
                 if (Ball.IsIntersectingMusicNoteItem)
                 {
+                    // increase progress
                     if (closestMusicNoteItem != null)
                         closestMusicNoteItem.Disable();
-                        
+                    
                     var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
                     var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
                     noteSound.Play();
@@ -486,10 +485,22 @@ namespace XylophoneGame
         /// </summary>
         public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
-            
-            foreach(Tile tile in Tiles) {
-                if (tile != null) {
-                    tile.Draw(spriteBatch, screenSafeArea);
+           
+            for (int i = 0; i < Tiles.Count; i++)
+            {
+				var tile = Tiles[i];
+                tile.Draw(spriteBatch, screenSafeArea);
+                
+                if (tile is MusicNoteItem && ((MusicNoteItem)tile).IsEnabled == false && ((MusicNoteItem)tile).IsParticlesDisabled)
+                {
+                    Tiles.RemoveAt(i);
+					tile.Destroy();
+                }
+                
+                if (tile is TimeItem && ((TimeItem)tile).IsEnabled == false && ((TimeItem)tile).IsParticlesDisabled)
+                {
+                    Tiles.RemoveAt(i);
+                    tile.Destroy();
                 }
             }
             

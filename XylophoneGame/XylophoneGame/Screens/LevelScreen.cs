@@ -16,9 +16,6 @@ namespace XylophoneGame
         /// </summary>
         public HUD Hud;
 
-        //private Particles Particles;
-        private bool AnimateExplosion;
-        
         /// <summary>
         /// Level.
         /// </summary>
@@ -27,11 +24,7 @@ namespace XylophoneGame
         public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
-           
             Hud = new HUD(parent.Player);
-            
-            //Particles = new Particles(1, 40, 0.005f);
-            AnimateExplosion = false;
         }
 
         public void Construct(string level, SongType songType, Color backgroundColor, Texture2D backgroundTexture)
@@ -41,7 +34,7 @@ namespace XylophoneGame
             
 			LoadLevel(level, songType, song);
 			
-			Hud.Construct(ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
+			Hud.Construct(Color.DarkMagenta, GameInfo.Instance.RandomColor());
 			Hud.Subscribe(Parent.ScoreSubject);
         }
         
@@ -105,22 +98,10 @@ namespace XylophoneGame
         {
             base.Update(gameTime);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Parent.ScoreSubject, Hud.Width);
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Parent.ScoreSubject, Parent.HudWidth);
             
             Hud.Update(gameTime);
 
-            if (Hud.HasSongEnded)
-            {
-                AnimateExplosion = true;
-            }
-
-            if (AnimateExplosion)
-            {
-                //Particles.AddExplosionParticle(GameInfo.Camera.Position, 40);
-                AnimateExplosion = false;
-            }
-            
-            //Particles.UpdateExplosionParticles();
         }
 
         //-----------------------------------------------------------------------------
@@ -131,8 +112,7 @@ namespace XylophoneGame
             BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
             base.Draw(spriteBatch, screenSafeArea);
 
-			//Particles.DrawExplosionParticles(spriteBatch, screenSafeArea);
-            Hud.Draw(spriteBatch, screenSafeArea);
+            Hud.Draw(spriteBatch,  Parent.HudWidth, Parent.HudHeight, Parent.ScreenTopCenter, Parent.HudFont, Parent.HudLargeFont);
             
             if (Level != null)
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,14 +15,16 @@ namespace XylophoneGame
         /// </summary>
         private Particles Particles;
         
+        public bool IsParticlesDisabled { get; private set; }
         public bool IsEnabled { get; private set; }
-        
+                
         public TimeItem(String name, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, Texture2D animationTexture = null, Texture2D particlesTexture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
         {
             Particles = new Particles(Color.Green, 20, radius, 0.015f, particlesTexture);
             AnimationPlayer.PlayAnimation(new Animation(animationTexture, Position, 0.4f, 21, 60, Color, true));
             IsEnabled = true;
+            IsParticlesDisabled = false;
         }
 
 		public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -36,6 +37,7 @@ namespace XylophoneGame
             }
 
             Particles.UpdateExplosionParticles();
+            IsParticlesDisabled = (IsEnabled == false && Particles.ExplosionLayers.Count <= 0);
 		}
 
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
@@ -54,7 +56,6 @@ namespace XylophoneGame
             }
 
             Particles.DrawExplosionParticles(spriteBatch, screenSafeArea);
-            
         }
         
 		public void Disable()

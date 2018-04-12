@@ -202,7 +202,7 @@ namespace XylophoneGame
             ScreenManager manager = (ScreenManager)owner;
             
             screen = new LevelScreen(ScreensType.LEVEL, manager, manager.ContentManager);
-            screen.Construct(manager.Level, manager.Song, GameInfo.Instance.RandomColor(), null);
+            screen.Construct(manager.Level, manager.SongType, GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             

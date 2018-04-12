@@ -10,11 +10,11 @@ namespace XylophoneGame
     public class Particles
     {
 
+		public List<Circle> ExplosionLayers { get; private set; }
+		public List<Circle> TrailLayers { get; private set; }
         private int NumberOfParticles;
         private Texture2D Texture;
         private int Size;
-        private List<Circle> ExplosionLayers;
-        private List<Circle> TrailLayers;
         private float ExplisionSpeed;
         private float TrailSpeed;
         private Color Color;

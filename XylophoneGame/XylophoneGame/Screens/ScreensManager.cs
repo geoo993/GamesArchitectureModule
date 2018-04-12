@@ -13,33 +13,75 @@ namespace XylophoneGame
 {
     public class ScreenManager
     {
+        /// <summary>
+        /// Observable Subject
+        /// </summary>
         public ScoreSubject ScoreSubject { get; private set; }
         
+		/// <summary>
+		/// Screens state machine.
+		/// </summary>
+		private StateMachine FSM { get; set; }
+		public ScreensState State { get; private set; }
         
+        /// <summary>
+        /// Game info .
+        /// </summary>
+        /// <value>The title.</value>
         public string Title { get; private set; }
         public string Player { get; private set; }
         public string Level { get; private set; }
-        public SongType Song { get; private set; }
+        public SongType SongType { get; private set; }
+        public string Song
+        {
+            get { return XylophoneSongs.Instance.GetSong(SongType);  }
+        }
         public float SongSpeed { get; private set; }
 
+        /// <summary>
+        /// managers
+        /// </summary>
+        /// <value>The content manager.</value>
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public GameServiceContainer Services { get; private set; }
 
-        public Screen CurrentScreen;
-
-        public bool ShouldExit { get; private set; }
-
         /// <summary>
-        /// Screens state machine.
+        /// Game screens.
         /// </summary>
-        private StateMachine FSM { get; set; }
-        public ScreensState State { get; private set; }
+        public Screen CurrentScreen;
+        public Vector2 ScreenTopCenter { get; private set; }
         
         /// <summary>
-        /// delay time to wait 8 seconds before setting GameEnd method
+        /// Game Fonts
         /// </summary>
-        private static readonly TimeSpan GameEndInterval = TimeSpan.FromMilliseconds(8000);
+        public SpriteFont HudFont { get; private set; }
+        public SpriteFont HudLargeFont { get; private set; }
+        public float HudFlashScoreCount { get; private set; }
+        public float HudWidth {
+            get {
+                if (HudFont != null) {
+                    return HudFont.MeasureString(Song).X;
+                }
+                return 0.0f;
+            }
+        }
+        public float HudHeight {
+            get {
+                if (HudFont != null) {
+                    return HudFont.MeasureString(Song).Y;
+                }
+                return 0.0f;
+            }
+        }
+        
+        public bool ShouldExit { get; private set; }
+
+        
+        /// <summary>
+        /// delay time to wait 10 seconds before setting GameEnd method
+        /// </summary>
+        private static readonly TimeSpan GameEndInterval = TimeSpan.FromMilliseconds(10000);
         private TimeSpan GameEndLastTimeInterval;
 
         //-----------------------------------------------------------------------------
@@ -50,34 +92,20 @@ namespace XylophoneGame
             Title = title;
             Player = player;
             Level = LevelInfo.RandomLevel;
-            Song = XylophoneSongs.RandomSong;
-            SongSpeed = XylophoneSongs.Songs[Song];
+            SongType = XylophoneSongs.RandomSong;
+            SongSpeed = XylophoneSongs.Songs[SongType];
             ContentManager = contentManager;
             CommandManager = manager;
             Services = service;
             CurrentScreen = null;
+            ScreenTopCenter = Vector2.Zero;
             
             ScoreSubject = new ScoreSubject();
-            ScoreSubject.StartScoreSystem(XylophoneSongs.Instance.GetSong(Song), SongSpeed);
+            ScoreSubject.StartScoreSystem(Song, SongSpeed);
             
-        }
-
-        public void Reset()
-        {
-            Level = LevelInfo.RandomLevel;
-            Song = XylophoneSongs.RandomSong;
-            SongSpeed = XylophoneSongs.Songs[Song];
-
-            if (ScoreSubject != null)
-            {
-                ScoreSubject.EndScoreSystems();
-                ScoreSubject = null;
-            }
-			ScoreSubject = new ScoreSubject();
-			ScoreSubject.StartScoreSystem(XylophoneSongs.Instance.GetSong(Song), SongSpeed);
-            
-            FSM.ClearCurrentState();
-            SetState(ScreensState.LEVEL);
+			FSM = new StateMachine(this, 0.0f, null);
+            HudFont = null;
+            HudLargeFont = null;
         }
 
         //-----------------------------------------------------------------------------
@@ -85,9 +113,12 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public virtual void Construct()
         {
-            FSM = new StateMachine(this, 0.0f, null);
+            HudFont = ContentManager.Load<SpriteFont>("Fonts/GameFont");
+            HudLargeFont = ContentManager.Load<SpriteFont>("Fonts/LargeGameFont");
+            
             SetState(ScreensState.SPLASH);
             SetKeyoardBindings(CommandManager);
+            
         }
 
         #region KeyBoard Actions
@@ -296,6 +327,7 @@ namespace XylophoneGame
             
             if (CurrentScreen != null)
             {
+                ScreenTopCenter = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (screenSafeArea.Height / 2.0f));
                 FSM.Draw(spriteBatch, screenSafeArea);
             }
         }
@@ -317,14 +349,52 @@ namespace XylophoneGame
             ScoreSubject.EndScoreSystems();
             ScoreSubject = null;
             
-            
             Services = null;
+            
+            HudFont = null;
+            HudLargeFont = null;
         
             if (FSM != null)
             {
                 FSM.Destroy();
                 FSM = null;
             }
+        }
+        
+        
+        public void Reset()
+        {
+            Level = LevelInfo.RandomLevel;
+            SongType = XylophoneSongs.RandomSong;
+            SongSpeed = XylophoneSongs.Songs[SongType];
+
+            if (ScoreSubject != null)
+            {
+                ScoreSubject.EndScoreSystems();
+                ScoreSubject = null;
+            }
+            ScoreSubject = new ScoreSubject();
+            ScoreSubject.StartScoreSystem(Song, SongSpeed);
+            
+            FSM.ClearCurrentState();
+            SetState(ScreensState.LEVEL);
+        }
+        
+        public void ShowResults(SpriteBatch spriteBatch, Rectangle screenSafeArea, string result) {
+        
+			HudFlashScoreCount = (HudFlashScoreCount + 0.02f) % 1.0f;
+            var textColor = Color.Bisque;
+            var position = ScreenTopCenter + new Vector2(-(screenSafeArea.Width * 0.5f) + (HudWidth * 0.5f), 0.0f);
+            var largetFontWidth = HudLargeFont.MeasureString(result).X;
+            var color = textColor * HudFlashScoreCount;
+            var origin = new Vector2(largetFontWidth / 2, 0);
+            DrawShadowedString(spriteBatch, HudLargeFont, result, position, origin, color, 1.0f);
+        }
+        
+        public static void DrawShadowedString(SpriteBatch spriteBatch, SpriteFont font, string value, Vector2 position, Vector2 origin, Color color, float scale)
+        {
+            spriteBatch.DrawString(font, value, position + new Vector2(1.0f, 1.0f), color, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
+            spriteBatch.DrawString(font, value, position, color, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
         }
         
         

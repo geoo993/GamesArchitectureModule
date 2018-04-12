@@ -1,19 +1,21 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Screens/ScreensManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game1.cs">
     <Files>
-      <File FileName="Screens/ScreensManager.cs" Line="197" Column="25" />
+      <File FileName="Screens/ScreensManager.cs" Line="115" Column="13" />
       <File FileName="Screens/ScreensState.cs" Line="205" Column="57" />
-      <File FileName="Levels/Level.cs" Line="165" Column="46" />
-      <File FileName="Screens/LevelScreen.cs" Line="11" Column="35" />
+      <File FileName="Levels/Level.cs" Line="477" Column="1" />
+      <File FileName="Screens/LevelScreen.cs" Line="135" Column="54" />
       <File FileName="Screens/WinScreen.cs" Line="69" Column="13" />
-      <File FileName="Screens/LoseScreen.cs" Line="73" Column="14" />
+      <File FileName="Screens/LoseScreen.cs" Line="76" Column="13" />
       <File FileName="Score/ScoreInfo.cs" Line="28" Column="21" />
       <File FileName="Score/ScoreObserver.cs" Line="77" Column="34" />
       <File FileName="Score/ScoreSubject.cs" Line="119" Column="38" />
-      <File FileName="Notes/Note.cs" Line="97" Column="38" />
+      <File FileName="Notes/Note.cs" Line="51" Column="13" />
       <File FileName="Songs/Songs.cs" Line="58" Column="71" />
-      <File FileName="Utilities/HUD.cs" Line="116" Column="13" />
+      <File FileName="Utilities/HUD.cs" Line="82" Column="1" />
       <File FileName="bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua" Line="9" Column="14" />
+      <File FileName="Ball/Ball.cs" Line="166" Column="43" />
+      <File FileName="Game1.cs" Line="84" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

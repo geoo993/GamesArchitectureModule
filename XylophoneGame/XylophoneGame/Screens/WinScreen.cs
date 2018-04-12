@@ -8,7 +8,7 @@ namespace XylophoneGame
     public class WinScreen: Screen
     {
         public ScoreObserver Observer;
-         
+        
         public WinScreen( ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
@@ -63,10 +63,6 @@ namespace XylophoneGame
         {
             base.Update(gameTime);
             
-            
-            Debug.Print("");
-            Debug.Print("Score is " + Observer.Matches);
-            
         }
 
         //-----------------------------------------------------------------------------
@@ -75,6 +71,9 @@ namespace XylophoneGame
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
         {
             base.Draw(spriteBatch, screenSafeArea);
+            
+            var word = "You played all "+ Observer.Matches.ToString() +" notes";
+            Parent.ShowResults(spriteBatch, screenSafeArea, word);
         }
     }
 }

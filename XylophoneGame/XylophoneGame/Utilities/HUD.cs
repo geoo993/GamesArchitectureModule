@@ -25,10 +25,7 @@ namespace XylophoneGame
         /// <summary>
         /// HUD elements
         /// </summary>
-        private SpriteFont HudFont;
-        private SpriteFont HudLargeFont;
         public Progressbar HudProgressBar;
-        public Vector2 HudPosition;
 
         /// <summary>
         /// Text color
@@ -42,55 +39,17 @@ namespace XylophoneGame
         private bool FlashScore;
         private float FlashScoreCount;
         
-        //
-        public float Width {
-            get {
-                if (HudFont != null)
-                {
-                    return HudFont.MeasureString(Song).X;
-                }else {
-                    return 0.0f;
-                }
-            }
-        }
-        
-        public float NotesCompletedWidth {
-            get {
-                if (HudFont != null)
-                {
-                    return HudFont.MeasureString(NotesCompleted).X;
-                }else {
-                    return 0.0f;
-                }
-            }
-        }
-        
-        private float Height {
-            get {
-                if (HudFont != null)
-                {
-                    return HudFont.MeasureString(Song).Y;
-                }else {
-                    return 0.0f;
-                }
-            }
-        }
-        
 		private FrameCounter FrameCounter;
         
         public HUD(string title)
         : base(title+" Score System")
         {
-            HudFont = null;
             HudProgressBar = new Progressbar();
             FrameCounter = new FrameCounter();
         }
         
-        public void Construct(ContentManager contentManager, Color textColor, Color textProgressColor)
+        public void Construct(Color textColor, Color textProgressColor)
         {
-            HudFont = contentManager.Load<SpriteFont>("Fonts/GameFont");
-            HudLargeFont = contentManager.Load<SpriteFont>("Fonts/LargeGameFont");
-            HudPosition = Vector2.Zero;
             HudTextColor = textColor;
             HudTextProgressColor = textProgressColor;
             NotesCompletedScore = "";
@@ -154,29 +113,29 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Draw(SpriteBatch spriteBatch, Rectangle safeArea)
+        public void Draw(SpriteBatch spriteBatch, float width, float height, Vector2 hudPosition, SpriteFont hudFont, SpriteFont hudLargeFont)
         {
-        
-            HudPosition = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (safeArea.Height / 2.0f));
-            var notesPosition = HudPosition + new Vector2(-(Width * 0.5f), 0.0f);
+            
+            var NotesCompletedWidth = hudFont.MeasureString(NotesCompleted).X;
+            var notesPosition = hudPosition + new Vector2(-(width * 0.5f), 0.0f);
             
             // xylophone notes
-            DrawShadowedString(spriteBatch, HudFont, Song, notesPosition, Vector2.Zero, HudTextColor, 1.0f);
-            DrawShadowedString(spriteBatch, HudFont, CurrentNote.ToString(), notesPosition + new Vector2(NotesCompletedWidth, Height * 1.2f), Vector2.Zero, HudTextProgressColor, 1.0f);
+            ScreenManager.DrawShadowedString(spriteBatch, hudFont, Song, notesPosition, Vector2.Zero, HudTextColor, 1.0f);
+            ScreenManager.DrawShadowedString(spriteBatch, hudFont, CurrentNote.ToString(), notesPosition + new Vector2(NotesCompletedWidth, height * 1.2f), Vector2.Zero, HudTextProgressColor, 1.0f);
 
-            //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, HudTextColor, 1.0f);
-            //DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), HudTextColor, 1.0f);
-            FlashScoreCount = FlashScore ? (FlashScoreCount + 0.1f) % 1.0f : 0.2f;
+            //ScreenManager.DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, HudTextColor, 1.0f);
+            //ScreenManager.DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, height * 1.2f), HudTextColor, 1.0f);
+            FlashScoreCount = FlashScore ? (FlashScoreCount + 0.05f) % 1.0f : 0.2f;
             
             var Max = MaxNotes - 1;
             var word = Matches.ToString() +"/"+Max.ToString();
-            var width = HudLargeFont.MeasureString(word).X;
+            var largetFontWidth = hudLargeFont.MeasureString(word).X;
             var color = HudTextColor * FlashScoreCount;
-            var origin = new Vector2(width / 2, 0);
-            DrawShadowedString(spriteBatch, HudLargeFont, word, GameInfo.Camera.Position - new Vector2(0.0f, 100.0f), origin, color, 1.0f);
+            var origin = new Vector2(largetFontWidth / 2, 0);
+            ScreenManager.DrawShadowedString(spriteBatch, hudLargeFont, word, GameInfo.Camera.Position - new Vector2(0.0f, 100.0f), origin, color, 1.0f);
             
 			// hud frames
-			HudProgressBar.Construct((int)Width, (int)Height, HudPosition - new Vector2((Width * 0.5f), 0.0f), Color.Orange, Color.Gold, Color.Thistle);
+			HudProgressBar.Construct((int)width, (int)height, hudPosition - new Vector2((width * 0.5f), 0.0f), Color.Orange, Color.Gold, Color.Thistle);
 			HudProgressBar.Draw(spriteBatch);
 			
             // frame rate
@@ -184,16 +143,8 @@ namespace XylophoneGame
             //DrawShadowedString(spriteBatch, HudFont, fps, new Vector2(hudLocation.X - (safeArea.Width / 2.0f), hudLocation.Y), hudColor, hudColor);
         }
 
-        private void DrawShadowedString(SpriteBatch spriteBatch, SpriteFont font, string value, Vector2 position, Vector2 origin, Color color, float scale)
-        {
-            spriteBatch.DrawString(font, value, position + new Vector2(1.0f, 1.0f), color, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
-            spriteBatch.DrawString(font, value, position, color, 0.0f, origin, scale, SpriteEffects.None, 0.0f);
-        }
-        
-        
         public void Destroy() {
-            HudFont = null;
-
+         
             HudProgressBar.Destroy();
             HudProgressBar = null;
 
