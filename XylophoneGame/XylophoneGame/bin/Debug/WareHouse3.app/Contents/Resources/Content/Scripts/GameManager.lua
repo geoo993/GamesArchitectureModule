@@ -1,3 +1,4 @@
+PlayerName = "Kevin";
 ScreenWidth = 1200;
 ScreenHeight = 720;
 MapWidth = 3600;

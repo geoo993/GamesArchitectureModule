@@ -30,8 +30,8 @@ namespace XylophoneGame
         public void Construct(string level, SongType songType, Color backgroundColor, Texture2D backgroundTexture)
         {
             Construct(backgroundColor, backgroundTexture);
+            SaveLoadJSON.Load();
             var song = XylophoneSongs.Instance.GetSong(songType);
-            
 			LoadLevel(level, songType, song);
 			
 			Hud.Construct(Color.DarkMagenta, GameInfo.Instance.RandomColor());

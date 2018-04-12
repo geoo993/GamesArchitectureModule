@@ -1,49 +1,63 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
-using NLua;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 
-    
 namespace XylophoneGame
 {
-    
-    public class SaveGameData
+   
+    struct GameData
     {
-
-        private string PlayerName;
-        private string Level;
-        private int Score;
-        public Lua ctx = new Lua();
+        public string PlayerName;
+        public string Level;
+        public int Score;
+        public bool DidWin;
         
-        public SaveGameData(string name, string level){
-            PlayerName = name;
-            Level = level;
-            Score = 0;
-        }
-        
-        public void DoAString() {
-            
-            double val = 12.0;
-            GameManager.manager ["Abdul"] = val; // Create a global value 'x' 
-            var res = GameManager.manager.DoString ("return 10 + Abdul*(5 + 2)")[0] as double?;
-            Debug.Print(res.ToString());
-        }
-        
-        
-        public void Start()
+        internal GameData(string name, string level, int score, bool didWin)
         {
-            ctx.RegisterFunction("Test", this, typeof(SaveGameData).GetMethod("Test"));
-            ctx.LoadCLRPackage();
-            ctx.DoFile("../Resources/Content/Scripts/test.lua");
+            this.PlayerName = name;
+            this.Level = level;
+            this.Score = score;
+            this.DidWin = didWin;
         }
-
-        public void Test(string str)
-        {
-            var expected = "abcd 가나다라 あかさた";
-            Console.WriteLine("{0} (From C#)", expected); // for comparison purpose
-            Console.WriteLine("{0} (From NLua)", str);
-        }
-        
     }
+
+
+    class SaveLoadJSON
+    {
+        public static List<GameData> Levels = new List<GameData>();
+        
+        public static void Load()
+        {
+            using (StreamReader file = File.OpenText("../Resources/Content/Scripts/GameData.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                Levels = (List<GameData>)serializer.Deserialize(file, typeof(List<GameData>));
+            }  
+        }
+    
+        public static void Save(GameData level)
+        {
+            Levels.Add(level);
+            if (File.Exists("../Resources/Content/Scripts/GameData.json"))
+            {
+                File.Delete("../Resources/Content/Scripts/GameData.json");
+            }
+    
+            using (FileStream fs = File.Open("../Resources/Content/Scripts/GameData.json", FileMode.CreateNew))
+            using (StreamWriter sw = new StreamWriter(fs))
+            using (JsonWriter jw = new JsonTextWriter(sw))
+            {
+                jw.Formatting = Formatting.Indented;
+    
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(jw, Levels);
+            }
+        }
+    }
+    
     
 }

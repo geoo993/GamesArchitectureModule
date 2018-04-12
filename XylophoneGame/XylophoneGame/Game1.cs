@@ -66,7 +66,8 @@ namespace XylophoneGame
         {
             // TODO: Add your initialization logic here
             Device.graphicsDevice = graphics.GraphicsDevice;
-			ScreenManager = new ScreenManager(Window.Title, "George", Content, Commands.manager, Services);
+            var player = (string)GameManager.manager["PlayerName"];
+			ScreenManager = new ScreenManager(Window.Title, player, Content, Commands.manager, Services);
             
             base.Initialize();
         }

@@ -206,6 +206,7 @@ namespace XylophoneGame
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             
+            
             Debug.Print("Enter: Level Screen");
         }
 

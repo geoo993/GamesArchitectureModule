@@ -14,6 +14,8 @@ namespace XylophoneGame
         {
             Observer = new ScoreObserver("Score Observer");
 			Observer.Subscribe(parent.ScoreSubject);
+            
+            SaveLoadJSON.Save(new GameData(Parent.Player, Parent.Level, Observer.Matches, true));
         }
         
         //-----------------------------------------------------------------------------
@@ -72,8 +74,8 @@ namespace XylophoneGame
         {
             base.Draw(spriteBatch, screenSafeArea);
             
-            var word = "You played all "+ Observer.Matches.ToString() +" notes";
-            Parent.ShowResults(spriteBatch, screenSafeArea, word);
+            var word = "Well done "+ Parent.Player+", you played all "+ Observer.Matches.ToString() +" notes";
+            Parent.ShowResults(spriteBatch, screenSafeArea, word, false);
         }
     }
 }

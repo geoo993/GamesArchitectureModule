@@ -45,8 +45,7 @@ namespace XylophoneGame
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public GameServiceContainer Services { get; private set; }
-        
-        public SaveGameData SaveGameData { get; private set; }
+
         
         /// <summary>
         /// Game screens.
@@ -98,7 +97,6 @@ namespace XylophoneGame
             SongSpeed = XylophoneSongs.Songs[SongType];
             ContentManager = contentManager;
             CommandManager = manager;
-            SaveGameData = new SaveGameData(player, Level);
             Services = service;
             CurrentScreen = null;
             ScreenTopCenter = Vector2.Zero;
@@ -121,11 +119,6 @@ namespace XylophoneGame
             
             SetState(ScreensState.SPLASH);
             SetKeyoardBindings(CommandManager);
-
-            SaveGameData.Start();
-            
-            LuaFunction fun = SaveGameData.ctx["Test"] as LuaFunction;
-            
             
         }
 
@@ -388,15 +381,16 @@ namespace XylophoneGame
             SetState(ScreensState.LEVEL);
         }
         
-        public void ShowResults(SpriteBatch spriteBatch, Rectangle screenSafeArea, string result) {
-        
+        public void ShowResults(SpriteBatch spriteBatch, Rectangle screenSafeArea, string result, bool useLargeFont) {
+
+            var hud = useLargeFont ? HudLargeFont : HudFont;
 			HudFlashScoreCount = (HudFlashScoreCount + 0.02f) % 1.0f;
             var textColor = Color.Bisque;
-            var position = ScreenTopCenter + new Vector2(-(screenSafeArea.Width * 0.5f) + (HudWidth * 0.5f), 0.0f);
-            var largetFontWidth = HudLargeFont.MeasureString(result).X;
+            var position = ScreenTopCenter + new Vector2(-(screenSafeArea.Width * 0.5f) + (HudWidth * 0.3f), 0.0f);
+            var largetFontWidth = hud.MeasureString(result).X;
             var color = textColor * HudFlashScoreCount;
             var origin = new Vector2(largetFontWidth / 2, 0);
-            DrawShadowedString(spriteBatch, HudLargeFont, result, position, origin, color, 1.0f);
+            DrawShadowedString(spriteBatch, hud, result, position, origin, color, 1.0f);
         }
         
         public static void DrawShadowedString(SpriteBatch spriteBatch, SpriteFont font, string value, Vector2 position, Vector2 origin, Color color, float scale)

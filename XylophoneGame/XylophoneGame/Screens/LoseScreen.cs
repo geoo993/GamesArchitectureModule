@@ -14,6 +14,8 @@ namespace XylophoneGame
         {
             Observer = new ScoreObserver("Lose Screen Observer");
             Observer.Subscribe(parent.ScoreSubject);
+
+            SaveLoadJSON.Save(new GameData(Parent.Player, Parent.Level, Observer.Matches, false));
         }
       
         //-----------------------------------------------------------------------------
@@ -67,8 +69,8 @@ namespace XylophoneGame
         
             base.Draw(spriteBatch, screenSafeArea);
 
-            var word = "You played "+ Observer.Matches.ToString() +" notes";
-            Parent.ShowResults(spriteBatch, screenSafeArea, word);
+            var word = "Unlucky "+ Parent.Player+", you played "+ Observer.Matches.ToString() +" notes";
+            Parent.ShowResults(spriteBatch, screenSafeArea, word, false);
         }
 
         
