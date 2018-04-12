@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
+using NLua;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -45,7 +45,9 @@ namespace XylophoneGame
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public GameServiceContainer Services { get; private set; }
-
+        
+        public SaveGameData SaveGameData { get; private set; }
+        
         /// <summary>
         /// Game screens.
         /// </summary>
@@ -96,6 +98,7 @@ namespace XylophoneGame
             SongSpeed = XylophoneSongs.Songs[SongType];
             ContentManager = contentManager;
             CommandManager = manager;
+            SaveGameData = new SaveGameData(player, Level);
             Services = service;
             CurrentScreen = null;
             ScreenTopCenter = Vector2.Zero;
@@ -118,6 +121,11 @@ namespace XylophoneGame
             
             SetState(ScreensState.SPLASH);
             SetKeyoardBindings(CommandManager);
+
+            SaveGameData.Start();
+            
+            LuaFunction fun = SaveGameData.ctx["Test"] as LuaFunction;
+            
             
         }
 

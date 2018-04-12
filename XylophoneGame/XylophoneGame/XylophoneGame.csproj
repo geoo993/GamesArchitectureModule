@@ -222,6 +222,9 @@
     <Content Include="Content\bin\MacOSX\musicNote.xnb">
       <Link>Content\Icons\musicNote.xnb</Link>
     </Content>
+    <Content Include="bin\Debug\WareHouse3.app\Contents\Resources\Content\Scripts\test.lua">
+      <Link>Content\Scripts\test.lua</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <NativeReference Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\libopenal.1.dylib">

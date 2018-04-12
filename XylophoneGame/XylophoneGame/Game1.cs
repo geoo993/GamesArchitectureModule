@@ -82,7 +82,7 @@ namespace XylophoneGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
             ScreenManager.Construct();
-            
+
             //GameInfo.Camera.SetKeyoardBindings(Commands.manager);
             
         }
