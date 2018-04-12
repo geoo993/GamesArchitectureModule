@@ -108,6 +108,7 @@
     <Compile Include="Particles\Particles.cs" />
     <Compile Include="Notes\NotesInfo.cs" />
     <Compile Include="Collectables\MusicNoteItem.cs" />
+    <Compile Include="SaveData\SaveGameData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -256,6 +257,7 @@
     <Folder Include="Content\Icons\" />
     <Folder Include="Content\SpriteSheets\" />
     <Folder Include="Particles\" />
+    <Folder Include="SaveData\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
