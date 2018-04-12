@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,9 +7,13 @@ namespace XylophoneGame
 {
     public class WinScreen: Screen
     {
-        public WinScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
+        public ScoreObserver Observer;
+         
+        public WinScreen( ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
+            Observer = new ScoreObserver("Score Observer");
+			Observer.Subscribe(parent.ScoreSubject);
         }
         
         //-----------------------------------------------------------------------------
@@ -18,15 +22,22 @@ namespace XylophoneGame
         public override void Construct(Color backgroundColor, Texture2D backgroundTexture)
         {
             base.Construct(backgroundColor, backgroundTexture);
+            
         }
         
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
+        
         public override void Destroy()
         {
+          
+            Observer.OnCompleted();
+            Observer = null;
+            
             base.Destroy();
         }
+        
         
         //-----------------------------------------------------------------------------
         //
@@ -51,6 +62,11 @@ namespace XylophoneGame
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            
+            
+            Debug.Print("");
+            Debug.Print("Score is " + Observer.Matches);
+            
         }
 
         //-----------------------------------------------------------------------------

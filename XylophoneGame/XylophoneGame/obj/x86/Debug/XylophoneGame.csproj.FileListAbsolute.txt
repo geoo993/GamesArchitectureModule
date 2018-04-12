@@ -71,3 +71,5 @@
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/timeIconAnimation.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/star.xnb
 /Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/LargeGameFont.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/musicNote.xnb
+/Users/GeorgeQuentin/Dev/GamesArchitectureModule/XylophoneGame/XylophoneGame/bin/Debug/Content/musicNoteAnimation.xnb

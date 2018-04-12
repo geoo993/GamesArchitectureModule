@@ -10,8 +10,7 @@ namespace XylophoneGame
 {
     public class LevelScreen: Screen
     {
-        public ScoreSubject ScoreSubject { get; private set; }
-        
+       
         /// <summary>
         /// HUD
         /// </summary>
@@ -25,27 +24,25 @@ namespace XylophoneGame
         /// </summary>
         public Level Level;
         
-        public LevelScreen(string title, ScreensType type, ScreenManager parent, ContentManager contentManager)
+        public LevelScreen(ScreensType type, ScreenManager parent, ContentManager contentManager)
         : base(type, parent, contentManager)
         {
            
-            Hud = new HUD(title);
+            Hud = new HUD(parent.Player);
             
             //Particles = new Particles(1, 40, 0.005f);
             AnimateExplosion = false;
         }
 
-        public void Construct(string level, SongType songType, float progressSpeed, Color backgroundColor, Texture2D backgroundTexture)
+        public void Construct(string level, SongType songType, Color backgroundColor, Texture2D backgroundTexture)
         {
             Construct(backgroundColor, backgroundTexture);
             var song = XylophoneSongs.Instance.GetSong(songType);
-            ScoreSubject = new ScoreSubject();
-            ScoreSubject.StartScoreSystem(song, progressSpeed);
             
 			LoadLevel(level, songType, song);
 			
 			Hud.Construct(ContentManager, Color.DarkMagenta, GameInfo.Instance.RandomColor());
-			Hud.Subscribe(ScoreSubject);
+			Hud.Subscribe(Parent.ScoreSubject);
         }
         
         //-----------------------------------------------------------------------------
@@ -66,10 +63,6 @@ namespace XylophoneGame
 
             Hud.Destroy();
             Hud = null;
-            
-            ScoreSubject.EndScoreSystems();
-            ScoreSubject = null;
-            
             
             base.Destroy();
         }
@@ -112,7 +105,7 @@ namespace XylophoneGame
         {
             base.Update(gameTime);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), ScoreSubject, Hud.Width);
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Parent.ScoreSubject, Hud.Width);
             
             Hud.Update(gameTime);
 

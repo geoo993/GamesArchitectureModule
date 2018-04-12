@@ -54,6 +54,10 @@ namespace XylophoneGame
         {
             get { return Levels[Random.Next(Levels.Count)]; }
         }
+        public static string LevelAt(int index)
+        {
+           return Levels[index];
+        }
         
     }
     
@@ -66,6 +70,7 @@ namespace XylophoneGame
     public class TileInfo {
         public static int UnitWidth = (int)(double)GameManager.manager["TileWidth"];
         public static int UnitHeight = (int)(double)GameManager.manager["TileHeight"];
+        public static int MoveSpeed = (int)(double)GameManager.manager["TileMoveSpeed"];
     }
     
     public class CollectableInfo {

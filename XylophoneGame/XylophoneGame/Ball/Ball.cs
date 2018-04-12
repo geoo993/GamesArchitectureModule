@@ -40,6 +40,8 @@ namespace XylophoneGame
 
         public bool IsIntersectingNote { get; private set; }
         public bool IsIntersectingTimeItem { get; private set; }
+        public bool IsIntersectingMusicNoteItem { get; private set; }
+        
         private bool OnCollisionEnter;
         private bool OnCollisionExit;
         private Note PreviousNoteCollided;
@@ -51,12 +53,13 @@ namespace XylophoneGame
         {
             this.EnableParticles = true;
             this.HasJumped = true;
-            this.Particles = new Particles();
+            this.Particles = new Particles(color);
             this.AvailableJumps = MaxJumps;
             this.PreviousNoteCollided = null;
             this.IsBorderEnabled = true;
             this.IsIntersectingNote = false;
             this.IsIntersectingTimeItem = false;
+            this.IsIntersectingMusicNoteItem = false;
         }
 
         public void SetLeftMovement(ButtonAction buttonState)
@@ -114,19 +117,19 @@ namespace XylophoneGame
                 DoJump = true;
             }
         }
-        
-        
-        private void UpdateCollisions(Note note, TimeItem timeItem, Vector2 mapSize)
+
+
+        private void UpdateCollisions(Note note, TimeItem timeItem, MusicNoteItem musicNoteItem, Vector2 mapSize)
         {
             PreviousNote = PreviousNoteCollided;
-			var noteBounds = note.BoundingRectangle;
+            var noteBounds = note.BoundingRectangle;
             var previousTileName = (PreviousNoteCollided != null) ? PreviousNoteCollided.Name : "";
 
             if (Intersects(noteBounds))
             {
                 IsIntersectingNote = true;
                 OnCollisionExit = false;
-                
+
                 if (OnCollisionEnter == false && (previousTileName != note.Name || PreviousNoteCollided == null))
                 {
                     OnCollisionEnter = !MotionState.state.IsJumping;
@@ -151,16 +154,26 @@ namespace XylophoneGame
                 IsIntersectingNote = false;
                 OnCollisionEnter = false;
                 OnCollisionExit = (PreviousNoteCollided != null);
-				PreviousNoteCollided = null;
+                PreviousNoteCollided = null;
             }
 
-            if (timeItem == null)
-                return;
-                
-            IsIntersectingTimeItem = false;
-            var timerItemBounds = timeItem.BoundingRectangle;
-            if (IntersectsCircle(timerItemBounds)) {
-                IsIntersectingTimeItem = true;
+			IsIntersectingTimeItem = false;
+            if (timeItem != null)
+            {
+                var timerItemBounds = timeItem.BoundingRectangle;
+                if (IntersectsCircle(timerItemBounds) && timeItem.IsEnabled)
+                {
+                    IsIntersectingTimeItem = true;
+                }
+            }
+
+			IsIntersectingMusicNoteItem = false;
+            if (musicNoteItem != null) { 
+                var musicNoteItemBounds = musicNoteItem.BoundingRectangle;
+                if (IntersectsCircle(musicNoteItemBounds) && musicNoteItem.IsEnabled)
+                {
+                    IsIntersectingMusicNoteItem = true;
+                }
             }
 
         }
@@ -219,7 +232,7 @@ namespace XylophoneGame
 
                 if (EnableParticles)
                 {
-                    //Particles.AddTrailParticle(Position, Radius);
+                    Particles.AddTrailParticle(Position, Radius);
                 }
                 
                 Acceleration.Y -= Gravity.Y;
@@ -243,7 +256,7 @@ namespace XylophoneGame
                 HasJumped = true;
             }
             
-            //Particles.UpdateTrailParticles();
+            Particles.UpdateTrailParticles();
         }
        
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -253,9 +266,9 @@ namespace XylophoneGame
             this.Position += this.Velocity * elapsed;
         }
         
-        public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote, ref TimeItem closestTimeItem) {
+        public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote, ref TimeItem closestTimeItem, ref MusicNoteItem closestMusicNoteItem) {
 			
-			this.UpdateCollisions(closestNote, closestTimeItem, mapSize);
+			this.UpdateCollisions(closestNote, closestTimeItem, closestMusicNoteItem, mapSize);
 			this.UpdateBounds(closestNote, mapSize);
 			this.UpdateMovement(Ground);
             
@@ -294,7 +307,7 @@ namespace XylophoneGame
         public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
         {
             
-            //Particles.DrawTrailParticles(spriteBatch, screenSafeArea);
+            Particles.DrawTrailParticles(spriteBatch, screenSafeArea);
             base.Draw(spriteBatch, screenSafeArea);
         }
 
@@ -303,11 +316,17 @@ namespace XylophoneGame
             Particles.Destroy();
             Particles = null;
 
-            PreviousNoteCollided.Destroy();
-            PreviousNoteCollided = null;
+            if (PreviousNoteCollided != null)
+            {
+                PreviousNoteCollided.Destroy();
+                PreviousNoteCollided = null;
+            }
 
-            PreviousNote.Destroy();
-            PreviousNote = null;
+            if (PreviousNote != null)
+            {
+                PreviousNote.Destroy();
+                PreviousNote = null;
+            }
             
             base.Destroy();
         }

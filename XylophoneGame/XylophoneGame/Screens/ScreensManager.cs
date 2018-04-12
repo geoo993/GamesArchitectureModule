@@ -13,7 +13,11 @@ namespace XylophoneGame
 {
     public class ScreenManager
     {
+        public ScoreSubject ScoreSubject { get; private set; }
+        
+        
         public string Title { get; private set; }
+        public string Player { get; private set; }
         public string Level { get; private set; }
         public SongType Song { get; private set; }
         public float SongSpeed { get; private set; }
@@ -41,9 +45,10 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public ScreenManager(string title, ContentManager contentManager, CommandManager manager, GameServiceContainer service)
+        public ScreenManager(string title, string player, ContentManager contentManager, CommandManager manager, GameServiceContainer service)
         {
             Title = title;
+            Player = player;
             Level = LevelInfo.RandomLevel;
             Song = XylophoneSongs.RandomSong;
             SongSpeed = XylophoneSongs.Songs[Song];
@@ -51,7 +56,10 @@ namespace XylophoneGame
             CommandManager = manager;
             Services = service;
             CurrentScreen = null;
-
+            
+            ScoreSubject = new ScoreSubject();
+            ScoreSubject.StartScoreSystem(XylophoneSongs.Instance.GetSong(Song), SongSpeed);
+            
         }
 
         public void Reset()
@@ -60,6 +68,14 @@ namespace XylophoneGame
             Song = XylophoneSongs.RandomSong;
             SongSpeed = XylophoneSongs.Songs[Song];
 
+            if (ScoreSubject != null)
+            {
+                ScoreSubject.EndScoreSystems();
+                ScoreSubject = null;
+            }
+			ScoreSubject = new ScoreSubject();
+			ScoreSubject.StartScoreSystem(XylophoneSongs.Instance.GetSong(Song), SongSpeed);
+            
             FSM.ClearCurrentState();
             SetState(ScreensState.LEVEL);
         }
@@ -162,7 +178,7 @@ namespace XylophoneGame
         {
             if (CurrentScreen is LevelScreen && buttonState == ButtonAction.PRESSED)
             {
-                ((LevelScreen)CurrentScreen).ScoreSubject.SwitchAutopPlay();
+                ((LevelScreen)CurrentScreen).Parent.ScoreSubject.SwitchAutopPlay();
             }
         }
 
@@ -178,6 +194,7 @@ namespace XylophoneGame
         {
             if (CurrentScreen is MainScreen)
             {
+                Reset();
                 SetState(ScreensState.LEVEL);
             }
             else if (CurrentScreen is WinScreen)
@@ -236,7 +253,7 @@ namespace XylophoneGame
             if (CurrentScreen is LevelScreen)
             {
                 ScoreObserver observer = new ScoreObserver("Game Observer");
-                observer.Subscribe(((LevelScreen)CurrentScreen).ScoreSubject);
+                observer.Subscribe(((LevelScreen)CurrentScreen).Parent.ScoreSubject);
 
                 if (observer.HasSongEnded)
                 {
@@ -258,7 +275,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public void Update(GameTime gameTime)
         {
-            
+            // short delay before we go to game end
             if (GameEndLastTimeInterval + GameEndInterval < gameTime.TotalGameTime)
             {
                 SetGameEndScreen();
@@ -296,6 +313,10 @@ namespace XylophoneGame
 
             CommandManager.Destroy();
             CommandManager = null;
+            
+            ScoreSubject.EndScoreSystems();
+            ScoreSubject = null;
+            
             
             Services = null;
         

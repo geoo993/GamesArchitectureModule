@@ -16,7 +16,6 @@ namespace XylophoneGame
         private PrimitiveLine BoxBorder;
         public bool IsBorderEnabled { get; set; }
         private float InitialGround;
-        private Vector2 InitialPosition;
         
         /// <summary>
         /// name of the Note.
@@ -30,7 +29,6 @@ namespace XylophoneGame
             this.IsBorderEnabled = false;
             this.HasTexture = true;
             this.InitialGround = Ground;
-            this.InitialPosition = position;
         }
     
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)

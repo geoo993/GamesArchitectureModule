@@ -78,7 +78,6 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            //Debug.Print("Update: Splash Screen");
             screen.Update(gameTime);
         }
            
@@ -202,8 +201,8 @@ namespace XylophoneGame
         {
             ScreenManager manager = (ScreenManager)owner;
             
-            screen = new LevelScreen(manager.Title, ScreensType.LEVEL, manager, manager.ContentManager);
-            screen.Construct(manager.Level, manager.Song, manager.SongSpeed, GameInfo.Instance.RandomColor(), null);
+            screen = new LevelScreen(ScreensType.LEVEL, manager, manager.ContentManager);
+            screen.Construct(manager.Level, manager.Song, GameInfo.Instance.RandomColor(), null);
             manager.CurrentScreen = screen;
 			screen.OnEnter();
             
@@ -215,7 +214,6 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            //Debug.Print("Update: Level Screen");
             screen.Update(gameTime);
         }  
         

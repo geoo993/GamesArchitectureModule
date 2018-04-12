@@ -97,6 +97,16 @@ namespace XylophoneGame
                 .OrderBy(o => (o.Position - position).LengthSquared())
                 .FirstOrDefault();
         }
+        
+        public Tile ClosestMusicNoteItem(List<Tile> tiles, Vector2 position)
+        {
+            
+            // https://stackoverflow.com/questions/33145365/what-is-the-most-effective-way-to-get-closest-target
+            return tiles
+                .Where(o => (o is MusicNoteItem && ((MusicNoteItem)o).IsEnabled))
+                .OrderBy(o => (o.Position - position).LengthSquared())
+                .FirstOrDefault();
+        }
 
         /// <summary>
         /// horizontal length distance of the level measured in tiles.
@@ -192,8 +202,11 @@ namespace XylophoneGame
 					// Blank space
                     return LoadEmptyTile(TileCollision.Passable);
                 case 'T':
-					//// Passable
+					//// Impassable
                     return LoadTimeItem("Collectable", x, y, Color.White, TileCollision.Impassable);
+                case 'N':
+                    //// Impassable
+                    return LoadMusicNoteItem("Collectable", x, y, Color.White, TileCollision.Impassable);
                 case '#':
 					//// Platform block
                     return LoadNoteTile("Platform", x, y,  Color.White, TileCollision.Platform);
@@ -231,7 +244,7 @@ namespace XylophoneGame
                 texture = null;
                 note = null;
             } 
-            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position.ToVector2(), TileInfo.UnitWidth, TileInfo.UnitHeight, 4.0f, 1.0f, 1.0f, color, note, texture, collision);
+            var Note = new Note(noteName+(Tiles.Count+1).ToString(), position.ToVector2(), TileInfo.UnitWidth, TileInfo.UnitHeight, TileInfo.MoveSpeed, 1.0f, 1.0f, color, note, texture, collision);
             Note.NoteName = noteName;
             return Note;
         }
@@ -258,8 +271,32 @@ namespace XylophoneGame
                 animationTexture = null;
                 particlesTexture = null;
             }
-            
             return new TimeItem(name, position.ToVector2(), CollectableInfo.Radius, 0, 0, 0, color, null, texture, animationTexture, particlesTexture, collision);
+        }
+        
+        /// <summary>
+        /// Create music note collectable item.
+        /// </summary>
+        private Tile LoadMusicNoteItem(string name, int x, int y, Color color, TileCollision collision)
+        {
+            Texture2D texture;
+            Texture2D animationTexture;
+            Texture2D particlesTexture;
+            Point position = GetBounds(x, y).Center;
+           
+            //<- file creating stuff here -> 
+            try { 
+            //<-- try to load the file --> 
+                texture = Content.Load<Texture2D>("Icons/musicNote");
+                animationTexture = Content.Load<Texture2D>("SpriteSheets/musicNoteAnimation");
+                particlesTexture = Content.Load<Texture2D>("Icons/star");
+            } catch {
+                //<--print exception--> 
+                texture = null;
+                animationTexture = null;
+                particlesTexture = null;
+            }
+            return new MusicNoteItem(name, position.ToVector2(), CollectableInfo.Radius, 0, 0, 0, color, null, texture, animationTexture, particlesTexture, collision);
         }
         
         
@@ -334,6 +371,7 @@ namespace XylophoneGame
                 var elapsed = (float)(totalTime * observer.ProgressSpeed) % hudWidth;
                 var closestNote = (Note)ClosestNote(Tiles, Ball.Position);
                 var closestTimeItem = (TimeItem)ClosestTimeItem(Tiles, Ball.Position);
+                var closestMusicNoteItem = (MusicNoteItem)ClosestMusicNoteItem(Tiles, Ball.Position);
                 var noteToSelect = XylophoneSongs.Instance.GetNoteName(CurrentSong[Progress]);
                 var isNoteSelectedWithMatch = false;
                 var isNoteSelectedWithError = false;
@@ -344,15 +382,27 @@ namespace XylophoneGame
                 TimeProgress = MathExtensions.Percentage(elapsed, hudWidth, 0);
                 ScoreSubject.SetTimeProgress(TimeProgress);
 
-                Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote, ref closestTimeItem);
+                Ball.Update(gameTime, mapSize, ref noteToSelect, ref isNoteSelectedWithMatch, ref isNoteSelectedWithError, ref closestNote, ref closestTimeItem, ref closestMusicNoteItem);
 
                 if (Ball.IsIntersectingTimeItem)
                 {
 					ScoreSubject.ReduceProgressSpeed();
                     if (closestTimeItem != null)
                         closestTimeItem.Disable();
-                    
                 }
+                
+                 
+                if (Ball.IsIntersectingMusicNoteItem)
+                {
+                    if (closestMusicNoteItem != null)
+                        closestMusicNoteItem.Disable();
+                        
+                    var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
+                    var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
+                    noteSound.Play();
+                        
+                }
+                        
 
                 if (isNoteSelectedWithMatch)
                 {
@@ -383,14 +433,13 @@ namespace XylophoneGame
                         var noteAsset = NoteInfo.AvailableNotes[noteToSelect];
                         var noteSound = Content.Load<SoundEffect>("Sounds/" + noteAsset);
                         noteSound.Play();
-
                     }
                 }
                 else
                 {
-
+              
                     // if ball has collided with the note to selct, we then go to the next note
-                    if (isNoteSelectedWithMatch && Ball.NoteSelected != null)
+                    if (isNoteSelectedWithMatch && Ball.NoteSelected != null )
                     {
                         Progress = (Progress + 1) % CurrentSong.Length;
                         Progress = XylophoneSongs.Instance.GetIndexOfNextNote(CurrentSongType, Progress);
@@ -398,13 +447,13 @@ namespace XylophoneGame
 
                         var nextCharacterAtIndex = CurrentSong[Progress];
                         noteToSelect = XylophoneSongs.Instance.GetNoteName(nextCharacterAtIndex);
+                       
                     }
                 }
 
 
                 for (int i = 0; i < Tiles.Count; ++i)
                 {
-
 
                     if (Ball.NoteSelected != null && noteToSelect != null && Tiles[i] is Note)
                     {

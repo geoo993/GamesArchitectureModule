@@ -17,28 +17,30 @@ namespace XylophoneGame
         private List<Circle> TrailLayers;
         private float ExplisionSpeed;
         private float TrailSpeed;
+        private Color Color;
         
         /// <summary>
         /// Constructs a new circle.
         /// </summary>
-        public Particles(int numberOfParticles = 0, int size = 0, float decay = 0.015f, Texture2D texture = null)
+        public Particles(Color color, int numberOfParticles = 0, int size = 0, float decay = 0.015f, Texture2D texture = null)
         {
             this.NumberOfParticles = numberOfParticles;
             this.Texture = texture;
             this.Size = size;
             this.ExplisionSpeed = decay;
             this.TrailSpeed = decay;
+            this.Color = color;
             this.ExplosionLayers = new List<Circle>();
             this.TrailLayers = new List<Circle>();
         }
         
         #region Trail Particles
-        public void AddTrailParticle(Vector2 position, int radius)
+        public void AddTrailParticle(Vector2 position, int radius, bool randomColor = true)
         {
             byte red = (byte)GameInfo.Random.Next(0, 255);
             byte green = (byte)GameInfo.Random.Next(0, 255);
             byte blue = (byte)GameInfo.Random.Next(0, 255);
-            Color color =  new Color(red, green, blue);
+            Color color = randomColor ? new Color(red, green, blue) : Color;
         
             Circle particle = new Circle("", position, radius, 0.0f, 0.0f, 1.0f, color, null, Texture);
             TrailLayers.Add(particle);
@@ -78,14 +80,14 @@ namespace XylophoneGame
         #endregion
         
         #region Explosion Particles
-        public void AddExplosionParticle(Vector2 position, int size)
+        public void AddExplosionParticle(Vector2 position, int size, bool randomColor = true)
         {
             for (int i = 0; i < NumberOfParticles; i++)
             {
                 byte red = (byte)GameInfo.Random.Next(0, 255);
                 byte green = (byte)GameInfo.Random.Next(0, 255);
                 byte blue = (byte)GameInfo.Random.Next(0, 255);
-                Color color =  new Color(red, green, blue);
+                Color color = randomColor ? new Color(red, green, blue) : Color;
                 
                 Circle particle = new Circle("", position, GameInfo.Random.Next(size / 4, size), GameInfo.Random.Next(10), 0.0f, 1.0f, color, null, Texture);
                 particle.Angle = (float)GameInfo.Random.Next(-180, 180);

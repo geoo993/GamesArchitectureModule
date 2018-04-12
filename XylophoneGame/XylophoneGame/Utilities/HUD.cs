@@ -36,6 +36,13 @@ namespace XylophoneGame
         private Color HudTextColor;
         private Color HudTextProgressColor;
         
+        /// <summary>
+        /// The flash score.
+        /// </summary>
+        private bool FlashScore;
+        private float FlashScoreCount;
+        
+        //
         public float Width {
             get {
                 if (HudFont != null)
@@ -88,6 +95,7 @@ namespace XylophoneGame
             HudTextProgressColor = textProgressColor;
             NotesCompletedScore = "";
 			ScoreList = new List<char>();
+            FlashScore = false;
         }
    
         public void Update(GameTime gameTime)
@@ -104,13 +112,14 @@ namespace XylophoneGame
             LengthOfSong = Song.Length;
             CurrentNote = Song[value.Progress];
             NotesCompleted = Song.Substring(0, value.Progress);
-
-            Debug.Print("");
-            Debug.Print("Auto play " + value.AutoPlay);
-            Debug.Print("Song length " + LengthOfSong);
-            Debug.Print("Progress " + value.Progress);
-            Debug.Print("Time Progress " + value.TimeProgress);
-            Debug.Print("has Ended " + value.HasSongEnded);
+            FlashScore = value.HasSongEnded;
+            
+            //Debug.Print("");
+            //Debug.Print("Auto play " + value.AutoPlay);
+            //Debug.Print("Song length " + LengthOfSong);
+            //Debug.Print("Progress " + value.Progress);
+            //Debug.Print("Time Progress " + value.TimeProgress);
+            //Debug.Print("has Ended " + value.HasSongEnded);
         
 			HudProgressBar.SetProgress(value.Progress, LengthOfSong);
 			HudProgressBar.SetTimeProgress(value.TimeProgress);
@@ -157,11 +166,12 @@ namespace XylophoneGame
 
             //DrawShadowedString(spriteBatch, HudFont, score, GameInfo.Camera.Position, HudTextColor, 1.0f);
             //DrawShadowedString(spriteBatch, HudFont, NotesCompletedScore, notesPosition + new Vector2(0.0f, Height * 1.2f), HudTextColor, 1.0f);
-
+            FlashScoreCount = FlashScore ? (FlashScoreCount + 0.1f) % 1.0f : 0.2f;
+            
             var Max = MaxNotes - 1;
             var word = Matches.ToString() +"/"+Max.ToString();
             var width = HudLargeFont.MeasureString(word).X;
-            var color = HudTextColor * 0.2f;
+            var color = HudTextColor * FlashScoreCount;
             var origin = new Vector2(width / 2, 0);
             DrawShadowedString(spriteBatch, HudLargeFont, word, GameInfo.Camera.Position - new Vector2(0.0f, 100.0f), origin, color, 1.0f);
             

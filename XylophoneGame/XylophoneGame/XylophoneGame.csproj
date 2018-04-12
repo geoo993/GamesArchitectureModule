@@ -107,6 +107,7 @@
     <Compile Include="Collectables\TimeItem.cs" />
     <Compile Include="Particles\Particles.cs" />
     <Compile Include="Notes\NotesInfo.cs" />
+    <Compile Include="Collectables\MusicNoteItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -213,6 +214,12 @@
     </Content>
     <Content Include="Content\bin\MacOSX\LargeGameFont.xnb">
       <Link>Content\Fonts\LargeGameFont.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\musicNoteAnimation.xnb">
+      <Link>Content\SpriteSheets\musicNoteAnimation.xnb</Link>
+    </Content>
+    <Content Include="Content\bin\MacOSX\musicNote.xnb">
+      <Link>Content\Icons\musicNote.xnb</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>

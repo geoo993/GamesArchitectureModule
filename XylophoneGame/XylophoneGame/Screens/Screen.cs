@@ -11,7 +11,7 @@ namespace XylophoneGame
     public class Screen
     {
         public ScreensType Type { get; private set; }
-        protected ScreenManager Parent { get; private set; }
+        public ScreenManager Parent { get; private set; }
 
         protected ContentManager ContentManager { get; private set; }
 

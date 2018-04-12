@@ -12,7 +12,6 @@ namespace XylophoneGame
     public enum SongType {
         TwinkleLittle,
         JingleBells,
-        RainRainGoAway,
         IncyIncySpider
     }
     
@@ -32,10 +31,9 @@ namespace XylophoneGame
         }
 
         public static readonly Dictionary<SongType, float> Songs = new Dictionary<SongType, float>() {
-            {SongType.TwinkleLittle, 30.0f},
-            {SongType.JingleBells, 30.0f},
-            {SongType.RainRainGoAway, 30.0f},
-            {SongType.IncyIncySpider, 30.0f}
+            {SongType.TwinkleLittle, (float)(double)GameManager.manager["TwinkleLittleSpeed"]},
+            {SongType.JingleBells, (float)(double)GameManager.manager["JingleBellsSpeed"]},
+            {SongType.IncyIncySpider, (float)(double)GameManager.manager["IncyIncySpiderSpeed"]}
         };
         
          
@@ -46,16 +44,18 @@ namespace XylophoneGame
             }
         }
         
+        public static SongType SongAt(int index) {
+            return Songs.Keys.ToList()[index];
+        }
+        
         public string GetSong(SongType type) {
             switch (type) {
             case SongType.JingleBells:
-                    return "EEE EEE EGCD E F F FFF EE EG G FD C";
+                    return (string)GameManager.manager["JingleBells"];
             case SongType.TwinkleLittle:
-                    return "CCGGAAG FFEEDDC GGFFEED GGFFEED CCGGAAG FFEEDDC";
-            case SongType.RainRainGoAway:
-                    return "GEGGEGGE AGGE FFDDFFD GFEDECC";
+                    return (string)GameManager.manager["TwinkleLittle"];
             case SongType.IncyIncySpider:
-                    return "CCC DEE E DCD EC E E FG GF EFGE CC DEE D CD EC C CCC DE E E DCD EC";
+                    return (string)GameManager.manager["IncyIncySpider"];
             default:
                     return "";
             }
