@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
 
 namespace XylophoneGame
 {
@@ -60,6 +58,10 @@ namespace XylophoneGame
         
         public float ProgressSpeed {
             get { return LatestScore.SongProgressSpeed; }
+        }
+        
+        public float DelayTimeProgress {
+            get { return LatestScore.DelayTimeProgress; }
         }
         
         public int MaxNotes {

@@ -58,5 +58,65 @@
     "Level": "level2",
     "Score": 39,
     "DidWin": false
+  },
+  {
+    "PlayerName": "Kevin",
+    "Level": "level1",
+    "Score": 9,
+    "DidWin": true
+  },
+  {
+    "PlayerName": "Kevin",
+    "Level": "level1",
+    "Score": 23,
+    "DidWin": false
+  },
+  {
+    "PlayerName": "Kevin",
+    "Level": "level1",
+    "Score": 17,
+    "DidWin": false
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 18,
+    "DidWin": false
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 26,
+    "DidWin": true
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 34,
+    "DidWin": false
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 0,
+    "DidWin": false
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 0,
+    "DidWin": true
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 42,
+    "DidWin": true
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 10,
+    "DidWin": true
   }
 ]

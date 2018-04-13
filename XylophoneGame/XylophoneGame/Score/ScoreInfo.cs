@@ -10,6 +10,7 @@ namespace XylophoneGame
         public bool AutoPlay;
         public int Progress;
         public float TimeProgress;
+        public float DelayTimeProgress;
         
         public float SongProgressSpeed;
         public int CollectedItems;
@@ -31,6 +32,7 @@ namespace XylophoneGame
             this.MaxNotes = 0;
             this.Progress = 0;
             this.TimeProgress = 0.0f;
+            this.DelayTimeProgress = 1.0f;
             this.Matches = 0;
             this.Errors = 0;
             this.TotalErrors = 0;

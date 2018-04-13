@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 // https://docs.microsoft.com/en-us/dotnet/standard/events/observer-design-pattern
 // https://docs.microsoft.com/en-us/dotnet/standard/events/how-to-implement-an-observer
@@ -126,12 +127,13 @@ namespace XylophoneGame
 			UpdateScore(score);
         }
         
-        public void ReduceProgressSpeed()
+        public void AddDelayTimeProgress()
         {
-            //score.SongProgressSpeed -= 10.0f;
-            //UpdateScore(score);
+            score.DelayTimeProgress -= 0.1f;
+            score.DelayTimeProgress = MathHelper.Clamp(score.DelayTimeProgress, 0, 1.0f);
+            UpdateScore(score);
         }
-       
+        
         public void SwitchAutopPlay()
         {
             score.AutoPlay = !score.AutoPlay;

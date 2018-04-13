@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using NLua;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -391,6 +389,19 @@ namespace XylophoneGame
             var color = textColor * HudFlashScoreCount;
             var origin = new Vector2(largetFontWidth / 2, 0);
             DrawShadowedString(spriteBatch, hud, result, position, origin, color, 1.0f);
+            
+            
+            var highestScorers = SaveLoadJSON.GetHighestScorers(3);
+            var highestScorersOffset = 50.0f;
+            
+            for (int i = 0; i < highestScorers.Count; i++)
+            {
+                var topScorer = highestScorers[i];
+                var displayScorer = topScorer.PlayerName +" played " + topScorer.Score + " notes";
+                DrawShadowedString(spriteBatch, hud, displayScorer, position + new Vector2(0.0f, highestScorersOffset), origin, color, 1.0f);
+                highestScorersOffset += 50.0f;
+            }
+
         }
         
         public static void DrawShadowedString(SpriteBatch spriteBatch, SpriteFont font, string value, Vector2 position, Vector2 origin, Color color, float scale)

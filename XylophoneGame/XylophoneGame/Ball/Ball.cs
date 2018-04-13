@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
@@ -164,6 +161,7 @@ namespace XylophoneGame
                 if (IntersectsCircle(timerItemBounds) && timeItem.IsEnabled)
                 {
                     IsIntersectingTimeItem = true;
+                    OnCollisionEnter = true;
                 }
             }
 
@@ -173,6 +171,7 @@ namespace XylophoneGame
                 if (IntersectsCircle(musicNoteItemBounds) && musicNoteItem.IsEnabled)
                 {
                     IsIntersectingMusicNoteItem = true;
+                    OnCollisionEnter = true;
                 }
             }
 
@@ -268,27 +267,43 @@ namespace XylophoneGame
         
         public void Update(GameTime gameTime, Vector2 mapSize, ref string noteToSelect, ref bool isNoteMatched, ref bool isNoteError, ref Note closestNote, ref TimeItem closestTimeItem, ref MusicNoteItem closestMusicNoteItem) {
 			
-			this.UpdateCollisions(closestNote, closestTimeItem, closestMusicNoteItem, mapSize);
-			this.UpdateBounds(closestNote, mapSize);
-			this.UpdateMovement(Ground);
+			UpdateCollisions(closestNote, closestTimeItem, closestMusicNoteItem, mapSize);
+			UpdateBounds(closestNote, mapSize);
+			UpdateMovement(Ground);
             
-			this.NoteSelected = null;
+			NoteSelected = null;
 
 			if (OnCollisionEnter)
 			{
-				
-				if (noteToSelect == closestNote.NoteName) {
-					NoteSelected = closestNote.NoteName;
+                if (IsIntersectingNote)
+                {
+                    if (noteToSelect == closestNote.NoteName)
+                    {
+                        NoteSelected = closestNote.NoteName;
+                        isNoteMatched = true;
+                    }
+                    else
+                    {
+                        isNoteError = true;
+                    }
+
+                    if (closestNote.NoteSound != null)
+                    {
+                        closestNote.NoteSound.Play();
+                    }
+
+                    closestNote.Pressed(this);
+                } 
+                
+                if (IsIntersectingTimeItem){
+                
+                }
+                
+                if (IsIntersectingMusicNoteItem) {
+                    NoteSelected = noteToSelect;
                     isNoteMatched = true;
-				} else {
-                    isNoteError = true;
                 }
                 
-                if (closestNote.NoteSound != null) {
-                    closestNote.NoteSound.Play();
-                }
-                
-                closestNote.Pressed(this);
             }
 			
 			if (OnCollisionExit)

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+
+using System.Linq;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
 
 namespace XylophoneGame
 {
@@ -25,17 +27,20 @@ namespace XylophoneGame
         : base(type, parent, contentManager)
         {
             Hud = new HUD(parent.Player);
+			SaveLoadJSON.Load();
+
         }
 
         public void Construct(string level, SongType songType, Color backgroundColor, Texture2D backgroundTexture)
         {
             Construct(backgroundColor, backgroundTexture);
-            SaveLoadJSON.Load();
+            
             var song = XylophoneSongs.Instance.GetSong(songType);
 			LoadLevel(level, songType, song);
 			
 			Hud.Construct(Color.DarkMagenta, GameInfo.Instance.RandomColor());
 			Hud.Subscribe(Parent.ScoreSubject);
+            
         }
         
         //-----------------------------------------------------------------------------
