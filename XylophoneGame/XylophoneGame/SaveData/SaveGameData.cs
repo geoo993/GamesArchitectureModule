@@ -2,6 +2,8 @@
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
+// https://stackoverflow.com/questions/24391890/saving-loading-data-on-level-selection-screen-xml-xna?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+// https://stackoverflow.com/questions/6201529/how-do-i-turn-a-c-sharp-object-into-a-json-string-in-net
 
 namespace XylophoneGame
 {
@@ -21,7 +23,6 @@ namespace XylophoneGame
             this.DidWin = didWin;
         }
     }
-
 
     class SaveLoadJSON
     {

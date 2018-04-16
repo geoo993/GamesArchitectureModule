@@ -1,19 +1,7 @@
 ﻿<Properties StartupConfiguration="{3A23AA06-840E-4419-9CA5-6CA6A633EB1F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Screens/WinScreen.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Levels/Level.cs">
     <Files>
-      <File FileName="Levels/Level.cs" Line="345" Column="88" />
-      <File FileName="Screens/ScreensManager.cs" Line="2" Column="1" />
-      <File FileName="Screens/ScreensState.cs" Line="33" Column="1" />
-      <File FileName="Score/ScoreInfo.cs" Line="7" Column="28" />
-      <File FileName="Score/ScoreObserver.cs" Line="5" Column="18" />
-      <File FileName="Score/ScoreSubject.cs" Line="77" Column="9" />
-      <File FileName="bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameManager.lua" Line="22" Column="1" />
-      <File FileName="SaveData/SaveGameData.cs" Line="1" Column="1" />
-      <File FileName="bin/Debug/WareHouse3.app/Contents/Resources/Content/Scripts/GameData.json" Line="12" Column="20" />
-      <File FileName="GameInfo/GameInfo.cs" Line="4" Column="1" />
-      <File FileName="Screens/LevelScreen.cs" Line="1" Column="1" />
-      <File FileName="Screens/LoseScreen.cs" Line="1" Column="1" />
-      <File FileName="Screens/WinScreen.cs" Line="1" Column="1" />
+      <File FileName="Levels/Level.cs" Line="24" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

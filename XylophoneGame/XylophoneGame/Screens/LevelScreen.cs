@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using System.Linq;
-using System.IO;
-using System.Diagnostics;
+﻿using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -99,11 +94,11 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2 screenCenter)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, screenCenter);
             
-            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Parent.ScoreSubject, Parent.HudWidth);
+            Level.Update(gameTime, new Vector2(GameInfo.MapWidth, GameInfo.MapHeight), Parent.ScoreSubject, Parent.Camera, Parent.HudWidth);
             
             Hud.Update(gameTime);
 
@@ -117,11 +112,11 @@ namespace XylophoneGame
             BackgroundTexture = CreateTexture(screenSafeArea.Width, screenSafeArea.Height, Color.Ivory);
             base.Draw(spriteBatch, screenSafeArea);
 
-            Hud.Draw(spriteBatch,  Parent.HudWidth, Parent.HudHeight, Parent.ScreenTopCenter, Parent.HudFont, Parent.HudLargeFont);
+            Hud.Draw(spriteBatch, Parent.GraphicsDevice, Parent.HudWidth, Parent.HudHeight, Parent.ScreenTopCenter, CameraPosition, Parent.HudFont, Parent.HudLargeFont);
             
             if (Level != null)
             {
-                Level.Draw(spriteBatch, screenSafeArea);
+                Level.Draw(spriteBatch, screenSafeArea, Parent.GraphicsDevice);
             }
         }
         
@@ -130,7 +125,7 @@ namespace XylophoneGame
          
         public Texture2D CreateTexture(int Width, int Height, Color color) {
         
-            Texture2D rectangle = new Texture2D(Device.graphicsDevice, Width, Height, false, SurfaceFormat.Color);
+            Texture2D rectangle = new Texture2D(Parent.GraphicsDevice, Width, Height, false, SurfaceFormat.Color);
             
             Color[] colorData = new Color[Width * Height];
             for (int i = 0; i < Width * Height; i++)

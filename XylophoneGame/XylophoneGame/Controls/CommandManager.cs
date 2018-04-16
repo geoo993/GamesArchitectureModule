@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -93,8 +89,6 @@ namespace XylophoneGame
             // Add the binding to the command map
             MouseButtonBindings.Add(button, action);
         }
-
-
 
         public void Destroy() {
             Input = null;

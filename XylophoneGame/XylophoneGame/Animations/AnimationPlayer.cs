@@ -90,7 +90,6 @@ namespace XylophoneGame
             }
         }
         
-        
         public void Destroy() {
             Animation.Destroy();
             Animation = null;

@@ -40,14 +40,14 @@ namespace XylophoneGame
             IsParticlesDisabled = (IsEnabled == false && Particles.ExplosionLayers.Count <= 0);
 		}
 
-        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics) 
         {
             if (IsEnabled)
             {
                 
                 if (AnimationPlayer.Animation == null || AnimationPlayer.Animation.Active == false)
                 {
-                    base.Draw(spriteBatch, screenSafeArea);
+                    base.Draw(spriteBatch, screenSafeArea, graphics);
                 }
                 else
                 {
@@ -55,7 +55,7 @@ namespace XylophoneGame
                 }
             }
 
-            Particles.DrawExplosionParticles(spriteBatch, screenSafeArea);
+            Particles.DrawExplosionParticles(spriteBatch, screenSafeArea, graphics);
         }
         
 		public void Disable()

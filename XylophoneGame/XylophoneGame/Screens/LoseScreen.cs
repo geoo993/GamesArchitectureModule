@@ -55,9 +55,9 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2 screenCenter)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, screenCenter);
             
         }
 

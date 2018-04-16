@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -49,9 +48,9 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Vector2 screenCenter)
         {
-            base.Update(gameTime);
+            base.Update(gameTime, screenCenter);
         }
 
         //-----------------------------------------------------------------------------

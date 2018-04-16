@@ -17,7 +17,6 @@ namespace XylophoneGame
         public Box(String name, Vector2 position, int width, int height, float speed, float jump, float mass, Color color, SoundEffect note = null, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, width, height, speed, jump, mass, color, note, texture, collision)
         {
-            this.BoxBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
             this.IsBorderEnabled = false;
         }
     
@@ -25,7 +24,7 @@ namespace XylophoneGame
         {
 			base.UpdatePosition(gameTime, mapSize);
 
-            if (IsBorderEnabled) {
+            if (IsBorderEnabled && BoxBorder != null) {
                 BoxBorder.CreateBox(Position - Origin, Position + Origin);
             }
         }
@@ -34,10 +33,10 @@ namespace XylophoneGame
         /// <summary>
         /// texture area of the box
         /// </summary>
-        protected override Texture2D CreateTexture() {
-            base.CreateTexture();
+        protected override Texture2D CreateTexture(GraphicsDevice graphics) {
+            base.CreateTexture(graphics);
             
-            Texture2D rectangle = new Texture2D(Device.graphicsDevice, Width, Height, false, SurfaceFormat.Color);
+            Texture2D rectangle = new Texture2D(graphics, Width, Height, false, SurfaceFormat.Color);
             
             Color[] colorData = new Color[Width * Height];
             for (int i = 0; i < Width * Height; i++)
@@ -71,12 +70,15 @@ namespace XylophoneGame
         /// <summary>
         /// Render  box with sprite batch.
         /// </summary>
-        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics) {
             
-            base.Draw(spriteBatch, screenSafeArea);
+            base.Draw(spriteBatch, screenSafeArea, graphics);
 
             if (IsBorderEnabled )
             {
+                if (BoxBorder == null)
+                    BoxBorder = new PrimitiveLine(graphics, BorderColor);
+                    
                 BoxBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
             }
 
@@ -84,7 +86,8 @@ namespace XylophoneGame
         
         public override void Destroy()
         {
-            BoxBorder.Destroy();
+            if (BoxBorder != null)
+                BoxBorder.Destroy();
             BoxBorder = null;
             base.Destroy();
         }

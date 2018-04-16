@@ -70,7 +70,6 @@
     <Compile Include="Controls\KeyboardEventArgs.cs" />
     <Compile Include="Controls\MouseEventArgs.cs" />
     <Compile Include="Controls\CommandManager.cs" />
-    <Compile Include="Controls\Accelerometer.cs" />
     <Compile Include="Controls\TouchCollectionExtensions.cs" />
     <Compile Include="Animations\AnimationPlayer.cs" />
     <Compile Include="Animations\Animation.cs" />

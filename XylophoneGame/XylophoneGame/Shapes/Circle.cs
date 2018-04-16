@@ -53,7 +53,6 @@ namespace XylophoneGame
         {
 			this.Radius = radius;
             this.IsBorderEnabled = false;
-            this.CircleBorder = new PrimitiveLine(Device.graphicsDevice, BorderColor);
         }
      
         public override void UpdatePosition(GameTime gameTime, Vector2 mapSize)
@@ -61,7 +60,7 @@ namespace XylophoneGame
 			base.UpdatePosition(gameTime, mapSize);
             
             Radius = this.Width / 2;
-            if (IsBorderEnabled)
+            if (IsBorderEnabled && CircleBorder != null)
             {
                 CircleBorder.CreateCircle(Radius, 20);
                 CircleBorder.Position = Position;
@@ -71,10 +70,10 @@ namespace XylophoneGame
         /// <summary>
         /// texture area of the circle type 1
         /// </summary>
-        protected override Texture2D CreateTexture()
+        protected override Texture2D CreateTexture(GraphicsDevice graphics)
         {
            
-            Texture2D pixels = new Texture2D(Device.graphicsDevice, Size, Size);
+            Texture2D pixels = new Texture2D(graphics, Size, Size);
             Color[] colorData = new Color[Size * Size];
             
             float diam = Radius;
@@ -202,13 +201,16 @@ namespace XylophoneGame
         /// <summary>
         /// Render  circle with sprite batch.
         /// </summary>
-        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) {
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics) {
 
-            base.Draw(spriteBatch, screenSafeArea);
+            base.Draw(spriteBatch, screenSafeArea, graphics);
 
             if (IsBorderEnabled)
             {
-                CircleBorder.Draw(spriteBatch, 2.0f, this.BorderColor * Opacity);
+                if (CircleBorder == null)
+                    CircleBorder = new PrimitiveLine(graphics, BorderColor);
+                   
+                CircleBorder.Draw(spriteBatch, 2.0f, BorderColor * Opacity);
             }
         }
         
@@ -221,7 +223,6 @@ namespace XylophoneGame
             
             Circle tempBall1;            
             Circle tempBall2;
-            
             
             for (int i = 0; i < tiles.Count; i++)
             {
@@ -302,7 +303,8 @@ namespace XylophoneGame
         
         public override void Destroy()
         {
-            CircleBorder.Destroy();
+            if (CircleBorder != null)
+                CircleBorder.Destroy();
             CircleBorder = null;
             base.Destroy();
         }

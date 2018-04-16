@@ -253,12 +253,12 @@ namespace XylophoneGame
             return false;
         }
         
-        protected virtual Texture2D CreateTexture() 
+        protected virtual Texture2D CreateTexture(GraphicsDevice graphics) 
         {
             return Texture;
         }
         
-        public virtual void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics)
         {
             
             if (Texture == null)
@@ -268,7 +268,7 @@ namespace XylophoneGame
 
             if (HasTexture == false)
             {
-                Texture = CreateTexture();
+                Texture = CreateTexture(graphics);
             }
             spriteBatch.Draw(Texture, BoundingRectangle, null, this.Color * Opacity, MathExtensions.DegreeToRadians(Angle), Vector2.Zero, SpriteEffects.None, Depth);
         }

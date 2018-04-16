@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Audio;
 
 namespace XylophoneGame
 {
@@ -64,7 +63,7 @@ namespace XylophoneGame
             }
         }
         
-        public void DrawTrailParticles(SpriteBatch spriteBatch, Rectangle screenSafeArea)
+        public void DrawTrailParticles(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics)
         {
             
             if (TrailLayers.Count > 0)
@@ -72,7 +71,7 @@ namespace XylophoneGame
                 // Draw the particles
                 foreach (Circle particle in TrailLayers)
                 {
-                    particle.Draw(spriteBatch, screenSafeArea);
+                    particle.Draw(spriteBatch, screenSafeArea, graphics);
                 }
             }
         }
@@ -121,14 +120,14 @@ namespace XylophoneGame
             } 
         }
         
-		public void DrawExplosionParticles(SpriteBatch spriteBatch, Rectangle screenSafeArea)
+		public void DrawExplosionParticles(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics)
 		{
 			if (ExplosionLayers.Count > 0)
 			{
 				// Draw the particles
 				foreach (Circle particle in ExplosionLayers)
 				{
-					particle.Draw(spriteBatch, screenSafeArea);
+					particle.Draw(spriteBatch, screenSafeArea, graphics);
 				}
 			}
 		}

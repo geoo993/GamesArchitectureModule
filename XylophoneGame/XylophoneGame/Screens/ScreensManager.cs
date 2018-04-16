@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,7 +42,8 @@ namespace XylophoneGame
         public ContentManager ContentManager { get; private set; }
         public CommandManager CommandManager { get; private set; }
         public GameServiceContainer Services { get; private set; }
-
+        public GraphicsDevice GraphicsDevice { get; private set; }
+        public Camera Camera { get; private set; }
         
         /// <summary>
         /// Game screens.
@@ -86,7 +86,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public ScreenManager(string title, string player, ContentManager contentManager, CommandManager manager, GameServiceContainer service)
+        public ScreenManager(string title, string player, ContentManager contentManager, GraphicsDevice graphicsDevice, GameServiceContainer service)
         {
             Title = title;
             Player = player;
@@ -94,7 +94,9 @@ namespace XylophoneGame
             SongType = XylophoneSongs.RandomSong;
             SongSpeed = XylophoneSongs.Songs[SongType];
             ContentManager = contentManager;
-            CommandManager = manager;
+            CommandManager = new CommandManager();
+            GraphicsDevice = graphicsDevice;
+            Camera = new Camera(graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height);
             Services = service;
             CurrentScreen = null;
             ScreenTopCenter = Vector2.Zero;
@@ -184,7 +186,7 @@ namespace XylophoneGame
         {
             if (CurrentScreen is LevelScreen)
             {
-                ((LevelScreen)CurrentScreen).Level.Ball.SetUpMovement(buttonState);
+                ((LevelScreen)CurrentScreen).Level.Ball.SetScaleUp(buttonState);
             }
         }
 
@@ -192,7 +194,7 @@ namespace XylophoneGame
         {
             if (CurrentScreen is LevelScreen)
             {
-                ((LevelScreen)CurrentScreen).Level.Ball.SetDownMovement(buttonState);
+                ((LevelScreen)CurrentScreen).Level.Ball.SetScaleDown(buttonState);
             }
         }
 
@@ -305,6 +307,10 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public void Update(GameTime gameTime)
         {
+            
+            // Update the command manager (updates polling input and fires input events)
+            CommandManager.Update();
+            
             // short delay before we go to game end
             if (GameEndLastTimeInterval + GameEndInterval < gameTime.TotalGameTime)
             {
@@ -326,7 +332,7 @@ namespace XylophoneGame
             
             if (CurrentScreen != null)
             {
-                ScreenTopCenter = new Vector2(GameInfo.Camera.Position.X, GameInfo.Camera.Position.Y - (screenSafeArea.Height / 2.0f));
+                ScreenTopCenter = new Vector2(Camera.Position.X, Camera.Position.Y - (screenSafeArea.Height / 2.0f));
                 FSM.Draw(spriteBatch, screenSafeArea);
             }
         }

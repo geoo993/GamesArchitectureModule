@@ -45,7 +45,7 @@ namespace XylophoneGame
         public Note PreviousNote { get; private set; }
         public String NoteSelected { get; private set; }
 
-        public Ball(String name, Level level, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
+        public Ball(String name, Vector2 position, int radius, float speed, float jump, float mass, Color color, SoundEffect note, Texture2D texture = null, TileCollision collision = TileCollision.Passable)
         : base(name, position, radius, speed, jump, mass, color, note, texture, collision)
         {
             this.EnableParticles = true;
@@ -90,7 +90,7 @@ namespace XylophoneGame
         
         }
         
-        public void SetUpMovement(ButtonAction buttonState)
+        public void SetScaleUp(ButtonAction buttonState)
         {
             if (buttonState == ButtonAction.DOWN)
             {
@@ -99,7 +99,7 @@ namespace XylophoneGame
         }
         
         
-        public void SetDownMovement(ButtonAction buttonState)
+        public void SetScaleDown(ButtonAction buttonState)
         {
             if (buttonState == ButtonAction.DOWN)
             {
@@ -231,7 +231,7 @@ namespace XylophoneGame
 
                 if (EnableParticles)
                 {
-                    Particles.AddTrailParticle(Position, Radius);
+                    Particles.AddTrailParticle(Position, Radius, false);
                 }
                 
                 Acceleration.Y -= Gravity.Y;
@@ -319,11 +319,11 @@ namespace XylophoneGame
             return base.Intersects(rectangle);
         }
         
-        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea) 
+        public override void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics) 
         {
             
-            Particles.DrawTrailParticles(spriteBatch, screenSafeArea);
-            base.Draw(spriteBatch, screenSafeArea);
+            Particles.DrawTrailParticles(spriteBatch, screenSafeArea, graphics);
+            base.Draw(spriteBatch, screenSafeArea, graphics);
         }
 
         public override void Destroy()

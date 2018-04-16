@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-// https://www.pinterest.co.uk/pin/614671049115390417/
 
 namespace XylophoneGame
 {
@@ -31,9 +27,9 @@ namespace XylophoneGame
         }
 
         public static readonly Dictionary<SongType, float> Songs = new Dictionary<SongType, float>() {
-            {SongType.TwinkleLittle, (float)(double)GameManager.manager["TwinkleLittleSpeed"]},
-            {SongType.JingleBells, (float)(double)GameManager.manager["JingleBellsSpeed"]},
-            {SongType.IncyIncySpider, (float)(double)GameManager.manager["IncyIncySpiderSpeed"]}
+            {SongType.TwinkleLittle, (float)(double)LuaInfo.manager["TwinkleLittleSpeed"]},
+            {SongType.JingleBells, (float)(double)LuaInfo.manager["JingleBellsSpeed"]},
+            {SongType.IncyIncySpider, (float)(double)LuaInfo.manager["IncyIncySpiderSpeed"]}
         };
         
          
@@ -51,11 +47,11 @@ namespace XylophoneGame
         public string GetSong(SongType type) {
             switch (type) {
             case SongType.JingleBells:
-                    return (string)GameManager.manager["JingleBells"];
+                    return (string)LuaInfo.manager["JingleBells"];
             case SongType.TwinkleLittle:
-                    return (string)GameManager.manager["TwinkleLittle"];
+                    return (string)LuaInfo.manager["TwinkleLittle"];
             case SongType.IncyIncySpider:
-                    return (string)GameManager.manager["IncyIncySpider"];
+                    return (string)LuaInfo.manager["IncyIncySpider"];
             default:
                     return "";
             }

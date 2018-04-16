@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace XylophoneGame
@@ -53,10 +54,7 @@ namespace XylophoneGame
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            Device.graphicsDevice = graphics.GraphicsDevice;
-            var player = (string)GameManager.manager["PlayerName"];
-			ScreenManager = new ScreenManager(Window.Title, player, Content, Commands.manager, Services);
+			ScreenManager = new ScreenManager(Window.Title, GameInfo.Player, Content, graphics.GraphicsDevice, Services);
             
             base.Initialize();
         }
@@ -70,11 +68,7 @@ namespace XylophoneGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            ScreenManager.Construct();
-
-            //GameInfo.Camera.SetKeyoardBindings(Commands.manager);
-            
+            ScreenManager.Construct();            
         }
         
        
@@ -105,12 +99,8 @@ namespace XylophoneGame
                 this.Exit();
             }
 
-            // Update the command manager (updates polling input and fires input events)
-            Commands.manager.Update();
-            //GameInfo.Camera.UpdateInputs();
-            
             ScreenManager.Update(gameTime);
-
+            
             base.Update(gameTime);
         }
         
@@ -127,7 +117,7 @@ namespace XylophoneGame
 
             //spriteBatch.Begin();
 			//this.spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-			this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, GameInfo.Camera.TranslationMatrix );
+			this.spriteBatch.Begin( SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, ScreenManager.Camera.TranslationMatrix );
             {
                 ScreenManager.Draw(spriteBatch, GraphicsDevice.Viewport.TitleSafeArea);
             }

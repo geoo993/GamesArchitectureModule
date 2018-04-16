@@ -48,16 +48,7 @@ namespace XylophoneGame
         }
 
         SplashScreen screen;
-        
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-        public SplashScreenState()
-            : base()
-        {
-        
-        }
-
+      
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -78,7 +69,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            screen.Update(gameTime);
+            screen.Update(gameTime, ((ScreenManager)owner).Camera.Position);
         }
            
         //-----------------------------------------------------------------------------
@@ -118,15 +109,7 @@ namespace XylophoneGame
         }
 
         MainScreen screen;
-        
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-        public MainScreenState()
-            : base()
-        {
-        }
-
+      
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
@@ -146,7 +129,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            screen.Update(gameTime);
+            screen.Update(gameTime, ((ScreenManager)owner).Camera.Position);
         }
         
         //-----------------------------------------------------------------------------
@@ -186,13 +169,6 @@ namespace XylophoneGame
 
         LevelScreen screen; 
 
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
-        public LevelScreenState()
-            : base()
-        {
-        }
 
         //-----------------------------------------------------------------------------
         //
@@ -215,7 +191,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            screen.Update(gameTime);
+            screen.Update(gameTime, ((ScreenManager)owner).Camera.Position);
         }  
         
         //-----------------------------------------------------------------------------
@@ -258,14 +234,6 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public WinScreenState()
-            : base()
-        {
-        }
-
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
             ScreenManager manager = (ScreenManager)owner;
@@ -282,7 +250,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            screen.Update(gameTime);
+            screen.Update(gameTime, ((ScreenManager)owner).Camera.Position);
         }
         
         //-----------------------------------------------------------------------------
@@ -326,14 +294,6 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public LoseScreenState()
-            : base()
-        {
-        }
-
-        //-----------------------------------------------------------------------------
-        //
-        //-----------------------------------------------------------------------------
         public override void Enter(ref Object owner)
         {
             ScreenManager manager = (ScreenManager)owner;
@@ -350,7 +310,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public override void Update(ref Object owner, GameTime gameTime)
         {
-            screen.Update(gameTime);
+            screen.Update(gameTime, ((ScreenManager)owner).Camera.Position);
         }
         
         //-----------------------------------------------------------------------------

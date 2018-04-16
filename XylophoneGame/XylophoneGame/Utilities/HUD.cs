@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace XylophoneGame
@@ -59,7 +57,6 @@ namespace XylophoneGame
    
         public void Update(GameTime gameTime)
         {
-            
             FrameCounter.Update(gameTime);
         }
         
@@ -113,7 +110,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Draw(SpriteBatch spriteBatch, float width, float height, Vector2 hudPosition, SpriteFont hudFont, SpriteFont hudLargeFont)
+        public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphics, float width, float height, Vector2 hudPosition, Vector2 cameraPosition, SpriteFont hudFont, SpriteFont hudLargeFont)
         {
             
             var NotesCompletedWidth = hudFont.MeasureString(NotesCompleted).X;
@@ -132,10 +129,10 @@ namespace XylophoneGame
             var largetFontWidth = hudLargeFont.MeasureString(word).X;
             var color = HudTextColor * FlashScoreCount;
             var origin = new Vector2(largetFontWidth / 2, 0);
-            ScreenManager.DrawShadowedString(spriteBatch, hudLargeFont, word, GameInfo.Camera.Position - new Vector2(0.0f, 100.0f), origin, color, 1.0f);
+            ScreenManager.DrawShadowedString(spriteBatch, hudLargeFont, word, cameraPosition - new Vector2(0.0f, 100.0f), origin, color, 1.0f);
             
 			// hud frames
-			HudProgressBar.Construct((int)width, (int)height, hudPosition - new Vector2((width * 0.5f), 0.0f), Color.Orange, Color.Gold, Color.Thistle);
+			HudProgressBar.Construct(graphics, (int)width, (int)height, hudPosition - new Vector2((width * 0.5f), 0.0f), Color.Orange, Color.Gold, Color.Thistle);
 			HudProgressBar.Draw(spriteBatch);
 			
             // frame rate

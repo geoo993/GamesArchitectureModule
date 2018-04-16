@@ -1,6 +1,4 @@
 ﻿
-using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -59,13 +57,13 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public void Construct(int width, int height, Vector2 position, Color color, Color timeColor, Color background)
+        public void Construct(GraphicsDevice graphics, int width, int height, Vector2 position, Color color, Color timeColor, Color background)
         {
             Width = width;
             Height = height;
-			ProgressSprite = Texture(width, height, color);
-			TimeProgressSprite = Texture(width, 10, timeColor);
-			BackgroundSprite = Texture(width, height, background);
+			ProgressSprite = Texture(graphics, width, height, color);
+			TimeProgressSprite = Texture(graphics, width, 10, timeColor);
+			BackgroundSprite = Texture(graphics, width, height, background);
 			ProgressColor = color;
             ProgressColor = timeColor;
             BackgroundColor = background;
@@ -177,9 +175,7 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         public void SetProgress(float progress, float lengthOfSong)
         {
-            //Debug.Print(" ");
-            //Debug.Print("Width "+Width.ToString());
-            //Debug.Print("Percent Given "+percent.ToString());
+        
             var percent = MathExtensions.Percentage(progress + 1, lengthOfSong, 0); // 66
             var value = MathExtensions.Value(percent, Width, 0) / Width;
             
@@ -202,9 +198,9 @@ namespace XylophoneGame
          /// <summary>
         /// texture area of the box
         /// </summary>
-        private Texture2D Texture(int width, int height, Color color) {
+        private Texture2D Texture(GraphicsDevice graphics, int width, int height, Color color) {
             
-            Texture2D rectangle = new Texture2D(Device.graphicsDevice, width, height, false, SurfaceFormat.Color);
+            Texture2D rectangle = new Texture2D(graphics, width, height, false, SurfaceFormat.Color);
             
             Color[] colorData = new Color[width * height];
             for (int i = 0; i < width * height; i++)

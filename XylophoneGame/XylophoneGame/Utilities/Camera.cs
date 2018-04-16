@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 // https://roguesharp.wordpress.com/2014/07/13/tutorial-5-creating-a-2d-camera-with-pan-and-zoom-in-monogame/
 // https://gamedev.stackexchange.com/questions/40272/how-can-i-implement-smooth-rotation-from-one-direction-to-another
@@ -9,20 +7,12 @@ using Microsoft.Xna.Framework.Input;
 namespace XylophoneGame
 {
     
+    
     public class Camera
     {
-       // Construct a new Camera class with standard zoom (no scaling)
-       public Camera()
-       {
-            Zoom = 1.0f;
-            SpriteWidth = 0;
-            SpriteHeight = 0;
-            CameraMovement = Vector2.Zero;
-            IsMoving = false;
-       }
-
-        // Centered Position of the Camera in pixels.
-        public Vector2 Position;
+    
+       // Centered Position of the Camera in pixels.
+       public Vector2 Position;
        // Current Zoom level with 1.0f being standard
        public float Zoom { get; private set; }
        // Current Rotation amount with 0.0f being standard orientation
@@ -30,18 +20,9 @@ namespace XylophoneGame
      
        // Height and width of the viewport window which we need to adjust
        // any time the player resizes the game window.
-       private int ViewportWidth {
-            get {
-				return Device.graphicsDevice.Viewport.Width;
-            }
-       }
-       private int ViewportHeight
-        {
-            get
-            {
-                return Device.graphicsDevice.Viewport.Height;
-            }
-        }
+       public int ViewportWidth { get; private set; }
+
+       public int ViewportHeight { get; private set; }
 
        private int SpriteWidth;
        private int SpriteHeight;
@@ -73,6 +54,20 @@ namespace XylophoneGame
                 Matrix.CreateTranslation( new Vector3( ViewportCenter, 0 ) );
           }
        }
+       
+          // Construct a new Camera class with standard zoom (no scaling)
+       public Camera(int screenWidth, int screenHeight)
+       {
+            Zoom = 1.0f;
+            ViewportWidth = screenWidth;
+            ViewportHeight = screenHeight;
+            SpriteWidth = 0;
+            SpriteHeight = 0;
+            CameraMovement = Vector2.Zero;
+            IsMoving = false;
+       }
+
+
      
        // Call this method with negative values to zoom out
        // or positive values to zoom in. It looks at the current zoom
@@ -150,7 +145,7 @@ namespace XylophoneGame
        }
      
        // Clamp the camera so it never leaves the visible area of the map.
-       private Vector2 MapClampedPosition( Vector2 position)
+       private Vector2 MapClampedPosition(Vector2 position)
        {
           var cameraMax = new Vector2( GameInfo.MapWidth - ( ViewportWidth / Zoom / 2 ),
                                        GameInfo.MapHeight - ( ViewportHeight / Zoom / 2 ) );
@@ -176,6 +171,7 @@ namespace XylophoneGame
                 CameraMovement.X = -1;
             }
         }
+        
         public void ScrollRight(ButtonAction buttonState, Vector2 amount)
         {
             if (buttonState == ButtonAction.DOWN)
@@ -231,7 +227,7 @@ namespace XylophoneGame
           // When using a controller, to match the thumbstick behavior,
           // we need to normalize non-zero vectors in case the user
           // is pressing a diagonal direction.
-          if ( CameraMovement != Vector2.Zero )
+          if (CameraMovement != Vector2.Zero )
           {
              CameraMovement.Normalize();
           }
@@ -271,4 +267,5 @@ namespace XylophoneGame
        
        
     }
+	
 }

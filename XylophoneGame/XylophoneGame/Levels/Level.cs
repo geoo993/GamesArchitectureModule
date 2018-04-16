@@ -307,7 +307,7 @@ namespace XylophoneGame
             Rectangle rect = GetBounds(x, y);
             Vector2 start = RectangleExtensions.GetBottomCenter(rect);
             int radius = rect.Width / 5;
-            Ball = new Ball("Ball", this, start, radius, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
+            Ball = new Ball("Ball", start, radius, BallInfo.BallSpeed, BallInfo.BallJumpSpeed, BallInfo.BallMass, GameInfo.Instance.RandomColor(), null, null, collision);
             
             return null;
         }
@@ -342,7 +342,7 @@ namespace XylophoneGame
         /// Updates all objects in the world, performs collision between them,
         /// and handles the time limit with scoring.
         /// </summary>
-        public void Update(GameTime gameTime, Vector2 mapSize, ScoreSubject ScoreSubject, float hudWidth)
+        public void Update(GameTime gameTime, Vector2 mapSize, ScoreSubject ScoreSubject, Camera camera, float hudWidth)
         {
         
 			ScoreObserver observer = new ScoreObserver("Game Observer");
@@ -350,9 +350,6 @@ namespace XylophoneGame
 
             if (observer.HasSongEnded == false)
             {
-
-                // center camera on ball
-                GameInfo.Camera.CenterOn(Ball, false);
 
                 //Update Ball And Note Tiles
                 Ball.UpdatePosition(gameTime, mapSize);
@@ -467,7 +464,11 @@ namespace XylophoneGame
 
                     Tiles[i].UpdatePosition(gameTime, mapSize);
                 }
-
+                
+                
+                
+                // center camera on ball
+                camera.CenterOn(Ball, false);
             }
 
         }
@@ -478,13 +479,13 @@ namespace XylophoneGame
         /// <summary>
         /// Draw everything in the level from background to foreground.
         /// </summary>
-        public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea)
+        public void Draw(SpriteBatch spriteBatch, Rectangle screenSafeArea, GraphicsDevice graphics)
         {
            
             for (int i = 0; i < Tiles.Count; i++)
             {
 				var tile = Tiles[i];
-                tile.Draw(spriteBatch, screenSafeArea);
+                tile.Draw(spriteBatch, screenSafeArea, graphics);
                 
                 if (tile is MusicNoteItem && ((MusicNoteItem)tile).IsEnabled == false && ((MusicNoteItem)tile).IsParticlesDisabled)
                 {
@@ -499,7 +500,7 @@ namespace XylophoneGame
                 }
             }
             
-			Ball.Draw(spriteBatch, screenSafeArea);
+			Ball.Draw(spriteBatch, screenSafeArea, graphics);
         }
 
         #endregion

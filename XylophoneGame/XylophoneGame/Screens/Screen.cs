@@ -1,10 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace XylophoneGame
 {
@@ -17,6 +13,8 @@ namespace XylophoneGame
 
         public Color BackgroundColor { get; private set; }
         public Texture2D BackgroundTexture;
+        
+        public Vector2 CameraPosition { get; private set; }
         
         protected bool IsBlocked { get; private set; }
         
@@ -99,13 +97,9 @@ namespace XylophoneGame
         //-----------------------------------------------------------------------------
         //
         //-----------------------------------------------------------------------------
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, Vector2 screenCenter)
         {
-            if (IsBlocked) {
-            
-            } else {
-                
-            }
+            CameraPosition = screenCenter;
         }
 
         //-----------------------------------------------------------------------------
@@ -116,7 +110,7 @@ namespace XylophoneGame
             
             if (BackgroundTexture != null)
             {
-                Vector2 hudLocation = new Vector2(GameInfo.Camera.Position.X - (screenSafeArea.Width / 2.0f), GameInfo.Camera.Position.Y - (screenSafeArea.Height / 2.0f) );
+                Vector2 hudLocation = new Vector2(CameraPosition.X - (screenSafeArea.Width / 2.0f), CameraPosition.Y - (screenSafeArea.Height / 2.0f) );
                 spriteBatch.Draw(BackgroundTexture, hudLocation, Color.White);
             }
         }

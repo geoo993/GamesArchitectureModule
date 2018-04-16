@@ -118,5 +118,17 @@
     "Level": "level3",
     "Score": 10,
     "DidWin": true
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 49,
+    "DidWin": true
+  },
+  {
+    "PlayerName": "George",
+    "Level": "level3",
+    "Score": 8,
+    "DidWin": true
   }
 ]
