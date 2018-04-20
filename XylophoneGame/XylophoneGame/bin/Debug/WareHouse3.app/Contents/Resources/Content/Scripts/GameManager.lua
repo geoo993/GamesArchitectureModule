@@ -1,4 +1,4 @@
-PlayerName = "George";
+PlayerName = "Alex";
 
 ScreenWidth = 1200;
 ScreenHeight = 720;

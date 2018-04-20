@@ -118,12 +118,12 @@ namespace XylophoneGame
             HudLargeFont = ContentManager.Load<SpriteFont>("Fonts/LargeGameFont");
             
             SetState(ScreensState.SPLASH);
-            SetKeyoardBindings(CommandManager);
+            SetKeyboardBindings(CommandManager);
             
         }
 
         #region KeyBoard Actions
-        public void SetKeyoardBindings(CommandManager manager)
+        public void SetKeyboardBindings(CommandManager manager)
         {
             manager.AddKeyboardBinding(Keys.Escape, Exit);
             manager.AddKeyboardBinding(Keys.Enter, NextScreen);
